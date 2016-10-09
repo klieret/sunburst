@@ -4,7 +4,7 @@ import example_paths
 import collections
 from typing import Dict, List
 from path import Path
-e_pathtimes = example_paths.pathtimes
+e_pathtimes = example_paths.pathvalues
 from itertools import groupby
 import matplotlib
 matplotlib.use("qt4agg")
