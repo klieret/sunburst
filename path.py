@@ -37,17 +37,24 @@ class Path(tuple):
         return self[:len(self) - 1]
 
 
-def paths2dot(paths: List[Path], filename):
-    with open(filename, "w") as out:
-        # strict: don't draw multiple edges
-        out.write("strict digraph G {")
-        for path in paths:
-            # Note: We have to make sure that a path like "1/1" is
-            # interpreted as 1->"1/1"-and not as a loop, so we designate the
-            #  vertices of the tree by the string representations of their
-            # paths.
-            path_steps = (path[:level + 1] for level in range(len(path)))
-            vertex_names =  ('"{}"'.format(STRING_DELIM.join(step)) for step in
-                             path_steps)
-            out.write("\t{};\n".format('->'.join(vertex_names)))
-        out.write("}")
+def paths2dot(paths: List[Path]) -> str:
+    """ Converts a list of paths to their correspondent graph described in the
+    DOT language (see http://www.graphviz.org/doc/info/lang.html). Not using
+    the python graphviz package to reduce dependencies.
+    :param paths: List of paths.
+    :return: graph described in DOT language.
+    """
+    dot = ""  # return value
+    # strict: don't draw multiple edges
+    dot += "strict digraph G {"
+    for path in paths:
+        # Note: We have to make sure that a path like "1/1" is
+        # interpreted as 1->"1/1"-and not as a loop, so we designate the
+        #  vertices of the tree by the string representations of their
+        # paths.
+        path_steps = (path[:level + 1] for level in range(len(path)))
+        vertex_names =  ('"{}"'.format(STRING_DELIM.join(step)) for step in
+                         path_steps)
+        dot += "\t{};\n".format('->'.join(vertex_names))
+    dot += "}"
+    return dot
