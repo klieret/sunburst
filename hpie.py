@@ -74,6 +74,7 @@ def calculate_angles(structured_paths: List[List[List[Path]]],
     value_sum = path_values[Path(())]
     for level_no, groups in enumerate(structured_paths):
         for group in groups:
+            theta2 = None  # else pycharm complains about theta2 undefined
             for path_no, path in enumerate(group):
                 # First we determine the starting angle  (theta1) for the wedge
                 # corresponding to the path.
@@ -101,7 +102,7 @@ class HierarchicalPie(object):
                  pathvalues,
                  axes,
                  origin=(0, 0),
-                 cmap=plt.get_cmap('rainbow'),
+                 cmap=plt.get_cmap('jet'),
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
                  default_edge_width=1):
@@ -133,6 +134,21 @@ class HierarchicalPie(object):
         self._angles = calculate_angles(self._structured_paths,
                                         self._completed_pv)
         self.wedges = [self.wedge(path) for path in self._paths]
+
+    def _is_outmost(self, path):
+        # is there a descendant of path?
+        # to speed up things we use self._structured_paths
+        level = len(path)
+        if level == self._max_level:
+            return True
+        for group in self._structured_paths[level + 1]:
+            for p in group:
+                if p.startswith(path):
+                    return False
+                # all paths in this group start the same
+                continue
+        return True
+
 
     def wedge_width(self, level):
         if level == 0:
@@ -189,6 +205,9 @@ class HierarchicalPie(object):
         angle = (theta1 + theta2) / 2
         level = len(path)
         radius = self._wedge_mid_radius(level)
+        if self._is_outmost(path):
+            radius = self._wedge_inner_radius(level)
+
         mid_x = self.origin[0] + radius * np.cos(np.deg2rad(angle))
         mid_y = self.origin[1] + radius * np.sin(np.deg2rad(angle))
 
@@ -201,8 +220,30 @@ class HierarchicalPie(object):
         else:
             raise ValueError
 
-        self.axes.text(mid_x, mid_y, self.path_text(path), ha="center", va="center",
-                 rotation=rotation)
+        # If the wedge is on the outmos layer, we can move the text farther out
+        # to avoid clashes with text from levels below
+        if self._is_outmost(path):
+            if 0 <= angle < 90:
+                va = "bottom"
+                ha = "left"
+            elif 90 <= angle <= 180:
+                va = "bottom"
+                ha = "right"
+            elif 180 <= angle <= 270:
+                va = "top"
+                ha = "right"
+            elif 270 <= angle <= 360:
+                va = "top"
+                ha = "left"
+            else:
+                raise ValueError
+        else:
+            ha = "center"
+            va = "center"
+
+        self.axes.text(mid_x, mid_y, self.path_text(path), ha=ha, va=va,
+                       rotation=rotation)
+
 
     def _tangential_text(self, path):
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
@@ -222,8 +263,9 @@ class HierarchicalPie(object):
             rotation = angle - 270
         else:
             raise ValueError
-        self.axes.text(mid_x, mid_y, self.path_text(path), ha="center", va="center",
-                 rotation=rotation)
+
+        self.axes.text(mid_x, mid_y, self.path_text(path), ha="center",
+                       va="center", rotation=rotation)
 
     def plot(self):
         if not self.wedges:
@@ -233,7 +275,8 @@ class HierarchicalPie(object):
             self.axes.add_patch(w)
         for path in self._paths:
             if len(path)*(self._angles[path].theta2 -
-                          self._angles[path].theta1) > 90:  # todo: random criteria!
+                          self._angles[path].theta1) > 90:
+                # todo: random criteria!
                 self._tangential_text(path)
             else:
                 self._radial_text(path)
