@@ -2,7 +2,7 @@
 
 import collections
 from typing import Dict, List
-from path import Path
+from .path import Path
 from itertools import groupby
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
@@ -201,6 +201,7 @@ class HierarchicalPie(object):
             return "({})".format(minutes)
 
     def path_text(self, path):
+        print(path, tuple(path), type(path), str(path), repr(path), path[-1] if path else "")
         return path[-1] if path else ""
 
     def _radial_text(self, path):

@@ -6,10 +6,15 @@ STRING_DELIM = "/"
 
 
 class Path(tuple):
-    def __new__(cls, iterable):
-        for t in iterable:
+    def __new__(cls, iterator):
+        # avoid unintended behaviour, namely having Path("abc") and
+        # Path(("abc")) resulting in the path a/b/c of length 3 by excluding
+        # str from the list of allowed iterators
+        if isinstance(iterator, str):
+            raise ValueError("Don't initialize a Path object with a string.")
+        for t in iterator:
             assert isinstance(t, str)
-        return super().__new__(cls, iterable)
+        return super().__new__(cls, iterator)
 
     def __str__(self):
         # requires all entries of the underlying tuple to be strings!
@@ -21,20 +26,26 @@ class Path(tuple):
         # ==> use quotation marks. Since the string itself can also contain
         # various kinds of quote constructions, just use the __repr__ method
         # of the str class.
-        return STRING_DELIM.join((string.__repr__() for string in self))
+        return "Path({})".format(STRING_DELIM.join((string.__repr__() for string in self)))
 
-    def __getitem__(self, item):
-        # return elements of type Path, not tuple!
-        # (also affects slicing etc.)
-        result = tuple.__getitem__(self, item)
-        return Path(result)
+    def __getitem__(self, key):
+        result = tuple.__getitem__(self, key)
+        # Depending on whether key was a single int or a slice object ,
+        # tuple.__getitem__ will return a tuple or a string. However,
+        # we want our __getitem__ method to return a Path instance in either
+        # way!
+        if isinstance(result, tuple):
+            return Path(result)
+        elif isinstance(result, str):
+            return Path((result,))  # do not remove ',' or it's gonna be a str
 
     def startswith(self, tag):
         if not isinstance(tag, Path):
-            raise ValueError("Must be Path instance!")
+            raise ValueError("Expecting instance of Path "
+                             "but got {}!".format(type(tag)))
         if len(tag) > len(self):
             return False
-        return tuple(tag) == tuple(self[:len(tag)])
+        return self[:len(tag)] == tag
 
     def parent(self):
         return self[:len(self) - 1]
