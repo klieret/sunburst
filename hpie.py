@@ -97,8 +97,13 @@ def calculate_angles(structured_paths: List[List[List[Path]]],
 
 
 class HierarchicalPie(object):
-    def __init__(self, pathvalues, axes, origin=(0, 0), cmap=plt.get_cmap('rainbow'),
-                 default_ring_width=0.4, default_edge_color=(0, 0, 0, 1),
+    def __init__(self,
+                 pathvalues,
+                 axes,
+                 origin=(0, 0),
+                 cmap=plt.get_cmap('rainbow'),
+                 default_ring_width=0.4,
+                 default_edge_color=(0, 0, 0, 1),
                  default_edge_width=1):
 
         # *** Input & Config *** (emph)
@@ -228,7 +233,7 @@ class HierarchicalPie(object):
             self.axes.add_patch(w)
         for path in self._paths:
             if len(path)*(self._angles[path].theta2 -
-                          self._angles[path].theta1) > 90:
+                          self._angles[path].theta1) > 90:  # todo: random criteria!
                 self._tangential_text(path)
             else:
                 self._radial_text(path)
@@ -243,4 +248,4 @@ class HierarchicalPie(object):
                      label=self.path_text(path),
                      facecolor=self.face_color(path),
                      edgecolor=self.edge_color(path),
-                     fill=True)
+                     fill=True)  # todo: supply rest of the arguments
