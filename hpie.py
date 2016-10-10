@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
-import example_paths
 import collections
 from typing import Dict, List
 from path import Path
-e_pathtimes = example_paths.pathvalues
 from itertools import groupby
-import matplotlib
-matplotlib.use("qt4agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
@@ -108,7 +104,8 @@ class HierarchicalPie(object):
         self.paths = list(self.completed_pv.keys())
         self.max_level = max((len(path) for path in self.paths))
         self.structured_paths = structurize(self.paths)
-        self.angles = calculate_angles(self.structured_paths, self.completed_pv)
+        self.angles = calculate_angles(self.structured_paths,
+                                       self.completed_pv)
 
         self.cmap = plt.get_cmap('rainbow')
         self.edgecolor = "b"
@@ -130,7 +127,8 @@ class HierarchicalPie(object):
         return sum(self.ring_width(level) for level in range(level))
 
     def _wedge_mid_radius(self, level):
-        return (self._wedge_outer_radius(level) + self._wedge_inner_radius(level)) / 2
+        return (self._wedge_outer_radius(level) +
+                self._wedge_inner_radius(level)) / 2
 
     def edge_color(self, path):
         return (0, 0, 0, 1)
@@ -163,7 +161,8 @@ class HierarchicalPie(object):
             return str(minutes)
 
     def path_text(self, path):
-        return "{} ({})".format(path, self.format_value(self.completed_pv[path]))
+        return "{} ({})".format(path,
+                                self.format_value(self.completed_pv[path]))
 
     def radial_text(self, path):
         theta1, theta2 = self.angles[path].theta1, self.angles[path].theta2
@@ -211,7 +210,8 @@ class HierarchicalPie(object):
         for w in self.wedges:
             ax.add_patch(w)
         for path in self.paths:
-            if len(path)*(self.angles[path].theta2 - self.angles[path].theta1) > 90:
+            if len(path)*(self.angles[path].theta2 -
+                          self.angles[path].theta1) > 90:
                 self.tangential_text(path)
             else:
                 self.radial_text(path)
@@ -228,13 +228,3 @@ class HierarchicalPie(object):
                      edgecolor=self.edge_color(path),
                      fill=True)
 
-
-fig, ax = plt.subplots()
-ax.set_aspect("equal")
-ax.set_ylim([-2, 2])
-ax.set_xlim([-2, 2])
-
-hp = HierarchicalPie(e_pathtimes)
-hp.plot(ax)
-
-plt.show()
