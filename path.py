@@ -53,8 +53,8 @@ def paths2dot(paths: List[Path]) -> str:
         #  vertices of the tree by the string representations of their
         # paths.
         path_steps = (path[:level + 1] for level in range(len(path)))
-        vertex_names =  ('"{}"'.format(STRING_DELIM.join(step)) for step in
-                         path_steps)
+        vertex_names = ('"{}"'.format(STRING_DELIM.join(step)) for step in
+                        path_steps)
         dot += "\t{};\n".format('->'.join(vertex_names))
     dot += "}"
     return dot

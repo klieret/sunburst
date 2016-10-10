@@ -106,7 +106,7 @@ class HierarchicalPie(object):
 
         self.completed_pv = complete(self.input_pv)
         self.paths = list(self.completed_pv.keys())
-        self.max_len = max((len(path) for path in self.paths))
+        self.max_level = max((len(path) for path in self.paths))
         self.structured_paths = structurize(self.paths)
         self.angles = calculate_angles(self.structured_paths, self.completed_pv)
 
@@ -114,10 +114,23 @@ class HierarchicalPie(object):
         self.edgecolor = "b"
 
         self.origin = (0, 0)
-        self.ring_width = 0.4
-        self.inner_circle_width = 0
 
         self.wedges = [self.wedge(path) for path in self.paths]
+
+    def ring_width(self, level):
+        if level == 0:
+            return 0.3
+        else:
+            return 0.4
+
+    def _wedge_outer_radius(self, level):
+        return sum(self.ring_width(level) for level in range(level + 1))
+
+    def _wedge_inner_radius(self, level):
+        return sum(self.ring_width(level) for level in range(level))
+
+    def _wedge_mid_radius(self, level):
+        return (self._wedge_outer_radius(level) + self._wedge_inner_radius(level)) / 2
 
     def edge_color(self, path):
         return (0, 0, 0, 1)
@@ -137,7 +150,7 @@ class HierarchicalPie(object):
 
             color = list(self.cmap(angle/360))
             # make the color get lighter with progressing level
-            color[3] = 1 - (len(path) - 1) / (self.max_len - 1)
+            color[3] = 1 - (len(path) - 1) / (self.max_level - 1)
         return tuple(color)
 
     def format_value(self, value):
@@ -155,7 +168,8 @@ class HierarchicalPie(object):
     def radial_text(self, path):
         theta1, theta2 = self.angles[path].theta1, self.angles[path].theta2
         angle = (theta1 + theta2) / 2
-        radius = (self.inner_circle_width + (1-0.5 + len(path)) * self.ring_width)
+        level = len(path)
+        radius = self._wedge_mid_radius(level)
         mid_x = self.origin[0] + radius * np.cos(np.deg2rad(angle))
         mid_y = self.origin[1] + radius * np.sin(np.deg2rad(angle))
 
@@ -174,13 +188,13 @@ class HierarchicalPie(object):
     def tangential_text(self, path):
         theta1, theta2 = self.angles[path].theta1, self.angles[path].theta2
         angle = (theta1 + theta2) / 2
-        print(angle)
-        radius = (self.inner_circle_width + (1-0.5 + len(path)) * self.ring_width)
+        level = len(path)
+        radius = self._wedge_mid_radius(level)
         mid_x = self.origin[0] + radius * np.cos(np.deg2rad(angle))
         mid_y = self.origin[1] + radius * np.sin(np.deg2rad(angle))
 
         if 0 <= angle < 90:
-           rotation = angle - 90
+            rotation = angle - 90
         elif 90 <= angle < 180:
             rotation = angle - 90
         elif 180 <= angle < 270:
@@ -203,11 +217,12 @@ class HierarchicalPie(object):
                 self.radial_text(path)
 
     def wedge(self, path):
+        level = len(path)
         return Wedge((self.origin[0], self.origin[1]),
-                     (len(path) +1) * self.ring_width,
+                     self._wedge_outer_radius(level),
                      self.angles[path].theta1,
                      self.angles[path].theta2,
-                     width=self.ring_width,
+                     width=self.ring_width(level),
                      label=self.path_text(path),
                      facecolor=self.face_color(path),
                      edgecolor=self.edge_color(path),
