@@ -40,28 +40,37 @@ class Path(tuple):
         return self[:len(self) - 1]
 
 
-def paths2dot(paths: List[Path]) -> str:
+def paths2dot(paths: List[Path], full_labels=True) -> str:
     """ Converts a list of paths to their correspondent graph described in the
     DOT language (see http://www.graphviz.org/doc/info/lang.html). Not using
     the python graphviz package to reduce dependencies.
     :param paths: List of paths.
+    :param full_labels: If true, the vertices of the graph are labeled with the
+                        full path, else only the name of the endpoint
+                        (path[:-1]) is printed.
     :return: graph described in DOT language as string.
     """
     dot = ""  # return value
     # strict: don't draw multiple edges
     dot += "strict digraph G {"
     for path in paths:
-        # Note: We have to make sure that a path like "1/1" is
-        # interpreted as 1->"1/1"-and not as a loop, so we designate the
-        # vertices of the tree by the positive hashes of the path object
+        # Note: We have to make sure that a path like "1/1" is interpreted
+        # as 1->"1/1"-and not as a loop of the vertex "1", so we designate
+        # the vertices of the tree by the positive hashes of the path object
+        def vid(vert):
+            return str(abs(hash(vert)))
+
         vertices = [path[:level + 1] for level in range(len(path))]
-        vertex_ids = (str(abs(hash(vertex))) for vertex in vertices)
+        vertex_ids = (vid(vertex) for vertex in vertices)
         dot += "\t{};\n".format('->'.join(vertex_ids))
         # since __repr__ has a lot of quotation marks mixed in the
         # representation, we adapt the labeling with the ouput of __str__
+        # we have to manually escape double quotation marks)
         for vertex in vertices:
-            dot += '\t{} [label="{}"];\n'.format(str(abs(hash(vertex))),
-                                                 vertex.__str__().replace('"','\\"'))
+            if full_labels:
+                label = str(vertex).replace('"', '\\"')
+            else:
+                label = str(vertex[-1]).replace('"', '\\"')
+            dot += '\t{} [label="{}"];\n'.format(vid(vertex), label)
     dot += "}"
-    print(dot)
     return dot
