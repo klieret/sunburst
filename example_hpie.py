@@ -13,7 +13,7 @@ ax.set_aspect("equal")
 ax.set_ylim([-2, 2])
 ax.set_xlim([-2, 2])
 
-hp = HierarchicalPie(e_pathtimes)
-hp.plot(ax)
+hp = HierarchicalPie(e_pathtimes, ax)
+hp.plot()
 
 plt.show()

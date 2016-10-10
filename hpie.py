@@ -97,45 +97,60 @@ def calculate_angles(structured_paths: List[List[List[Path]]],
 
 
 class HierarchicalPie(object):
-    def __init__(self, pathvalues):
+    def __init__(self, pathvalues, axes, origin=(0, 0), cmap=plt.get_cmap('rainbow'),
+                 default_ring_width=0.4, default_edge_color=(0, 0, 0, 1),
+                 default_edge_width=1):
+
+        # *** Input & Config *** (emph)
         self.input_pv = pathvalues
+        self.axes = axes
+        self.cmap = cmap
+        self.origin = origin
+        self.default_ring_width = default_ring_width
+        self.default_edge_color = default_edge_color
+        self.default_edge_width = default_edge_width
 
-        self.completed_pv = complete(self.input_pv)
-        self.paths = list(self.completed_pv.keys())
-        self.max_level = max((len(path) for path in self.paths))
-        self.structured_paths = structurize(self.paths)
-        self.angles = calculate_angles(self.structured_paths,
-                                       self.completed_pv)
+        # *** Variables used for computation *** (emph)
+        self._completed_pv = None        # type: Dict[Path, float]
+        self._paths = None               # type: List[Path]
+        self._max_level = None           # type: int
+        self._structured_paths = None    # type: List[List[List[Path]]]
+        self._angles = None              # type: Dict[Path, Angles]
 
-        self.cmap = plt.get_cmap('rainbow')
-        self.edgecolor = "b"
+        # *** "Output" *** (emph)
+        self.wedges = None               # type: Dict[Path, Wedge]
 
-        self.origin = (0, 0)
+    def prepare_data(self):
+        self._completed_pv = complete(self.input_pv)
+        self._paths = list(self._completed_pv.keys())
+        self._max_level = max((len(path) for path in self._paths))
+        self._structured_paths = structurize(self._paths)
+        self._angles = calculate_angles(self._structured_paths,
+                                        self._completed_pv)
+        self.wedges = [self.wedge(path) for path in self._paths]
 
-        self.wedges = [self.wedge(path) for path in self.paths]
-
-    def ring_width(self, level):
+    def wedge_width(self, level):
         if level == 0:
-            return 0.3
+            return 0.75 * self.default_ring_width
         else:
             return 0.4
 
     def _wedge_outer_radius(self, level):
-        return sum(self.ring_width(level) for level in range(level + 1))
+        return sum(self.wedge_width(level) for level in range(level + 1))
 
     def _wedge_inner_radius(self, level):
-        return sum(self.ring_width(level) for level in range(level))
+        return sum(self.wedge_width(level) for level in range(level))
 
     def _wedge_mid_radius(self, level):
         return (self._wedge_outer_radius(level) +
                 self._wedge_inner_radius(level)) / 2
 
     def edge_color(self, path):
-        return (0, 0, 0, 1)
+        return self.default_edge_color
 
     def edge_width(self, path):
         # todo: implement
-        return 1
+        return self.default_edge_width
 
     def face_color(self, path):
         # take the middle angle, else the first wedge will have the same color
@@ -144,11 +159,11 @@ class HierarchicalPie(object):
         if len(path) == 0:
             color = (1, 1, 1, 1)
         else:
-            angle = (self.angles[path].theta1 + self.angles[path].theta2) / 2
+            angle = (self._angles[path].theta1 + self._angles[path].theta2) / 2
 
             color = list(self.cmap(angle/360))
             # make the color get lighter with progressing level
-            color[3] = 1 - (len(path) - 1) / (self.max_level - 1)
+            color[3] = 1 - (len(path) - 1) / (self._max_level - 1)
         return tuple(color)
 
     def format_value(self, value):
@@ -162,10 +177,10 @@ class HierarchicalPie(object):
 
     def path_text(self, path):
         return "{} ({})".format(path,
-                                self.format_value(self.completed_pv[path]))
+                                self.format_value(self._completed_pv[path]))
 
-    def radial_text(self, path):
-        theta1, theta2 = self.angles[path].theta1, self.angles[path].theta2
+    def _radial_text(self, path):
+        theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
         level = len(path)
         radius = self._wedge_mid_radius(level)
@@ -181,11 +196,11 @@ class HierarchicalPie(object):
         else:
             raise ValueError
 
-        plt.text(mid_x, mid_y, self.path_text(path), ha="center", va="center",
+        self.axes.text(mid_x, mid_y, self.path_text(path), ha="center", va="center",
                  rotation=rotation)
 
-    def tangential_text(self, path):
-        theta1, theta2 = self.angles[path].theta1, self.angles[path].theta2
+    def _tangential_text(self, path):
+        theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
         level = len(path)
         radius = self._wedge_mid_radius(level)
@@ -202,29 +217,30 @@ class HierarchicalPie(object):
             rotation = angle - 270
         else:
             raise ValueError
-        print(path, mid_x, mid_y, angle, rotation)
-        plt.text(mid_x, mid_y, self.path_text(path), ha="center", va="center",
+        self.axes.text(mid_x, mid_y, self.path_text(path), ha="center", va="center",
                  rotation=rotation)
 
-    def plot(self, ax):
+    def plot(self):
+        if not self.wedges:
+            # we didn't prepare the data yet
+            self.prepare_data()
         for w in self.wedges:
-            ax.add_patch(w)
-        for path in self.paths:
-            if len(path)*(self.angles[path].theta2 -
-                          self.angles[path].theta1) > 90:
-                self.tangential_text(path)
+            self.axes.add_patch(w)
+        for path in self._paths:
+            if len(path)*(self._angles[path].theta2 -
+                          self._angles[path].theta1) > 90:
+                self._tangential_text(path)
             else:
-                self.radial_text(path)
+                self._radial_text(path)
 
     def wedge(self, path):
         level = len(path)
         return Wedge((self.origin[0], self.origin[1]),
                      self._wedge_outer_radius(level),
-                     self.angles[path].theta1,
-                     self.angles[path].theta2,
-                     width=self.ring_width(level),
+                     self._angles[path].theta1,
+                     self._angles[path].theta2,
+                     width=self.wedge_width(level),
                      label=self.path_text(path),
                      facecolor=self.face_color(path),
                      edgecolor=self.edge_color(path),
                      fill=True)
-
