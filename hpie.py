@@ -9,6 +9,9 @@ from matplotlib.patches import Wedge
 import numpy as np
 
 
+# future: sorting & unsorting
+
+
 def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     """ Suppose we have a pathvalue dictionary of the form
     {1.1.1: 12.0} (only one entry). Complete will desect each path and
@@ -102,7 +105,7 @@ class HierarchicalPie(object):
                  pathvalues,
                  axes,
                  origin=(0, 0),
-                 cmap=plt.get_cmap('jet'),
+                 cmap=plt.get_cmap('autumn'),
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
                  default_edge_width=1):
@@ -157,9 +160,11 @@ class HierarchicalPie(object):
             return 0.4
 
     def _wedge_outer_radius(self, level):
+        # todo: make dependent of path to allow to explode slices
         return sum(self.wedge_width(level) for level in range(level + 1))
 
     def _wedge_inner_radius(self, level):
+        # todo: make dependent of path to allow to explode slices
         return sum(self.wedge_width(level) for level in range(level))
 
     def _wedge_mid_radius(self, level):
@@ -181,10 +186,9 @@ class HierarchicalPie(object):
             color = (1, 1, 1, 1)
         else:
             angle = (self._angles[path].theta1 + self._angles[path].theta2) / 2
-
             color = list(self.cmap(angle/360))
-            # make the color get lighter with progressing level
-            color[3] = 1 - (len(path) - 1) / (self._max_level - 1)
+            # make the color get lighter with increasing level
+            color[3] = 1 - (len(path) - 1) / (self._max_level + 1)
         return tuple(color)
 
     def format_value(self, value):
@@ -192,13 +196,12 @@ class HierarchicalPie(object):
         hours = int(value/60)
         minutes = int(value - hours * 60)
         if hours:
-            return "{}h{}".format(hours, minutes)
+            return "({}h{})".format(hours, minutes)
         else:
-            return str(minutes)
+            return "({})".format(minutes)
 
     def path_text(self, path):
-        return "{} ({})".format(path,
-                                self.format_value(self._completed_pv[path]))
+        return path[-1] if path else ""
 
     def _radial_text(self, path):
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
@@ -241,9 +244,11 @@ class HierarchicalPie(object):
             ha = "center"
             va = "center"
 
-        self.axes.text(mid_x, mid_y, self.path_text(path), ha=ha, va=va,
-                       rotation=rotation)
+        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1,1,1,0.8),ec=(0.25,0.25,0.25,0.8), lw=0.5)
 
+        text = "{} {}".format(self.path_text(path), self.format_value(self._completed_pv[path]))
+        self.axes.text(mid_x, mid_y, text, ha=ha, va=va,
+                       rotation=rotation, bbox=bbox_props)
 
     def _tangential_text(self, path):
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
@@ -264,8 +269,11 @@ class HierarchicalPie(object):
         else:
             raise ValueError
 
-        self.axes.text(mid_x, mid_y, self.path_text(path), ha="center",
-                       va="center", rotation=rotation)
+        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1,1,1,0.8),ec=(0.25,0.25,0.25,0.8), lw=0.5)
+
+        text = "{}\n{}".format(self.path_text(path), self.format_value(self._completed_pv[path]))
+        self.axes.text(mid_x, mid_y, text, ha="center",
+                       va="center", rotation=rotation, bbox=bbox_props)
 
     def plot(self):
         if not self.wedges:
