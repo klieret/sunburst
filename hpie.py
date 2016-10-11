@@ -12,20 +12,23 @@ import numpy as np
 # future: sorting & unsorting
 
 
-def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
+def complete(pathvalues: Dict[Path, float], empty_root=False) -> \
+        Dict[Path, float]:
     """ Suppose we have a pathvalue dictionary of the form
     {1.1.1: 12.0} (only one entry). Complete will desect each path and
     assign its value to the truncated path: I.e. "", 1.1 and 1.1.1. Thus we
     would get {1: 12.0, 1.1: 12.0, 1.1.1: 12.0}. For more items the values will
     be summed accordingly.
     :param pathvalues: {path: value} dictionary
+    :param empty_root: Should the empty root Path("") be included?
     :return: {path: value} dictionary
     """
     # fixme: highly problematic! What if "1" and "1.1" is given? Clarify!
     completed = collections.defaultdict(float)
     for path, value in pathvalues.items():
         # len(path) +1 ensures that also the whole tag is considered:
-        for level in range(len(path) + 1):
+        start = 0 if empty_root else 1
+        for level in range(start, len(path) + 1):
             completed[path[:level]] += value
     return completed
 
@@ -108,7 +111,8 @@ class HierarchicalPie(object):
                  cmap=plt.get_cmap('autumn'),
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
-                 default_edge_width=1):
+                 default_edge_width=1,
+                 empty_root=False):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
@@ -118,6 +122,7 @@ class HierarchicalPie(object):
         self.default_ring_width = default_ring_width
         self.default_edge_color = default_edge_color
         self.default_edge_width = default_edge_width
+        self.empty_root = empty_root
 
         # *** Variables used for computation *** (emph)
         self._completed_pv = None        # type: Dict[Path, float]
@@ -130,7 +135,8 @@ class HierarchicalPie(object):
         self.wedges = None               # type: Dict[Path, Wedge]
 
     def prepare_data(self):
-        self._completed_pv = complete(self.input_pv)
+        self._completed_pv = complete(self.input_pv,
+                                      empty_root=self.empty_root)
         self._paths = list(self._completed_pv.keys())
         self._max_level = max((len(path) for path in self._paths))
         self._structured_paths = structurize(self._paths)
