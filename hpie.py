@@ -12,8 +12,7 @@ import numpy as np
 # future: sorting & unsorting
 
 
-def complete(pathvalues: Dict[Path, float], empty_root=False) -> \
-        Dict[Path, float]:
+def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     """ Suppose we have a pathvalue dictionary of the form
     {1.1.1: 12.0} (only one entry). Complete will desect each path and
     assign its value to the truncated path: I.e. "", 1.1 and 1.1.1. Thus we
@@ -27,8 +26,7 @@ def complete(pathvalues: Dict[Path, float], empty_root=False) -> \
     completed = collections.defaultdict(float)
     for path, value in pathvalues.items():
         # len(path) +1 ensures that also the whole tag is considered:
-        start = 0 if empty_root else 1
-        for level in range(start, len(path) + 1):
+        for level in range(len(path) + 1):
             completed[path[:level]] += value
     return completed
 
@@ -112,7 +110,7 @@ class HierarchicalPie(object):
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
                  default_edge_width=1,
-                 empty_root=False):
+                 plot_empty_root=False):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
@@ -122,7 +120,7 @@ class HierarchicalPie(object):
         self.default_ring_width = default_ring_width
         self.default_edge_color = default_edge_color
         self.default_edge_width = default_edge_width
-        self.empty_root = empty_root
+        self.empty_root = plot_empty_root
 
         # *** Variables used for computation *** (emph)
         self._completed_pv = None        # type: Dict[Path, float]
@@ -135,14 +133,14 @@ class HierarchicalPie(object):
         self.wedges = None               # type: Dict[Path, Wedge]
 
     def prepare_data(self):
-        self._completed_pv = complete(self.input_pv,
-                                      empty_root=self.empty_root)
+        self._completed_pv = complete(self.input_pv)
         self._paths = list(self._completed_pv.keys())
         self._max_level = max((len(path) for path in self._paths))
         self._structured_paths = structurize(self._paths)
         self._angles = calculate_angles(self._structured_paths,
                                         self._completed_pv)
-        self.wedges = [self.wedge(path) for path in self._paths]
+        self.wedges = [self.wedge(path) for path in self._paths if
+                       len(path) >= 1]
 
     def _is_outmost(self, path):
         # is there a descendant of path?
@@ -160,18 +158,15 @@ class HierarchicalPie(object):
 
 
     def wedge_width(self, level):
-        if level == 0:
-            return 0.75 * self.default_ring_width
-        else:
-            return 0.4
+        return 0.4
 
     def _wedge_outer_radius(self, level):
         # todo: make dependent of path to allow to explode slices
-        return sum(self.wedge_width(level) for level in range(level + 1))
+        return sum(self.wedge_width(level) for level in range(1, level + 1))
 
     def _wedge_inner_radius(self, level):
         # todo: make dependent of path to allow to explode slices
-        return sum(self.wedge_width(level) for level in range(level))
+        return sum(self.wedge_width(level) for level in range(1, level))
 
     def _wedge_mid_radius(self, level):
         return (self._wedge_outer_radius(level) +
@@ -207,7 +202,6 @@ class HierarchicalPie(object):
             return "({})".format(minutes)
 
     def path_text(self, path):
-        print(path, tuple(path), type(path), str(path), repr(path), path[-1] if path else "")
         return path[-1] if path else ""
 
     def _radial_text(self, path):
@@ -289,6 +283,8 @@ class HierarchicalPie(object):
         for w in self.wedges:
             self.axes.add_patch(w)
         for path in self._paths:
+            if len(path) == 0:
+                continue
             if len(path)*(self._angles[path].theta2 -
                           self._angles[path].theta1) > 90:
                 # todo: random criteria!
