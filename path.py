@@ -12,9 +12,12 @@ class Path(tuple):
         # str from the list of allowed iterators
         if isinstance(iterator, str):
             raise ValueError("Don't initialize a Path object with a string.")
-        for t in iterator:
-            assert isinstance(t, str)
-        return super().__new__(cls, iterator)
+        lst = list(iterator)
+        for index, item in enumerate(lst):
+            assert isinstance(item, str)
+            if not item:
+                del lst[index]
+        return super().__new__(cls, lst)
 
     def __str__(self):
         # requires all entries of the underlying tuple to be strings!
