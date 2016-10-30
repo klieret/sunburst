@@ -19,7 +19,6 @@ def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     would get {1: 12.0, 1.1: 12.0, 1.1.1: 12.0}. For more items the values will
     be summed accordingly.
     :param pathvalues: {path: value} dictionary
-    :param empty_root: Should the empty root Path("") be included?
     :return: {path: value} dictionary
     """
     # fixme: highly problematic! What if "1" and "1.1" is given? Clarify!
@@ -72,10 +71,11 @@ Angles = collections.namedtuple('Angles', ['theta1', 'theta2'])
 
 
 def calculate_angles(structured_paths: List[List[List[Path]]],
-                     path_values: Dict[Path, float]) -> Dict[Path, Angles]:
+                     path_values: Dict[Path, float],
+                     value_sum: float) -> Dict[Path, Angles]:
     angles = {}  # return value
     # the total sum of all elements (on one level)
-    value_sum = path_values[Path(())]
+    value_sum = value_sum
     for level_no, groups in enumerate(structured_paths):
         for group in groups:
             theta2 = None  # else pycharm complains about theta2 undefined
@@ -110,7 +110,8 @@ class HierarchicalPie(object):
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
                  default_edge_width=1,
-                 plot_empty_root=False):
+                 plot_empty_root=False,
+                 value_sum=None):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
@@ -128,17 +129,20 @@ class HierarchicalPie(object):
         self._max_level = None           # type: int
         self._structured_paths = None    # type: List[List[List[Path]]]
         self._angles = None              # type: Dict[Path, Angles]
+        self._value_sum = value_sum
 
         # *** "Output" *** (emph)
         self.wedges = None               # type: Dict[Path, Wedge]
 
     def prepare_data(self):
         self._completed_pv = complete(self.input_pv)
+        if not self._value_sum:
+            self._value_sum = self._completed_pv[Path([])]
         self._paths = list(self._completed_pv.keys())
         self._max_level = max((len(path) for path in self._paths))
         self._structured_paths = structurize(self._paths)
         self._angles = calculate_angles(self._structured_paths,
-                                        self._completed_pv)
+                                        self._completed_pv, self._value_sum)
         self.wedges = [self.wedge(path) for path in self._paths if
                        len(path) >= 1]
 
@@ -155,7 +159,6 @@ class HierarchicalPie(object):
                 # all paths in this group start the same
                 continue
         return True
-
 
     def wedge_width(self, level):
         return 0.4
