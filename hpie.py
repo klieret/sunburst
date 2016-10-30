@@ -2,8 +2,9 @@
 
 import collections
 from typing import Dict, List
-from .path import Path
+from path import Path
 from itertools import groupby
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
@@ -11,40 +12,55 @@ import numpy as np
 
 # future: sorting & unsorting
 
+# fixme: problems with the total sum/value at the root
+# (not the same, as value at root can be more than the total of the next level)
+# solution: do not allow empty roots to be given by the user
+# thus the real (empy) root always carries the total sum of the entries
+# and gets set by complete
+# to plot the innerst circle, bring back the draw_center_circle option
 
 def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
-    """ Suppose we have a pathvalue dictionary of the form
-    {1.1.1: 12.0} (only one entry). Complete will desect each path and
-    assign its value to the truncated path: I.e. "", 1.1 and 1.1.1. Thus we
-    would get {1: 12.0, 1.1: 12.0, 1.1.1: 12.0}. For more items the values will
+    """ Consider a pathvalue dictionary of the form Dict[Path, float] e.g.
+    {1.1.1: 12.0} (here: only one entry). This function will disect each path and
+    assign its value to the truncated path: e.g. here 1, 1.1 and 1.1.1. Thus we
+    get {1: 12.0, 1.1: 12.0, 1.1.1: 12.0}. For more items the values will
     be summed accordingly.
+    Furthermore the total sum of the items of the topmost level
+    will be assigned to the empty path. For this to make sense we require that
+    no empy path is in the pathvalues beforehand""
     :param pathvalues: {path: value} dictionary
     :return: {path: value} dictionary
     """
-    # fixme: highly problematic! What if "1" and "1.1" is given? Clarify!
+    # todo: clarify
+    if Path(()) in pathvalues:
+        raise ValueError("This function does not allow the empty path as item"
+                         "in the pathvalues list.")
     completed = collections.defaultdict(float)
     for path, value in pathvalues.items():
-        # len(path) +1 ensures that also the whole tag is considered:
-        for level in range(len(path) + 1):
+        # len(path) +1 ensures that also the whole tag is considered
+        # starting point 0: also add to empty path.
+        for level in range(0, len(path) + 1):
             completed[path[:level]] += value
     return completed
 
 
 def structurize(paths: List[Path]) -> List[List[List[Path]]]:
     """ Takes a list of paths and groups the paths first by length (empty
-    path length 0)and then by the parent (path[:len(path) - 1]).
+    path length 0) and then by the parent (path[:len(path) - 1]).
     Example:
     [
-        [ [''] ],                    # level 0: empty path = root
+        [ ["" ]],                    # the root
         [ [1, 2, 3] ],               # level 1: only one group, because all
                                      #   elements share the same parent
-        [ [1.1, 1.2], [3.1, 3.2] ],  # (in case 2 doesn't have any children)
+        [ [1.1, 1.2], [3.1, 3.2] ],  # grouped by parents
         [ [1.1.1, 1.1.2], [1.2.1, 1.2.2], [3.1.1], [3.2.1] ]
     ]
     :param paths: Paths
     :return: [[Paths grouped by parents] grouped by levels.]
     """
+
     structured = []  # return value
+
 
     # we do this in two stepts via the iteritems.groupby function, first
     # using the level, then the parent function as keys.
@@ -56,8 +72,11 @@ def structurize(paths: List[Path]) -> List[List[List[Path]]]:
     def parent(path):
         return path.parent()
 
+    # sort by level
     paths.sort(key=level)
     paths_by_level = (list(group) for _, group in groupby(paths, key=level))
+
+    # sort by parent
     for paths_of_level in paths_by_level:
         paths_of_level.sort(key=parent)
         paths_by_parent = [list(group) for _, group in
@@ -71,11 +90,10 @@ Angles = collections.namedtuple('Angles', ['theta1', 'theta2'])
 
 
 def calculate_angles(structured_paths: List[List[List[Path]]],
-                     path_values: Dict[Path, float],
-                     value_sum: float) -> Dict[Path, Angles]:
+                     path_values: Dict[Path, float]) -> Dict[Path, Angles]:
     angles = {}  # return value
     # the total sum of all elements (on one level)
-    value_sum = value_sum
+    value_sum = path_values[Path(())]
     for level_no, groups in enumerate(structured_paths):
         for group in groups:
             theta2 = None  # else pycharm complains about theta2 undefined
@@ -103,15 +121,14 @@ def calculate_angles(structured_paths: List[List[List[Path]]],
 
 class HierarchicalPie(object):
     def __init__(self,
-                 pathvalues,
-                 axes,
+                 pathvalues: Dict[Path, float],
+                 axes: matplotlib.axes,
                  origin=(0, 0),
                  cmap=plt.get_cmap('autumn'),
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
                  default_edge_width=1,
-                 plot_empty_root=False,
-                 value_sum=None):
+                 plot_empty_root=False):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
@@ -129,20 +146,17 @@ class HierarchicalPie(object):
         self._max_level = None           # type: int
         self._structured_paths = None    # type: List[List[List[Path]]]
         self._angles = None              # type: Dict[Path, Angles]
-        self._value_sum = value_sum
 
         # *** "Output" *** (emph)
         self.wedges = None               # type: Dict[Path, Wedge]
 
     def prepare_data(self):
         self._completed_pv = complete(self.input_pv)
-        if not self._value_sum:
-            self._value_sum = self._completed_pv[Path([])]
         self._paths = list(self._completed_pv.keys())
         self._max_level = max((len(path) for path in self._paths))
         self._structured_paths = structurize(self._paths)
         self._angles = calculate_angles(self._structured_paths,
-                                        self._completed_pv, self._value_sum)
+                                        self._completed_pv)
         self.wedges = [self.wedge(path) for path in self._paths if
                        len(path) >= 1]
 
@@ -248,7 +262,7 @@ class HierarchicalPie(object):
             ha = "center"
             va = "center"
 
-        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1,1,1,0.8),ec=(0.25,0.25,0.25,0.8), lw=0.5)
+        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8), ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
 
         text = "{} {}".format(self.path_text(path), self.format_value(self._completed_pv[path]))
         self.axes.text(mid_x, mid_y, text, ha=ha, va=va,
@@ -273,7 +287,7 @@ class HierarchicalPie(object):
         else:
             raise ValueError
 
-        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1,1,1,0.8),ec=(0.25,0.25,0.25,0.8), lw=0.5)
+        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8), ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
 
         text = "{}\n{}".format(self.path_text(path), self.format_value(self._completed_pv[path]))
         self.axes.text(mid_x, mid_y, text, ha="center",
