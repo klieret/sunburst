@@ -1,10 +1,24 @@
+# Hierarchical Pie Plots for the python3 Pyplot library
+
+Suppose you have an hierarchical graph like such
+
+![graph](example_numbering.png)
+
+where each *vertex* is assigned a certain weight or number. 
+This module plots this in a multi-level Pie plot:
+
+![screenshot](scrot.png)
+
+with this module this can be done in but a few steps:
+
+```python
 #!/usr/bin/env python3
 
 import example_paths
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie
 
-# import the data
+# import the data 
 pathvalues = example_paths.numbering_pv
 
 fig, ax = plt.subplots()
@@ -19,3 +33,4 @@ ax.margins(x=0.1, y=0.1)
 ax.set_title('Example HPie')
 
 plt.show()
+```

@@ -56,10 +56,10 @@ class Path(tuple):
 
 
 def paths2dot(paths: List[Path], full_labels=True) -> str:
-    """ Converts a list of paths to their correspondent graph described in the
+    """ Converts a list of numbering to their correspondent graph described in the
     DOT language (see http://www.graphviz.org/doc/info/lang.html). Not using
     the python graphviz package to reduce dependencies.
-    :param paths: List of paths.
+    :param paths: List of numbering.
     :param full_labels: If true, the vertices of the graph are labeled with the
                         full path, else only the name of the endpoint
                         (path[:-1]) is printed.
@@ -77,7 +77,7 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
 
         vertices = [path[:level + 1] for level in range(len(path))]
         vertex_ids = (vid(vertex) for vertex in vertices)
-        dot += "\t{};\n".format('->'.join(vertex_ids))
+        dot += "\t{} [dir=none];\n".format('->'.join(vertex_ids))
         # since __repr__ has a lot of quotation marks mixed in the
         # representation, we adapt the labeling with the ouput of __str__
         # we have to manually escape double quotation marks)
