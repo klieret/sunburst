@@ -2,7 +2,7 @@
 
 import example_paths
 import matplotlib
-matplotlib.use("qt4agg")
+#matplotlib.use("qt4agg")
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie
 

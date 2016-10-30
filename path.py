@@ -29,10 +29,11 @@ class Path(tuple):
         # ==> use quotation marks. Since the string itself can also contain
         # various kinds of quote constructions, just use the __repr__ method
         # of the str class.
-        return "Path({})".format(STRING_DELIM.join((string.__repr__() for string in self)))
+        return "Path({})".format(STRING_DELIM.join((string.__repr__() for
+                                                    string in self)))
 
     def __getitem__(self, key):
-        result = tuple.__getitem__(self, key)
+        result = tuple.__getitem__(tuple(self), key)
         # Depending on whether key was a single int or a slice object ,
         # tuple.__getitem__ will return a tuple or a string. However,
         # we want our __getitem__ method to return a Path instance in either

@@ -21,15 +21,15 @@ import numpy as np
 
 def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     """ Consider a pathvalue dictionary of the form Dict[Path, float] e.g.
-    {1.1.1: 12.0} (here: only one entry). This function will disect each path and
-    assign its value to the truncated path: e.g. here 1, 1.1 and 1.1.1. Thus we
-    get {1: 12.0, 1.1: 12.0, 1.1.1: 12.0}. For more items the values will
-    be summed accordingly.
-    Furthermore the total sum of the items of the topmost level
-    will be assigned to the empty path. For this to make sense we require that
-    no empy path is in the pathvalues beforehand""
-    :param pathvalues: {path: value} dictionary
-    :return: {path: value} dictionary
+    {1.1.1: 12.0} (here: only one entry). This function will disect each path
+    and assign its value to the truncated path: e.g. here 1, 1.1 and 1.1.1.
+    Thus we get {1: 12.0, 1.1: 12.0, 1.1.1: 12.0}. For more items the values
+    will be summed accordingly.
+    Furthermore the total sum of the items of
+    the topmost level will be assigned to the empty path. For this to make
+    sense we require that no empy path is in the pathvalues beforehand""
+    :param pathvalues: {path: value} dictionary :return: {path: value}
+    dictionary
     """
     # todo: clarify
     if Path(()) in pathvalues:
@@ -60,7 +60,6 @@ def structurize(paths: List[Path]) -> List[List[List[Path]]]:
     """
 
     structured = []  # return value
-
 
     # we do this in two stepts via the iteritems.groupby function, first
     # using the level, then the parent function as keys.
@@ -122,7 +121,7 @@ def calculate_angles(structured_paths: List[List[List[Path]]],
 class HierarchicalPie(object):
     def __init__(self,
                  pathvalues: Dict[Path, float],
-                 axes: matplotlib.axes,
+                 axes,
                  origin=(0, 0),
                  cmap=plt.get_cmap('autumn'),
                  default_ring_width=0.4,
