@@ -4,7 +4,6 @@ import collections
 from typing import Dict, List
 from path import Path
 from itertools import groupby
-import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
