@@ -10,7 +10,7 @@ This module plots this in a multi-level Pie plot:
 ![screenshot](readme_files/scrot.png)
 
 with this module this can be done in but a few steps 
-([examples/example_hpie.py](```example_hpie.py```)):
+([https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/example_hpie.py](```example_hpie.py```)):
 
 ```python
 #!/usr/bin/env python3
