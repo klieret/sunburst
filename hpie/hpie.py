@@ -2,11 +2,11 @@
 
 import collections
 from typing import Dict, List
-from path import Path
 from itertools import groupby
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
+from .path import Path
 
 
 # future: sorting & unsorting
