@@ -9,22 +9,30 @@ This module plots this in a multi-level Pie plot:
 
 ![screenshot](readme_files/scrot.png)
 
-with this module this can be done in but a few steps:
+with this module this can be done in but a few steps 
+([examples/example_hpie.py](```example_hpie.py```)):
 
 ```python
 #!/usr/bin/env python3
 
-import example_paths
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie
+from hpie import HierarchicalPie, Path
+import random
 
 fig, ax = plt.subplots()
 
-# import the data & do the magic
-pathvalues = example_paths.numbering_pv
+# set up some data
+
+paths = [Path(tuple(a)) for a in "1 2 12 13 111 112 113 121 122 211 221 222 "
+                                 "1111 1112 1121".split(" ")]
+pathvalues = {path: random.uniform(1, 100) for path in paths}
+
+# do the magic
+
 hp = HierarchicalPie(pathvalues, ax)
 
-# plot
+# set plot attributes
+
 hp.plot()
 ax.autoscale()
 ax.set_aspect("equal")
@@ -35,4 +43,3 @@ ax.margins(x=0.1, y=0.1)
 ax.set_title('Example HPie')
 
 plt.show()
-```
