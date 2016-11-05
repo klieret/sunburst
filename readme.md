@@ -2,12 +2,12 @@
 
 Suppose you have an hierarchical graph like such
 
-![graph](example_numbering.png)
+![graph](readme_files/example_numbering.png)
 
 where each *vertex* is assigned a certain weight or number. 
 This module plots this in a multi-level Pie plot:
 
-![screenshot](scrot.png)
+![screenshot](readme_files/scrot.png)
 
 with this module this can be done in but a few steps:
 
