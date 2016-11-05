@@ -30,7 +30,7 @@ def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     :param pathvalues: {path: value} dictionary :return: {path: value}
     dictionary
     """
-    # todo: clarify
+    # todo: clarify: in particular: what happens if I have a value for 1.1 but also values for 1.1.1 etc. >> added
     if Path(()) in pathvalues:
         raise ValueError("This function does not allow the empty path as item"
                          "in the pathvalues list.")
