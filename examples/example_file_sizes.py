@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path
 import csv
+import sys
 
 fig, ax = plt.subplots()
 
@@ -39,8 +40,13 @@ ax.get_yaxis().set_visible(False)
 ax.margins(x=0.1, y=0.1)
 ax.set_title('Disk usage chart of this repository.\n'
              'Total size: {} bit'.format(int(hp._completed_pv[Path(("", ))])))
-
-
 fig.set_size_inches(10, 10)
-plt.show()
-fig.savefig("{}.png".format(__file__), dpi=100, bbox_inches='tight')
+
+# a few command line options to display plot/save figure/do nothing:
+
+if "debug" in sys.argv[1:]:
+    pass
+if "save" in sys.argv[1:]:
+    fig.savefig("{}.png".format(__file__), dpi=100, bbox_inches='tight')
+if len(sys.argv) == 1:
+    plt.show()
