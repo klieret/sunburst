@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "run this script with 'source set_path.sh'"
+echo "Run this to test the examples without having to install the package"
+echo "i.e. to update the path"
+echo "run with 'source set_path.sh'"
 
 add_to_pypath ()
 {
