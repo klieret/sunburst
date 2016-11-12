@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# run with "source set_path.sh"
+echo "run this script with 'source set_path.sh'"
 
 add_to_pypath ()
 {
