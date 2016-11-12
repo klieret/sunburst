@@ -1,15 +1,10 @@
 # Hierarchical Pie Plots for the python3 Pyplot library
 
-Suppose you have an hierarchical graph like such
+![screenshot](https://cloud.githubusercontent.com/assets/13602468/20237536/68419834-a8d5-11e6-9e43-bc33a645c411.png)
 
-![graph](readme_files/example_numbering.png)
+with this module such figures can be done in but a few steps.
 
-where each *vertex* is assigned a certain weight or number. 
-This module plots this in a multi-level Pie plot:
-
-![screenshot](readme_files/scrot.png)
-
-with this module this can be done in but a few steps 
+A minimal example:
 ([https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/example_hpie.py](```example_hpie.py```)):
 
 ```python
