@@ -11,7 +11,7 @@ setup(name='hpie',
       author_email='klieret@users.noreply.github.com',
       url='https://github.com/klieret/pyplot-hierarchical-pie',
       packages=['hpie'],
-      install_requires=['matplotlib'],
+      install_requires=['matplotlib', 'typing'],
 )
 
 
