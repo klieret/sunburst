@@ -19,7 +19,14 @@ with open("file_sizes.txt") as csvfile:
 
 # do the magic
 
-hp = HierarchicalPie(pathvalues, ax)
+hp = HierarchicalPie(pathvalues,
+                     ax,
+                     cmap=plt.get_cmap("hsv"),
+                     plot_minimal_angle=0,
+                     text_minimal_angle=1.5)
+
+# Do not display values
+hp.format_value_text = lambda value: None
 
 # set plot attributes
 
@@ -30,6 +37,10 @@ ax.autoscale_view(True, True, True)
 ax.get_xaxis().set_visible(False)
 ax.get_yaxis().set_visible(False)
 ax.margins(x=0.1, y=0.1)
-ax.set_title('Example HPie')
+ax.set_title('Disk usage chart of this repository.\n'
+             'Total size: {} bit'.format(int(hp._completed_pv[Path(("", ))])))
 
+
+fig.set_size_inches(10, 10)
 plt.show()
+fig.savefig("{}.png".format(__file__), dpi=100, bbox_inches='tight')
