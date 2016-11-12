@@ -1,10 +1,16 @@
+#!/bin/bash
+
+set -e
+
+echo "Checking that all examples work."
+
 cd ../examples
-pwd
-ls
+echo "Setting up path"
 . ./setup_path.sh
 for file in *.py
 do
-    echo $file
-    python3 $file
+    echo "Testing example ${file}"
+    python3 "${file}" debug
 done
 
+echo "All examples work"

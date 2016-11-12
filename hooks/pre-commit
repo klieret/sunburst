@@ -1,5 +1,11 @@
 #!/bin/bash
 
+set -e
+
 echo "Running pre-commit hooks"
+
+cd hooks
+
 echo "Running unittest"
 python3 -m unittest discover || exit 1
+. check_examples.sh || exit 1
