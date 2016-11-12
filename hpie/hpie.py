@@ -126,7 +126,9 @@ class HierarchicalPie(object):
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
                  default_edge_width=1,
-                 plot_empty_root=False):
+                 plot_empty_root=False,
+                 plot_minimal_angle=0,
+                 text_minimal_angle=0):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
@@ -137,6 +139,8 @@ class HierarchicalPie(object):
         self.default_edge_color = default_edge_color
         self.default_edge_width = default_edge_width
         self.empty_root = plot_empty_root
+        self.plot_minimal_angle = plot_minimal_angle
+        self.text_minimal_angle = text_minimal_angle
 
         # *** Variables used for computation *** (emph)
         self._completed_pv = None        # type: Dict[Path, float]
@@ -146,7 +150,7 @@ class HierarchicalPie(object):
         self._angles = None              # type: Dict[Path, Angles]
 
         # *** "Output" *** (emph)
-        self.wedges = None               # type: Dict[Path, Wedge]
+        self.wedges = {}                 # type: Dict[Path, Wedge]
 
     def prepare_data(self):
         self._completed_pv = complete(self.input_pv)
@@ -155,8 +159,21 @@ class HierarchicalPie(object):
         self._structured_paths = structurize(self._paths)
         self._angles = calculate_angles(self._structured_paths,
                                         self._completed_pv)
-        self.wedges = [self.wedge(path) for path in self._paths if
-                       len(path) >= 1]
+
+        skipped = 0
+        plotted = 0
+        for path in self._paths:
+            if len(path) >= 1:
+                angle = self._angles[path].theta2 - self._angles[path].theta1
+                print(path, angle)
+                if angle > self.plot_minimal_angle:
+                    self.wedges[path] = self.wedge(path)
+                    plotted += 1
+                else:
+                    skipped += 1
+                    print("Skipping")
+        print("Skipped: {} Plotted: {}".format(skipped, plotted))
+        print(self.wedges)
 
     def _is_outmost(self, path):
         # is there a descendant of path?
@@ -295,14 +312,16 @@ class HierarchicalPie(object):
         if not self.wedges:
             # we didn't prepare the data yet
             self.prepare_data()
-        for w in self.wedges:
-            self.axes.add_patch(w)
-        for path in self._paths:
-            if len(path) == 0:
+        for path, wedge in self.wedges.items():
+            self.axes.add_patch(wedge)
+            angle = self._angles[path].theta2 - self._angles[path].theta1
+
+            if not angle > self.text_minimal_angle:
+                # no text
                 continue
-            if len(path)*(self._angles[path].theta2 -
-                          self._angles[path].theta1) > 90:
-                # todo: random criteria!
+
+            if len(path)*angle > 90:
+                # fixme: replace with less random criteria!
                 self._tangential_text(path)
             else:
                 self._radial_text(path)
