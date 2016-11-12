@@ -1,8 +1,22 @@
 # Hierarchical Pie Plots for the python3 Pyplot library
 
+[![Build Status](https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master)](https://travis-ci.org/klieret/pyplot-hierarchical-pie)
+
 ![screenshot](https://cloud.githubusercontent.com/assets/13602468/20237536/68419834-a8d5-11e6-9e43-bc33a645c411.png)
 
 with this module such figures can be done in but a few steps.
+
+## Install
+
+As this project is still in development, you have to clone the repository and then run ```pip```:
+
+```sh
+git clone https://github.com/klieret/pyplot-hierarchical-pie
+cd pyplot-hierarchical-pie
+pip3 install .
+```
+
+## Minimal example
 
 A minimal example:
 ([https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/example_hpie.py](```example_hpie.py```)):

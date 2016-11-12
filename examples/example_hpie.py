@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
+import sys
+import matplotlib
+if "debug" in sys.argv[1:]:
+    matplotlib.use("AGG")
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path
 import random
-import sys
 
 fig, ax = plt.subplots()
 
