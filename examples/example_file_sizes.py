@@ -13,7 +13,6 @@ pathvalues = {}
 with open("file_sizes.txt") as csvfile:
     reader = csv.reader(csvfile, delimiter="\t")
     for row in reader:
-        print(row)
         if not len(row) == 2:
             continue
         pathvalues[Path(row[1].split('/'))] = float(row[0])

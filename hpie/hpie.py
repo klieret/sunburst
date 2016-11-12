@@ -160,20 +160,11 @@ class HierarchicalPie(object):
         self._angles = calculate_angles(self._structured_paths,
                                         self._completed_pv)
 
-        skipped = 0
-        plotted = 0
         for path in self._paths:
             if len(path) >= 1:
                 angle = self._angles[path].theta2 - self._angles[path].theta1
-                print(path, angle)
                 if angle > self.plot_minimal_angle:
                     self.wedges[path] = self.wedge(path)
-                    plotted += 1
-                else:
-                    skipped += 1
-                    print("Skipping")
-        print("Skipped: {} Plotted: {}".format(skipped, plotted))
-        print(self.wedges)
 
     def _is_outmost(self, path):
         # is there a descendant of path?
