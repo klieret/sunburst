@@ -26,7 +26,7 @@ hp = HierarchicalPie(pathvalues,
                      ax,
                      cmap=plt.get_cmap("hsv"),
                      plot_minimal_angle=0,
-                     text_minimal_angle=1.5)
+                     label_minimal_angle=1.5)
 
 # Do not display values
 hp.format_value_text = lambda value: None

@@ -6,14 +6,14 @@
 
 with this module such figures can be done in but a few steps.
 
-## Install
+## Installation
 
-As this project is still in development, you have to clone the repository and then run ```pip```:
+As this project is still in development, you have to first have to clone the repository before running ```pip```:
 
 ```sh
 git clone https://github.com/klieret/pyplot-hierarchical-pie
 cd pyplot-hierarchical-pie
-pip3 install .
+sudo pip3 install .
 ```
 
 ## Minimal example
@@ -52,3 +52,6 @@ ax.margins(x=0.1, y=0.1)
 ax.set_title('Example HPie')
 
 plt.show()
+```
+
+Other examples are in ```examples```. 
