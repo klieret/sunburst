@@ -29,8 +29,11 @@ class Path(tuple):
         # ==> use quotation marks. Since the string itself can also contain
         # various kinds of quote constructions, just use the __repr__ method
         # of the str class.
-        return "Path({})".format(STRING_DELIM.join((string.__repr__() for
-                                                    string in self)))
+        # This should normally return code that can directly interpreted
+        # by python to give the same Path element than the string
+        # represents
+        return "Path({})".format(",".join((string.__repr__() for
+                                           string in self)))
 
     def __getitem__(self, key):
         result = tuple.__getitem__(tuple(self), key)
