@@ -16,6 +16,19 @@ cd pyplot-hierarchical-pie
 sudo pip3 install .
 ```
 
+To uninstall, run
+
+```sh
+sudo pip3 uninstall hpie
+```
+
+To check if this package is installed, run
+
+```sh
+pip3 freeze | grep hpie
+```
+
+
 ## Minimal example
 
 (Even more minimal) version of [```minimal_example_hpie.py```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py):
@@ -23,26 +36,37 @@ sudo pip3 install .
 ```python
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path
-import random
-
-# set up figure
 
 fig, ax = plt.subplots()
 
-# set up some data
+# set up some random data
 
-paths = [Path(tuple(a)) for a in "1 2 12 13 111 112 113 121 122 211 221 222 "
-                                 "1111 1112 1121".split(" ")]
-pathvalues = {path: random.randrange(1, 100) for path in paths}
+data = {
+    Path(('lorem', )): 36,
+    Path(('ipsum', 'eirmod', 'dolor')): 94,
+    Path(('lorem', 'sadipscing', 'dolor')): 44,
+    Path(('lorem', 'sadipscing', 'lorem')): 37,
+    Path(('lorem', 'eirmod', 'lorem')): 45,
+    Path(('ipsum', 'eirmod')): 29,
+    Path(('lorem', 'eirmod')): 11,
+    Path(('lorem', 'sadipscing', 'nonumy')): 23,
+    Path(('ipsum',)): 40,
+    Path(('lorem', 'sadipscing')): 79,
+}
 
 # do the magic
 
-hp = HierarchicalPie(pathvalues, ax)
-hp.plot(setup_axes=True)
+hp = HierarchicalPie(data, ax)
 
-# plot
+# set plot attributes
+
+hp.plot(setup_axes=True)
+ax.set_title('Example HPie')
+
+# save/show plot
 
 plt.show()
+
 ```
 
-Other examples are in ```examples/```.  
+Other examples are in [```examples```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py/).  
