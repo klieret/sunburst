@@ -30,7 +30,6 @@ def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     :param pathvalues: {path: value} dictionary :return: {path: value}
     dictionary
     """
-    # todo: clarify: in particular: what happens if I have a value for 1.1 but also values for 1.1.1 etc. >> added
     if Path(()) in pathvalues:
         raise ValueError("This function does not allow the empty path as item"
                          "in the pathvalues list.")
@@ -123,10 +122,10 @@ class HierarchicalPie(object):
                  axes,
                  origin=(0, 0),
                  cmap=plt.get_cmap('autumn'),
-                 default_ring_width=0.4,  # fixme: seems to be ignored
+                 default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
-                 default_edge_width=1,  # fixme: seems to be ignored
-                 plot_center=False, # fixme: implement!
+                 default_line_width=1,
+                 plot_center=False,
                  plot_minimal_angle=0,
                  label_minimal_angle=0):
         """
@@ -137,10 +136,12 @@ class HierarchicalPie(object):
         :param cmap: Colormap
         :param default_ring_width:
         :param default_edge_color:
-        :param default_edge_width:
+        :param default_line_width:
         :param plot_center:
-        :param plot_minimal_angle: Plot only wedges with an angle bigger than plot_minimal_angle
-        :param label_minimal_angle: Only label wedges with an angle bigger than plot_minimal_angle
+        :param plot_minimal_angle: Plot only wedges with an angle bigger
+                                   than plot_minimal_angle
+        :param label_minimal_angle: Only label wedges with an angle bigger than
+                                    plot_minimal_angle
         """
 
         # *** Input & Config *** (emph)
@@ -150,7 +151,7 @@ class HierarchicalPie(object):
         self.origin = origin
         self.default_ring_width = default_ring_width
         self.default_edge_color = default_edge_color
-        self.default_edge_width = default_edge_width
+        self.default_line_width = default_line_width
         self.plot_center = plot_center
         self.plot_minimal_angle = plot_minimal_angle
         self.label_minimal_angle = label_minimal_angle
@@ -176,9 +177,9 @@ class HierarchicalPie(object):
                                         self._completed_pv)
 
         for path in self._paths:
-            if len(path) >= 1:
+            if self.plot_center or len(path) >= 1:
                 angle = self._angles[path].theta2 - self._angles[path].theta1
-                if angle > self.plot_minimal_angle:
+                if len(path) == 0 or angle > self.plot_minimal_angle:
                     self.wedges[path] = self.wedge(path)
 
     def _is_outmost(self, path):
@@ -195,13 +196,14 @@ class HierarchicalPie(object):
                 continue
         return True
 
+    # noinspection PyUnusedLocal
     def ring_width(self, level):
         """
         The width to a ring/wedge.
         :param level: level (length of the path corresponding to a wedge)
         :return:
         """
-        return 0.4
+        return self.default_ring_width
 
     def wedge_outer_radius(self, path: Path):
         """ The outer radius of the wedge corresponding to a path.
@@ -211,9 +213,10 @@ class HierarchicalPie(object):
         :return
         """
         level = len(path)
-        return sum(self.ring_width(level) for level in range(1, level + 1))
+        start = 0 if self.plot_center else 1
+        return sum(self.ring_width(level) for level in range(start, level + 1))
 
-    def wedge_inner_radius(self, path: Path):
+    def _wedge_inner_radius(self, path: Path):
         """ The inner radius of the wedge corresponding to a path.
         This method takes path as an argument (and not len(path)) to allow
         to explode slices.
@@ -221,7 +224,8 @@ class HierarchicalPie(object):
         :return
         """
         level = len(path)
-        return sum(self.ring_width(level) for level in range(1, level))
+        start = 0 if self.plot_center else 1
+        return sum(self.ring_width(level) for level in range(start, level))
 
     def _wedge_mid_radius(self, path: Path):
         """ The radius of the middle of the wedge corresponding to a path.
@@ -230,16 +234,16 @@ class HierarchicalPie(object):
         :param path
         :return
         """
-        level = len(path)
         return (self.wedge_outer_radius(path) +
-                self.wedge_inner_radius(path)) / 2
+                self._wedge_inner_radius(path)) / 2
 
+    # noinspection PyUnusedLocal
     def edge_color(self, path):
         return self.default_edge_color
 
-    def edge_width(self, path):
-        # todo: implement
-        return self.default_edge_width
+    # noinspection PyUnusedLocal
+    def line_width(self, path):
+        return self.default_line_width
 
     def face_color(self, path):
         # take the middle angle, else the first wedge will have the same color
@@ -254,9 +258,11 @@ class HierarchicalPie(object):
             color[3] = 1 - (len(path) - 1) / (self._max_level + 1)
         return tuple(color)
 
+    # noinspection PyMethodMayBeStatic
     def format_path_text(self, path):
         return path[-1] if path else ""
 
+    # noinspection PyMethodMayBeStatic
     def format_value_text(self, value):
         return "{0:.2f}".format(value)
         # todo:
@@ -277,10 +283,9 @@ class HierarchicalPie(object):
     def _radial_text(self, path):
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
-        level = len(path)
         radius = self._wedge_mid_radius(path)
         if self._is_outmost(path):
-            radius = self.wedge_inner_radius(path)
+            radius = self._wedge_inner_radius(path)
 
         mid_x = self.origin[0] + radius * np.cos(np.deg2rad(angle))
         mid_y = self.origin[1] + radius * np.sin(np.deg2rad(angle))
@@ -315,7 +320,9 @@ class HierarchicalPie(object):
             ha = "center"
             va = "center"
 
-        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8), ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
+        # todo: allow customization
+        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8),
+                          ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
 
         text = self.text(path, self._completed_pv[path])
         self.axes.text(mid_x, mid_y, text, ha=ha, va=va,
@@ -324,7 +331,6 @@ class HierarchicalPie(object):
     def _tangential_text(self, path):
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
-        level = len(path)
         radius = self._wedge_mid_radius(path)
         mid_x = self.origin[0] + radius * np.cos(np.deg2rad(angle))
         mid_y = self.origin[1] + radius * np.sin(np.deg2rad(angle))
@@ -340,7 +346,9 @@ class HierarchicalPie(object):
         else:
             raise ValueError
 
-        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8), ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
+        # todo: allow customization
+        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8),
+                          ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
 
         text = self.text(path, self._completed_pv[path])
         self.axes.text(mid_x, mid_y, text, ha="center",
@@ -382,4 +390,5 @@ class HierarchicalPie(object):
                      label=self.text(path, self._completed_pv[path]),
                      facecolor=self.face_color(path),
                      edgecolor=self.edge_color(path),
+                     linewidth=self.line_width(path),
                      fill=True)  # todo: supply rest of the arguments
