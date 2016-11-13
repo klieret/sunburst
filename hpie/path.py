@@ -32,8 +32,8 @@ class Path(tuple):
         # This should normally return code that can directly interpreted
         # by python to give the same Path element than the string
         # represents
-        return "Path({})".format(",".join((string.__repr__() for
-                                           string in self)))
+        return "Path(({}, ))".format(", ".join((string.__repr__() for
+                                                string in self)))
 
     def __getitem__(self, key):
         result = tuple.__getitem__(tuple(self), key)
