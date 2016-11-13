@@ -258,7 +258,7 @@ class HierarchicalPie(object):
         return path[-1] if path else ""
 
     def format_value_text(self, value):
-        return str(value)
+        return "{0:.2f}".format(value)
         # todo:
         # hours = int(value/60)
         # minutes = int(value - hours * 60)
