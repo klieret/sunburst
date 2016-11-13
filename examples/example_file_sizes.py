@@ -44,11 +44,8 @@ ax.set_title('Disk usage chart of this repository.\n'
              'Total size: {} bit'.format(int(hp._completed_pv[Path(("", ))])))
 fig.set_size_inches(10, 10)
 
-# a few command line options to display plot/save figure/do nothing:
+# save/show plot
 
-if "debug" in sys.argv[1:]:
-    pass
-if "save" in sys.argv[1:]:
-    fig.savefig("figures/{}.png".format(__file__), dpi=100, bbox_inches='tight')
-if len(sys.argv) == 1:
+fig.savefig("figures/{}.png".format(__file__), dpi=100, bbox_inches='tight')
+if len(sys.argv) == 1 or not "debug" in sys.argv:
     plt.show()
