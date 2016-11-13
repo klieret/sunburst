@@ -69,4 +69,8 @@ plt.show()
 
 ```
 
-Other examples are in [```examples```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py/).  
+Running this script with ```python3 minimal_example_hpie.py``` will produce the following plot:
+
+![screenshot_minmal_example](https://cloud.githubusercontent.com/assets/13602468/20247642/559798a8-a9d1-11e6-931c-bcf0869c8198.png)
+
+Other examples are in [```examples```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/).  
