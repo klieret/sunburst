@@ -18,15 +18,14 @@ sudo pip3 install .
 
 ## Minimal example
 
-A minimal example:
-([https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/example_hpie.py](```example_hpie.py```)):
+(Even more minimal) version of [```minimal_example_hpie.py```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py):
 
 ```python
-#!/usr/bin/env python3
-
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path
 import random
+
+# set up figure
 
 fig, ax = plt.subplots()
 
@@ -34,24 +33,16 @@ fig, ax = plt.subplots()
 
 paths = [Path(tuple(a)) for a in "1 2 12 13 111 112 113 121 122 211 221 222 "
                                  "1111 1112 1121".split(" ")]
-pathvalues = {path: random.uniform(1, 100) for path in paths}
+pathvalues = {path: random.randrange(1, 100) for path in paths}
 
 # do the magic
 
 hp = HierarchicalPie(pathvalues, ax)
+hp.plot(setup_axes=True)
 
-# set plot attributes
-
-hp.plot()
-ax.autoscale()
-ax.set_aspect("equal")
-ax.autoscale_view(True, True, True)
-ax.get_xaxis().set_visible(False)
-ax.get_yaxis().set_visible(False)
-ax.margins(x=0.1, y=0.1)
-ax.set_title('Example HPie')
+# plot
 
 plt.show()
 ```
 
-Other examples are in ```examples```. 
+Other examples are in ```examples/```.  

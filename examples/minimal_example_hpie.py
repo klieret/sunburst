@@ -15,7 +15,7 @@ fig, ax = plt.subplots()
 
 paths = [Path(tuple(a)) for a in "1 2 12 13 111 112 113 121 122 211 221 222 "
                                  "1111 1112 1121".split(" ")]
-pathvalues = {path: random.uniform(1, 100) for path in paths}
+pathvalues = {path: random.randrange(1, 100) for path in paths}
 
 # do the magic
 
@@ -23,13 +23,7 @@ hp = HierarchicalPie(pathvalues, ax)
 
 # set plot attributes
 
-hp.plot()
-ax.autoscale()
-ax.set_aspect("equal")
-ax.autoscale_view(True, True, True)
-ax.get_xaxis().set_visible(False)
-ax.get_yaxis().set_visible(False)
-ax.margins(x=0.1, y=0.1)
+hp.plot(setup_axes=True)
 ax.set_title('Example HPie')
 
 # save/show plot

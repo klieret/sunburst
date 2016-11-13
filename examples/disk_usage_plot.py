@@ -34,13 +34,7 @@ hp.format_value_text = lambda value: None
 
 # set plot attributes
 
-hp.plot()
-ax.autoscale()
-ax.set_aspect("equal")
-ax.autoscale_view(True, True, True)
-ax.get_xaxis().set_visible(False)
-ax.get_yaxis().set_visible(False)
-ax.margins(x=0.1, y=0.1)
+hp.plot(setup_axes=True)
 ax.set_title('Disk usage chart of this repository.\n'
              'Total size: {} bit'.format(int(hp._completed_pv[Path(("", ))])))
 fig.set_size_inches(10, 10)

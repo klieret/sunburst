@@ -346,7 +346,7 @@ class HierarchicalPie(object):
         self.axes.text(mid_x, mid_y, text, ha="center",
                        va="center", rotation=rotation, bbox=bbox_props)
 
-    def plot(self):
+    def plot(self, setup_axes=False):
         if not self.wedges:
             # we didn't prepare the data yet
             self.prepare_data()
@@ -363,6 +363,14 @@ class HierarchicalPie(object):
                 self._tangential_text(path)
             else:
                 self._radial_text(path)
+
+        if setup_axes:
+            self.axes.autoscale()
+            self.axes.set_aspect("equal")
+            self.axes.autoscale_view(True, True, True)
+            self.axes.get_xaxis().set_visible(False)
+            self.axes.get_yaxis().set_visible(False)
+            self.axes.margins(x=0.1, y=0.1)
 
     def wedge(self, path):
         level = len(path)
