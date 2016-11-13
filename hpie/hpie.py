@@ -133,11 +133,12 @@ class HierarchicalPie(object):
         :param pathvalues: Dict[Path, float]
         :param axes:
         :param origin: Coordinates of the center of the pie chart.
-        :param cmap: Colormap
-        :param default_ring_width:
-        :param default_edge_color:
-        :param default_line_width:
-        :param plot_center:
+        :param cmap: Colormap: Controls the coloring based on the angle.
+        :param default_ring_width: Default width of each ring/wedge.
+        :param default_edge_color: Default edge color of the wedges.
+        :param default_line_width: Default line width of the wedges.
+        :param plot_center: Plot a circle in the middle corresponding to the
+                            total of all paths.
         :param plot_minimal_angle: Plot only wedges with an angle bigger
                                    than plot_minimal_angle
         :param label_minimal_angle: Only label wedges with an angle bigger than
@@ -197,24 +198,26 @@ class HierarchicalPie(object):
         return True
 
     # noinspection PyUnusedLocal
-    def ring_width(self, level):
+    def wedge_width(self, path: Path):
         """
         The width to a ring/wedge.
-        :param level: level (length of the path corresponding to a wedge)
+        :param path:
         :return:
         """
         return self.default_ring_width
 
-    def wedge_outer_radius(self, path: Path):
+    # noinspection PyUnusedLocal
+    def wedge_gap(self, path: Path):
+        return 0, 0
+
+    def _wedge_outer_radius(self, path: Path):
         """ The outer radius of the wedge corresponding to a path.
         This method takes path as an argument (and not len(path)) to allow
         to explode slices.
         :param path
         :return
         """
-        level = len(path)
-        start = 0 if self.plot_center else 1
-        return sum(self.ring_width(level) for level in range(start, level + 1))
+        return self._wedge_inner_radius(path) + self.wedge_width(path)
 
     def _wedge_inner_radius(self, path: Path):
         """ The inner radius of the wedge corresponding to a path.
@@ -223,9 +226,10 @@ class HierarchicalPie(object):
         :param path
         :return
         """
-        level = len(path)
         start = 0 if self.plot_center else 1
-        return sum(self.ring_width(level) for level in range(start, level))
+        ancestors = [path[:i] for i in range(start, len(path))]
+        return sum(self.wedge_width(ancestor) + sum(self.wedge_gap(ancestor))
+                   for ancestor in ancestors) + self.wedge_gap(path)[0]
 
     def _wedge_mid_radius(self, path: Path):
         """ The radius of the middle of the wedge corresponding to a path.
@@ -234,7 +238,7 @@ class HierarchicalPie(object):
         :param path
         :return
         """
-        return (self.wedge_outer_radius(path) +
+        return (self._wedge_outer_radius(path) +
                 self._wedge_inner_radius(path)) / 2
 
     # noinspection PyUnusedLocal
@@ -383,10 +387,10 @@ class HierarchicalPie(object):
     def wedge(self, path):
         level = len(path)
         return Wedge((self.origin[0], self.origin[1]),
-                     self.wedge_outer_radius(path),
+                     self._wedge_outer_radius(path),
                      self._angles[path].theta1,
                      self._angles[path].theta2,
-                     width=self.ring_width(level),
+                     width=self.wedge_width(path),
                      label=self.text(path, self._completed_pv[path]),
                      facecolor=self.face_color(path),
                      edgecolor=self.edge_color(path),
