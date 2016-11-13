@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd ..
-du | sort -n -r > examples/file_sizes.txt
+du | sort -n -r > examples/data/file_sizes.txt
 

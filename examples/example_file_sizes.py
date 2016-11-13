@@ -13,7 +13,7 @@ fig, ax = plt.subplots()
 # read data
 
 pathvalues = {}
-with open("file_sizes.txt") as csvfile:
+with open("data/file_sizes.txt") as csvfile:
     reader = csv.reader(csvfile, delimiter="\t")
     for row in reader:
         if not len(row) == 2:
@@ -49,6 +49,6 @@ fig.set_size_inches(10, 10)
 if "debug" in sys.argv[1:]:
     pass
 if "save" in sys.argv[1:]:
-    fig.savefig("{}.png".format(__file__), dpi=100, bbox_inches='tight')
+    fig.savefig("figures/{}.png".format(__file__), dpi=100, bbox_inches='tight')
 if len(sys.argv) == 1:
     plt.show()

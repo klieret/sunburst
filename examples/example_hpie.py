@@ -36,6 +36,6 @@ ax.set_title('Example HPie')
 if "debug" in sys.argv[1:]:
     pass
 if "save" in sys.argv[1:]:
-    fig.savefig("{}.png".format(__file__), dpi=100, bbox_inches='tight')
+    fig.savefig("figures/{}.png".format(__file__), dpi=100, bbox_inches='tight')
 if len(sys.argv) == 1:
     plt.show()
