@@ -5,10 +5,11 @@ import unittest
 from ..path import Path
 from ..hpie import complete
 
+
 class HpieTest(unittest.TestCase):
 
     def setUp(self):
-        self.pathvalues = {Path(('1',)): 0.,
+        self.pathvalues = {Path(('1',)): 5.,
                            Path(('1', '1', '1')): 92.,
                            Path(('1', '1', '1', '1')): 15.,
                            Path(('1', '1', '1', '2')): 99.,
@@ -24,8 +25,9 @@ class HpieTest(unittest.TestCase):
 
     def test_complete(self):
         # hand calculated
-        hand_calculated = {Path(()): 0+92+15+99+0+70+27+51+43+29+69+29+43.,
-                Path(('1',)): 0+92+15+99+0+70+27+51+43+29+69.,
+        hand_calculated = {
+                Path(()): 5+92+15+99+0+70+27+51+43+29+69+29+43.,
+                Path(('1',)): 5+92+15+99+0+70+27+51+43+29+69.,
                 Path(('1', '1',)): 92+15+99+70+27.,
                 Path(('1', '1', '1')): 92+15+99.,
                 Path(('1', '1', '1', '1')): 15.,
