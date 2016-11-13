@@ -42,7 +42,7 @@ fig, ax = plt.subplots()
 # set up some random data
 
 data = {
-    Path(('lorem', )): 36,
+    Path(('lorem', )): 36,  # note the ',' 
     Path(('ipsum', 'eirmod', 'dolor')): 94,
     Path(('lorem', 'sadipscing', 'dolor')): 44,
     Path(('lorem', 'sadipscing', 'lorem')): 37,
@@ -74,3 +74,17 @@ Running this script with ```python3 minimal_example_hpie.py``` will produce the 
 ![screenshot_minmal_example](https://cloud.githubusercontent.com/assets/13602468/20247642/559798a8-a9d1-11e6-931c-bcf0869c8198.png)
 
 Other examples are in [```examples```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/).  
+
+## Caveats regarding initialization of Path objects
+
+```Path``` objects must be initialized by a (possibly empty) iterable (but not a string) with (non-empty) strings as elements. Note that therefore the following lines of code will all fail:
+
+```python
+from hpie import Path
+
+Path("test")        # initialization with a string
+Path(("test"))      # ("test") gets simplified to "test". Correct: ("test", )
+Path(("", "test"))  # empty string
+Path("")            # empty string. If you want an empty path, use Path(())
+Path()              # missing argument. If you want an empty path, use Path(())
+```
