@@ -10,7 +10,7 @@ echo "Setting up path"
 for file in *.py
 do
     echo "Testing example ${file}"
-    python3 "${file}" debug
+    python3 "${file}" debug || exit 1
 done
 
 echo "All examples work"
