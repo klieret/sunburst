@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import os.path
 import matplotlib
 if "debug" in sys.argv[1:]:
     matplotlib.use("AGG")
@@ -33,6 +34,9 @@ ax.set_title('Example HPie')
 
 # save/show plot
 
-fig.savefig("figures/{}.png".format(__file__), dpi=100, bbox_inches='tight')
-if len(sys.argv) == 1 or not "debug" in sys.argv:
+fig.savefig(os.path.join(os.path.dirname(__file__), "figures",
+                         "{}.png".format(os.path.basename(__file__))),
+            dpi=100,
+            bbox_inches='tight')
+if len(sys.argv) == 1 or "debug" not in sys.argv:
     plt.show()
