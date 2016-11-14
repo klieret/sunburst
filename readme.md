@@ -107,16 +107,22 @@ hp._completed_pv.items() = {
 
 ### Ring Charts
 
-Thus you get ring charts, if and only if all of the non-zero values correspond to paths with the same length. E.g. if we change the above data as follows (by lengthening the paths with question marks):
+Thus you get ring charts, if and only if all of the non-zero values correspond to paths with the same length. E.g. if we change the above data as follows (by lengthening the paths with question marks and removing the entry for the empty path):
 
 ```python
 data = {
+    Path(('ipsum', '?', '?', )):                40.45,
+    Path(('ipsum', 'eirmod', '?', )):           29.34,
     Path(('ipsum', 'eirmod', 'dolor')):         94.4,
+    Path(('lorem', '?', '?', )):                36.12,
     Path(('lorem', 'sadipscing', 'dolor')):     44.32,
     Path(('lorem', 'sadipscing', 'lorem')):     37.15,
     Path(('lorem', 'sadipscing', 'nonumy')):    23.98,
+    Path(('lorem', 'eirmod', '?', )):           11.12,
     Path(('lorem', 'eirmod', 'lorem')):         45.65,
+    Path(('lorem', 'sadipscing', '?', )):       79.67,
 }
+
 ```
 
 we should get a classical ring chart. This is [```minimal_example_rings.py```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py). Running it via ```python3 minimal_example_hpie.py``` indeed yields the following plot, which indeed just fills up the white space of the above plot with wedges labeled ```?```.
