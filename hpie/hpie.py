@@ -26,13 +26,13 @@ def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     will be summed accordingly.
     Furthermore the total sum of the items of
     the topmost level will be assigned to the empty path. For this to make
-    sense we require that no empy path is in the pathvalues beforehand""
+    sense we require that no empy path is in the data beforehand""
     :param pathvalues: {path: value} dictionary :return: {path: value}
     dictionary
     """
     if Path(()) in pathvalues:
         raise ValueError("This function does not allow the empty path as item"
-                         "in the pathvalues list.")
+                         "in the data list.")
     completed = collections.defaultdict(float)
     for path, value in pathvalues.items():
         # len(path) +1 ensures that also the whole tag is considered
@@ -207,6 +207,7 @@ class HierarchicalPie(object):
         return self.default_ring_width
 
     # noinspection PyUnusedLocal
+    # noinspection PyMethodMayBeStatic
     def wedge_gap(self, path: Path):
         return 0, 0
 

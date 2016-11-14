@@ -13,17 +13,17 @@ fig, ax = plt.subplots()
 
 # read data
 
-pathvalues = {}
+data = {}
 with open("data/file_sizes.txt") as csvfile:
     reader = csv.reader(csvfile, delimiter="\t")
     for row in reader:
         if not len(row) == 2:
             continue
-        pathvalues[Path(row[1].split('/'))] = float(row[0])
+        data[Path(row[1].split('/'))] = float(row[0])
 
 # do the magic
 
-hp = HierarchicalPie(pathvalues,
+hp = HierarchicalPie(data,
                      ax,
                      cmap=plt.get_cmap("hsv"),
                      plot_minimal_angle=0,
