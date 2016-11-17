@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-import sys
 import os.path
 import matplotlib
-if "debug" in sys.argv[1:]:
-    matplotlib.use("AGG")
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path, stringvalues_to_pathvalues
 
@@ -78,5 +75,6 @@ fig.savefig(os.path.join(os.path.dirname(__file__), "figures",
                          "{}.png".format(os.path.basename(__file__))),
             dpi=100,
             bbox_inches='tight')
-if len(sys.argv) == 1 or "debug" not in sys.argv:
+
+if __name__ == "__main__":
     plt.show()

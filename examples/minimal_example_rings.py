@@ -40,7 +40,8 @@ fig.savefig(os.path.join(os.path.dirname(__file__), "figures",
                          "{}.png".format(os.path.basename(__file__))),
             dpi=100,
             bbox_inches='tight')
-if len(sys.argv) == 1 or "debug" not in sys.argv:
+
+if __name__ == "__main__":
     plt.show()
 
     # For the interpretation:

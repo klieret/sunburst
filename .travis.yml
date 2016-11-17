@@ -5,6 +5,3 @@ python:
 install: "python3 setup.py install"
 script: 
   - "python3 -m unittest discover"
-  - "python3 examples/minimal_example_hpie.py debug"
-  - "python3 examples/minimal_example_rings.py debug"
-  - "python3 examples/example_paths.py debug"

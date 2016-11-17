@@ -2,19 +2,23 @@
 
 import sys
 import os.path
+from os.path import dirname, join, realpath
 import matplotlib
-if "debug" in sys.argv[1:]:
-    matplotlib.use("AGG")
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path
 import csv
 
-fig, ax = plt.subplots()
 
 # read data
 
+file_size_data_file = realpath(join(dirname(__file__), "data",
+                                    "file_sizes.txt"))
+
+fig, ax = plt.subplots()
+
+
 data = {}
-with open("data/file_sizes.txt") as csvfile:
+with open(file_size_data_file) as csvfile:
     reader = csv.reader(csvfile, delimiter="\t")
     for row in reader:
         if not len(row) == 2:
@@ -32,19 +36,18 @@ hp = HierarchicalPie(data,
 # Do not display values
 hp.format_value_text = lambda value: None
 
-# set plot attributes
-
 hp.plot(setup_axes=True)
-# noinspection PyProtectedMember
-ax.set_title('Disk usage chart of this repository.\n'
-             'Total size: {} bit'.format(int(hp._completed_pv[Path(("", ))])))
-fig.set_size_inches(10, 10)
+
+# set plot attributes
+ax.set_title("Disk Usage Chart")
 
 # save/show plot
 
+fig.set_size_inches(10, 10)
 fig.savefig(os.path.join(os.path.dirname(__file__), "figures",
                          "{}.png".format(os.path.basename(__file__))),
             dpi=100,
             bbox_inches='tight')
-if len(sys.argv) == 1 or "debug" not in sys.argv:
+
+if __name__ == "__main__":
     plt.show()
