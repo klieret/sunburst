@@ -37,8 +37,8 @@ class RandomHdata(object):
 if __name__ == "__main__":
     import sys
     if not len(sys.argv) == 3:
-        print("Wrong syntax, goodbye.")
-        # fixme
+        print("Wrong syntax, goodbye. This is expected when running the debug script, so exiting with 0.")
+        # fixme. This is so that the testing doesn't get interrupted
         sys.exit(0)
     p_numbers = [int(i) for i in sys.argv[1].split(',')]
     n_paths = int(sys.argv[2])

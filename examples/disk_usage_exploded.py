@@ -67,7 +67,6 @@ hps[3].wedge_gap = wedge_gap3
 
 
 for i, hp in enumerate(hps):
-    print(i)
     hp.format_value_text = lambda path: ""
     hp.format_path_text = lambda path: ""
     hp.plot(setup_axes=True)
