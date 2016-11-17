@@ -37,6 +37,7 @@ axs[3].set_title('Explode multiple slices')
 
 hps = [HierarchicalPie(data, ax) for ax in axs]
 
+
 # noinspection PyUnusedLocal
 def wedge_gap1(path: Path):
     return 0, 0.1

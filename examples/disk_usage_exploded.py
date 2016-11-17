@@ -33,20 +33,25 @@ axs[3].set_title('Explode wedges independently')
 
 hps = [HierarchicalPie(data, ax,
                        cmap=plt.get_cmap("hsv"),
-                     plot_minimal_angle=0,
-                     label_minimal_angle=1.5) for ax in axs]
+                       plot_minimal_angle=0,
+                       label_minimal_angle=1.5) for ax in axs]
+
 
 def wedge_gap0(path: Path):
     return 0, 1/(1+len(path))**2
 
+
+# noinspection PyUnusedLocal
 def wedge_gap1(path: Path):
     return 0, 0.1
+
 
 def wedge_gap2(path: Path):
     if path == Path((".", ".git", "objects")):
         return 0, 0.2
     else:
         return 0, 0
+
 
 def wedge_gap3(path: Path):
     if len(path) == 1:
@@ -55,7 +60,8 @@ def wedge_gap3(path: Path):
         return 0, 0.1
     elif path == Path((".", ".git")):
         return 0, 0.3
-    elif path.startswith(Path((".", ".git"))) and not path.startswith(Path((".", ".git", "objects"))):
+    elif path.startswith(Path((".", ".git"))) and not \
+            path.startswith(Path((".", ".git", "objects"))):
         return 0.075, 0.075
     else:
         return 0, 0

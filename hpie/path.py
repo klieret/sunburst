@@ -11,12 +11,12 @@ class Path(tuple):
             assert isinstance(item, str)
         return super().__new__(cls, iter_)
 
-    def __str__(self):
+    def __str__(self) -> str:
         # requires all entries of the underlying tuple to be strings!
         # __str__() should be readable, __repr__() should be unique
         return STRING_DELIM.join(self)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         # __str__() should be readable, __repr__() should be unique
         # ==> use quotation marks. Since the string itself can also contain
         # various kinds of quote constructions, just use the __repr__ method

@@ -35,6 +35,7 @@ hp.format_value_text = lambda value: None
 # set plot attributes
 
 hp.plot(setup_axes=True)
+# noinspection PyProtectedMember
 ax.set_title('Disk usage chart of this repository.\n'
              'Total size: {} bit'.format(int(hp._completed_pv[Path(("", ))])))
 fig.set_size_inches(10, 10)
