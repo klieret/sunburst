@@ -4,7 +4,7 @@
 # Hierarchical Pie Charts for the python3 Pyplot library
 
 ```HPie``` is a module to create "Ring charts" or "Hierarchical Pie Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts" ) together with the [```matplotlib```](http://matplotlib.org/) package. 
-Quoting [wikipedia](https://en.wikipedia.org/wiki/Pie_chart#Ring_chart_.2F_Sunburst_chart_.2F_Multilevel_pie_chart):
+Quoting [Wikipedia](https://en.wikipedia.org/wiki/Pie_chart#Ring_chart_.2F_Sunburst_chart_.2F_Multilevel_pie_chart):
 
 
 > A ring chart, also known as a sunburst chart or a multilevel pie chart, is used to visualize hierarchical data, depicted by concentric circles. The circle in the centre represents the root node, with the hierarchy moving outward from the center. A segment of the inner circle bears a hierarchical relationship to those segments of the outer circle which lie within the angular sweep of the parent segment.
@@ -48,7 +48,13 @@ pip3 freeze | grep hpie
 
 ## Minimal example
 
-You can find several examples at [```examples/```](examples/). The most basic example is [```minimal_example_hpie.py```](examples/minimal_example_hpie.py):
+You can find several examples at [```examples/```](examples/). Remember to either install this package or run
+
+```sh
+source setup_path.py
+```
+
+before running the examples so that the package is in the ```PYTHONPATH```. The most basic example is [```minimal_example_hpie.py```](examples/minimal_example_hpie.py):
 
 ```python
 import matplotlib.pyplot as plt
@@ -115,7 +121,7 @@ hp._completed_pv.items() = {
 
 ```
 
-[```test_hpie.py```](hpie/tests/test_calc.py) contains a test which explicitly checks that this is working correctly.
+[```hpie/tests/test_calc.py```](hpie/tests/test_calc.py) contains an explicit test of this calculation based on a similar example.
 
 ### Ring Charts
 
@@ -136,6 +142,6 @@ data = stringvalues_to_pathvalues({
 })
 ```
 
-we should get a classical ring chart. This is [```minimal_example_rings.py```](examples/minimal_example_hpie.py). Running it via ```python3 minimal_example_hpie.py``` yields the following plot, which indeed just fills up the white space of the above plot with wedges labeled ```?```.
+we should get a classical ring chart. This is [```minimal_example_rings.py```](examples/minimal_example_rings.py). Running it via ```python3 minimal_example_rings.py``` yields the following plot, which indeed just fills up the white space of the above plot with wedges labeled ```?```.
 
 ![screenshot minimal_example rings](https://cloud.githubusercontent.com/assets/13602468/20408445/c8cdf4ec-ad15-11e6-9a10-2758c3469f9d.png)
