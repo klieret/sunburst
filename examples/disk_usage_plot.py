@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path
 import csv
 
-
 # read data
 
 file_size_data_file = realpath(join(dirname(__file__), "data",

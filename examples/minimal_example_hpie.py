@@ -30,7 +30,7 @@ hp = HierarchicalPie(data, ax)
 # set plot attributes
 
 hp.plot(setup_axes=True)
-ax.set_title('Example HPie')
+ax.set_title('Minimal Example')
 
 # save/show plot
 
