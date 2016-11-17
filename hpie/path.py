@@ -1,23 +1,15 @@
 #!/usr/bin/env python3
 
-from typing import List
+from typing import List, Iterable
 
 STRING_DELIM = "/"
 
 
 class Path(tuple):
-    def __new__(cls, iterator):
-        # avoid unintended behaviour, namely having Path("abc") and
-        # Path(("abc")) resulting in the path a/b/c of length 3 by excluding
-        # str from the list of allowed iterators
-        if isinstance(iterator, str):
-            raise ValueError("Don't initialize a Path object with a string.")
-        lst = list(iterator)
-        for index, item in enumerate(lst):
+    def __new__(cls, iter_: Iterable[str]):
+        for item in iter_:
             assert isinstance(item, str)
-            if not item:
-                del lst[index]
-        return super().__new__(cls, lst)
+        return super().__new__(cls, iter_)
 
     def __str__(self):
         # requires all entries of the underlying tuple to be strings!
@@ -37,6 +29,7 @@ class Path(tuple):
 
     def __getitem__(self, key):
         result = tuple.__getitem__(tuple(self), key)
+        # todo: is this good style? Stands in contrast to the behaviour of other iterators...
         # Depending on whether key was a single int or a slice object ,
         # tuple.__getitem__ will return a tuple or a string. However,
         # we want our __getitem__ method to return a Path instance in either
@@ -56,6 +49,9 @@ class Path(tuple):
 
     def parent(self):
         return self[:len(self) - 1]
+
+    def ancestors(self):
+        return [self[:i] for i in range(len(self)+1)]
 
 
 def paths2dot(paths: List[Path], full_labels=True) -> str:

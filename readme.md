@@ -128,17 +128,3 @@ data = {
 we should get a classical ring chart. This is [```minimal_example_rings.py```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py). Running it via ```python3 minimal_example_hpie.py``` yields the following plot, which indeed just fills up the white space of the above plot with wedges labeled ```?```.
 
 ![screenshot minimal_example rings](https://cloud.githubusercontent.com/assets/13602468/20247923/619b7662-a9d9-11e6-9d87-ea5e3da60503.png)
-
-## Caveats regarding initialization of Path objects
-
-```Path``` objects must be initialized by a (possibly empty) iterable (but not a string) with (non-empty) strings as elements. Note that therefore the following lines of code will all fail:
-
-```python
-from hpie import Path
-
-Path("test")        # initialization with a string
-Path(("test"))      # ("test") gets simplified to "test". Correct: ("test", )
-Path(("", "test"))  # empty string
-Path("")            # empty string. If you want an empty path, use Path(())
-Path()              # missing argument. If you want an empty path, use Path(())
-```
