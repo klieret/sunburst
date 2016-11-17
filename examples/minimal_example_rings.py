@@ -13,7 +13,7 @@ fig, ax = plt.subplots()
 # set up some random data
 
 data = {
-    Path(('ipsum', '?', '?', )):                40.45,
+    Path(('ipsum', '?', '?', )):                40.45,  # note the ','
     Path(('ipsum', 'eirmod', '?', )):           29.34,
     Path(('ipsum', 'eirmod', 'dolor')):         94.4,
     Path(('lorem', '?', '?', )):                36.12,
