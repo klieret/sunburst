@@ -90,8 +90,6 @@ class HpieTest(unittest.TestCase):
 
     def test_structurize(self):
         calculated = structurize(list(self.hand_calculate_complete.keys()))
-        print(calculated)
-        print(self.hand_calculated_structurized)
         self.assertEqual(pathstruct_no_order(calculated),
                          pathstruct_no_order(self.hand_calculated_structurized))
 
