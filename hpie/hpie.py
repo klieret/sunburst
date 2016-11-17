@@ -16,7 +16,7 @@ class HierarchicalPie(object):
                  cmap=plt.get_cmap('autumn'),
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
-                 default_line_width=1,
+                 default_line_width=0.75,
                  plot_center=False,
                  plot_minimal_angle=0,
                  label_minimal_angle=0):
@@ -152,8 +152,16 @@ class HierarchicalPie(object):
             angle = (self._angles[path].theta1 + self._angles[path].theta2) / 2
             color = list(self.cmap(angle/360))
             # make the color get lighter with increasing level
-            color[3] = 1 - (len(path) - 1) / (self._max_level + 1)
+            for i in range(3):
+                color[i] += (1 - color[i]) * 0.7 * (len(path)/(self._max_level + 1))
+            # somehow this seems to be ignored yet
+            # color[3] = 1 - (len(path) - 1)**3 / (self._max_level**3 )
+            # print(color[3])
         return tuple(color)
+
+    # noinspection PyMethodMayBeStatic
+    def alpha(self, path: Path) -> float:
+        return 1
 
     # noinspection PyMethodMayBeStatic
     def format_path_text(self, path) -> str:
@@ -218,8 +226,9 @@ class HierarchicalPie(object):
             va = "center"
 
         # todo: allow customization
-        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8),
-                          ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
+        # boxstyle="round,pad=0.3"
+        bbox_props = dict(boxstyle="round, pad=0.2", fc=(1, 1, 1, 0.8),
+                          ec=(0.4, 0.4, 0.4, 1), lw=0.)
 
         text = self.text(path, self._completed_pv[path])
         self.axes.text(mid_x, mid_y, text, ha=ha, va=va,
@@ -244,8 +253,8 @@ class HierarchicalPie(object):
             raise ValueError
 
         # todo: allow customization
-        bbox_props = dict(boxstyle="round,pad=0.3", fc=(1, 1, 1, 0.8),
-                          ec=(0.25, 0.25, 0.25, 0.8), lw=0.5)
+        bbox_props = dict(boxstyle="round, pad=0.2", fc=(1, 1, 1, 0.8),
+                          ec=(0.4, 0.4, 0.4, 1), lw=0.)
 
         text = self.text(path, self._completed_pv[path])
         self.axes.text(mid_x, mid_y, text, ha="center",
@@ -273,8 +282,7 @@ class HierarchicalPie(object):
             self.axes.autoscale()
             self.axes.set_aspect("equal")
             self.axes.autoscale_view(True, True, True)
-            self.axes.get_xaxis().set_visible(False)
-            self.axes.get_yaxis().set_visible(False)
+            self.axes.axis('off')
             self.axes.margins(x=0.1, y=0.1)
 
     def wedge(self, path: Path) -> Wedge:
@@ -287,4 +295,5 @@ class HierarchicalPie(object):
                      facecolor=self.face_color(path),
                      edgecolor=self.edge_color(path),
                      linewidth=self.line_width(path),
-                     fill=True)  # todo: supply rest of the arguments
+                     fill=True,
+                     alpha=self.alpha(path))  # todo: supply rest of the arguments
