@@ -2,13 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import Path
+from ..path import Path, charvalues_to_pathvalues
 from ..calc import complete, structurize
-from typing import Dict, List
-
-
-def strinvalues_to_pathvalues(stringvalues: Dict[str, float]):
-    return {Path(tuple(item)): value for item, value in stringvalues.items()}
+from typing import List
 
 
 def stringstruct_to_pathstruct(stringstruct: List[List[List[str]]]):
@@ -29,7 +25,7 @@ def pathstruct_no_order(pathstruct: List[List[List[Path]]]):
 class HpieTest(unittest.TestCase):
 
     def setUp(self):
-        self.pathvalues = strinvalues_to_pathvalues({
+        self.pathvalues = charvalues_to_pathvalues({
                            '1': 5.,
                            '111': 92.,
                            '1111': 15.,
@@ -45,7 +41,7 @@ class HpieTest(unittest.TestCase):
                            '211': 43.})
 
         # hand calculated
-        self.hand_calculate_complete = strinvalues_to_pathvalues({
+        self.hand_calculate_complete = charvalues_to_pathvalues({
                 '': 5+92+15+99+0+70+27+51+43+29+69+29+43.,
                 '1': 5+92+15+99+0+70+27+51+43+29+69.,
                 '11': 92+15+99+70+27.,
@@ -62,6 +58,27 @@ class HpieTest(unittest.TestCase):
                 '2': 29+43.,
                 '21': 43.,
                 '211': 43.})
+
+        self.hand_calculate_complete_summed = charvalues_to_pathvalues({
+                '': 572.,
+                '1': 500.,
+                '11': 303.,
+                '111': 206.,
+                '1111': 15.,
+                '1112': 99.,
+                '112': 70.,
+                '1121': 70.,
+                '113': 27.,
+                '12': 123.,
+                '121': 43.,
+                '122': 29.,
+                '13': 69.,
+                '2': 72.,
+                '21': 43.,
+                '211': 43.})
+
+        self.assertEqual(self.hand_calculate_complete,
+                         self.hand_calculate_complete_summed)
 
         self.hand_calculated_structurized = stringstruct_to_pathstruct([
             [[""]],

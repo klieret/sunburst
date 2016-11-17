@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import Path
+from ..path import Path, charvalues_to_pathvalues, stringvalues_to_pathvalues
 
 
 class PathTest(unittest.TestCase):
@@ -18,6 +18,16 @@ class PathTest(unittest.TestCase):
         self.assertEqual(len(self.paths["empty"]), 0)
         self.assertEqual(len(self.paths["triple"]), 3)
         self.assertEqual(len(self.paths["unicode"]), 1)
+
+    def test_init(self):
+        self.assertEqual(Path(""), self.paths["empty"])
+        self.assertEqual(Path("abc"), self.paths["triple"])
+        for i in range(10):
+            with self.subTest(i=i):
+                self.assertEqual(len(Path("a"*i)), i)
+                self.assertEqual(len(Path(['a']*i)), i)
+                self.assertEqual(len(Path(('a', )*i)), i)
+                self.assertEqual(len(Path(("",)) * i), i)
 
     def test_getitem(self):
         for _, path in self.paths.items():
@@ -43,7 +53,27 @@ class PathTest(unittest.TestCase):
 
     def test_ancestors(self):
         for path in self.paths.values():
-            self.assertEqual(len(path.ancestors()), len(path) + 1)
+            ancestors = path.ancestors()
+            self.assertEqual(len(ancestors), len(path) + 1)
+            self.assertIn(Path(()), ancestors)
+            self.assertIn(path, ancestors)
+            self.assertIn(path.parent(), ancestors)
+
+    def test_startswith(self):
+        for path in self.paths.values():
+            self.assertTrue(path.startswith(Path(())))
+            for ancestor in path.ancestors():
+                self.assertTrue(path.startswith(ancestor))
+
+
+class TestConversions(unittest.TestCase):
+
+    def test_charvalues_to_pathvalues(self):
+        charvalues = {"123": 1., "": 2., "1": 3.}
+        pathvalues = {Path("123"): 1.,
+                      Path(()): 2.,
+                      Path("1"): 3.}
+        self.assertEqual(charvalues_to_pathvalues(charvalues), pathvalues)
 
 if __name__ == '__main__':
     unittest.main()

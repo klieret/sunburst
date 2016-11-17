@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import List, Iterable
+from typing import List, Iterable, Dict
 
 STRING_DELIM = "/"
 
@@ -88,3 +88,12 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
             dot += '\t{} [label="{}"];\n'.format(vid(vertex), label)
     dot += "}"
     return dot
+
+
+def stringvalues_to_pathvalues(stringvalues: Dict[str, float], delim='/'):
+    return {Path(item.split(delim)): value for item, value in
+            stringvalues.items()}
+
+
+def charvalues_to_pathvalues(pathvalues: Dict[str, float]):
+    return {Path(tuple(item)): value for item, value in pathvalues.items()}
