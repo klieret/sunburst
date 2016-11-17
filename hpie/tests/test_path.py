@@ -15,7 +15,7 @@ class PathTest(unittest.TestCase):
         }
 
     def test_length(self):
-        self.assertEqual(len(self.paths["empty"]), 0)
+        self.assertEqual(len(self.paths ["empty"]), 0)
         self.assertEqual(len(self.paths["triple"]), 3)
         self.assertEqual(len(self.paths["unicode"]), 1)
 

@@ -10,6 +10,7 @@ if "debug" in sys.argv[1:]:
 import matplotlib.pyplot as plt
 from hpie import HierarchicalPie, Path
 
+
 class RandomHdata(object):
     def __init__(self, population_numbers: List[int]):
         self.population_numbers = population_numbers
