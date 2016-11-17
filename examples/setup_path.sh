@@ -17,7 +17,7 @@ add_to_pypath ()
 }
 
 this_dir=$(dirname $0)
-lib=${this_dir}/../
+lib=$(realpath ${this_dir}/../)
 
 if [[ "$1" != "quiet" ]]
 then
