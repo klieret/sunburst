@@ -3,7 +3,7 @@
 
 # Hierarchical Pie Plots for the python3 Pyplot library
 
-![screenshot](https://cloud.githubusercontent.com/assets/13602468/20237536/68419834-a8d5-11e6-9e43-bc33a645c411.png)
+![screenshot](https://cloud.githubusercontent.com/assets/13602468/20408444/c8cb6a56-ad15-11e6-8f5c-1abef69dc551.png)
 
 with this module such figures can be done in but a few steps.
 
@@ -75,7 +75,7 @@ plt.show()
 
 Running this script with ```python3 minimal_example_hpie.py``` will produce the following plot:
 
-![screenshot_minmal_example](https://cloud.githubusercontent.com/assets/13602468/20247642/559798a8-a9d1-11e6-931c-bcf0869c8198.png)
+![screenshot_minmal_example](https://cloud.githubusercontent.com/assets/13602468/20408443/c8c8c1d4-ad15-11e6-86a6-868dc98e91d0.png)
 
 ### The Data 
 
@@ -126,4 +126,4 @@ data = stringvalues_to_pathvalues({
 
 we should get a classical ring chart. This is [```minimal_example_rings.py```](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py). Running it via ```python3 minimal_example_hpie.py``` yields the following plot, which indeed just fills up the white space of the above plot with wedges labeled ```?```.
 
-![screenshot minimal_example rings](https://cloud.githubusercontent.com/assets/13602468/20247923/619b7662-a9d9-11e6-9d87-ea5e3da60503.png)
+![screenshot minimal_example rings](https://cloud.githubusercontent.com/assets/13602468/20408445/c8cdf4ec-ad15-11e6-9a10-2758c3469f9d.png)
