@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
@@ -59,7 +59,7 @@ class HierarchicalPie(object):
         # *** "Output" *** (emph)
         self.wedges = {}                 # type: Dict[Path, Wedge]
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         """ Sets up auxiliary variables.
         """
         self._completed_pv = complete(self.input_pv)
@@ -75,7 +75,7 @@ class HierarchicalPie(object):
                 if len(path) == 0 or angle > self.plot_minimal_angle:
                     self.wedges[path] = self.wedge(path)
 
-    def _is_outmost(self, path):
+    def _is_outmost(self, path: Path) -> bool:
         # is there a descendant of path?
         # to speed up things we use self._structured_paths
         level = len(path)
@@ -90,7 +90,7 @@ class HierarchicalPie(object):
         return True
 
     # noinspection PyUnusedLocal
-    def wedge_width(self, path: Path):
+    def wedge_width(self, path: Path) -> float:
         """
         The width to a ring/wedge.
         :param path:
@@ -103,7 +103,7 @@ class HierarchicalPie(object):
     def wedge_gap(self, path: Path):
         return 0, 0
 
-    def _wedge_outer_radius(self, path: Path):
+    def _wedge_outer_radius(self, path: Path) -> float:
         """ The outer radius of the wedge corresponding to a path.
         This method takes path as an argument (and not len(path)) to allow
         to explode slices.
@@ -112,7 +112,7 @@ class HierarchicalPie(object):
         """
         return self._wedge_inner_radius(path) + self.wedge_width(path)
 
-    def _wedge_inner_radius(self, path: Path):
+    def _wedge_inner_radius(self, path: Path) -> float:
         """ The inner radius of the wedge corresponding to a path.
         This method takes path as an argument (and not len(path)) to allow
         to explode slices.
@@ -124,7 +124,7 @@ class HierarchicalPie(object):
         return sum(self.wedge_width(ancestor) + sum(self.wedge_gap(ancestor))
                    for ancestor in ancestors) + self.wedge_gap(path)[0]
 
-    def _wedge_mid_radius(self, path: Path):
+    def _wedge_mid_radius(self, path: Path) -> float:
         """ The radius of the middle of the wedge corresponding to a path.
         This method takes path as an argument (and not len(path)) to allow
         to explode slices.
@@ -135,14 +135,14 @@ class HierarchicalPie(object):
                 self._wedge_inner_radius(path)) / 2
 
     # noinspection PyUnusedLocal
-    def edge_color(self, path):
+    def edge_color(self, path: Path) -> Tuple[float, float, float, float]:
         return self.default_edge_color
 
     # noinspection PyUnusedLocal
-    def line_width(self, path):
+    def line_width(self, path: Path) -> float:
         return self.default_line_width
 
-    def face_color(self, path):
+    def face_color(self, path: Path) -> Tuple[float, float, float, float]:
         # take the middle angle, else the first wedge will have the same color
         # as its parent or at least make sure, that we don't get the value 0
         # (white or black in a lot of color maps)
@@ -156,11 +156,11 @@ class HierarchicalPie(object):
         return tuple(color)
 
     # noinspection PyMethodMayBeStatic
-    def format_path_text(self, path):
+    def format_path_text(self, path) -> str:
         return path[-1] if path else ""
 
     # noinspection PyMethodMayBeStatic
-    def format_value_text(self, value):
+    def format_value_text(self, value: float) -> str:
         return "{0:.2f}".format(value)
         # todo:
         # hours = int(value/60)
@@ -170,14 +170,14 @@ class HierarchicalPie(object):
         # else:
         #     return "({})".format(minutes)
 
-    def text(self, path, value):
+    def text(self, path: Path, value: float) -> str:
         path_text = self.format_path_text(path)
         value_text = self.format_value_text(value)
         if path_text and value_text:
             return "{} ({})".format(path_text, value_text)
         return path_text
 
-    def _radial_text(self, path):
+    def _radial_text(self, path: Path) -> str:
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
         radius = self._wedge_mid_radius(path)
@@ -225,7 +225,7 @@ class HierarchicalPie(object):
         self.axes.text(mid_x, mid_y, text, ha=ha, va=va,
                        rotation=rotation, bbox=bbox_props)
 
-    def _tangential_text(self, path):
+    def _tangential_text(self, path: Path) -> str:
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
         radius = self._wedge_mid_radius(path)
@@ -251,7 +251,7 @@ class HierarchicalPie(object):
         self.axes.text(mid_x, mid_y, text, ha="center",
                        va="center", rotation=rotation, bbox=bbox_props)
 
-    def plot(self, setup_axes=False):
+    def plot(self, setup_axes=False) -> None:
         if not self.wedges:
             # we didn't prepare the data yet
             self.prepare_data()
@@ -277,8 +277,7 @@ class HierarchicalPie(object):
             self.axes.get_yaxis().set_visible(False)
             self.axes.margins(x=0.1, y=0.1)
 
-    def wedge(self, path):
-        level = len(path)
+    def wedge(self, path: Path) -> Wedge:
         return Wedge((self.origin[0], self.origin[1]),
                      self._wedge_outer_radius(path),
                      self._angles[path].theta1,
