@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$1" -ne "quiet" ]]
+if [[ "$1" != "quiet" ]]
 then
 	echo "Run this to test the examples without having to install the package"
 	echo "i.e. to update the path"
@@ -19,14 +19,14 @@ add_to_pypath ()
 this_dir=$(dirname $0)
 lib=${this_dir}/../
 
-if [[ "$1" -ne "quiet" ]]
+if [[ "$1" != "quiet" ]]
 then
 	echo "old PYTHONPATH: $PYTHONPATH"
 fi
 
 add_to_pypath $lib
 
-if [[ "$1" -ne "quiet" ]]
+if [[ "$1" != "quiet" ]]
 then
 	echo "new PYTHONPATH: $PYTHONPATH"
 fi
