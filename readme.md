@@ -1,7 +1,6 @@
-[![Build Status](https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master)](https://travis-ci.org/klieret/pyplot-hierarchical-pie)
+# Hierarchical Pie Charts  [![Build Status](https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master)](https://travis-ci.org/klieret/pyplot-hierarchical-pie)
 
-
-# Hierarchical Pie Charts for the python3 Pyplot library
+| [Installation](#installation) | [Minimal Example](#minimal-example) | 
 
 ```HPie``` is a module to create "Ring charts" or "Hierarchical Pie Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts" ) together with the [```matplotlib```](http://matplotlib.org/) package. 
 Quoting [Wikipedia](https://en.wikipedia.org/wiki/Pie_chart#Ring_chart_.2F_Sunburst_chart_.2F_Multilevel_pie_chart):
@@ -17,18 +16,22 @@ A prominent example are disk usage charts (see [```examples/disk_usage_plot.py``
 
 ## Installation
 
-As this project is still in development, you have to first have to clone the repository before running [```pip3```](https://pip.pypa.io/en/stable/):
+As this project is still in development, you have to first have to clone the repository before installing the package with [```pip3```](https://pip.pypa.io/en/stable/):
 
 ```sh
 git clone https://github.com/klieret/pyplot-hierarchical-pie
-cd pyplot-hierarchical-pie
-sudo pip3 install .
 ```
 
-If you want to check if everything will work properly on your system, you can run:
+Alternatively click [here](https://github.com/klieret/pyplot-hierarchical-pie/archive/master.zip) to download the current state of the master branch. Change to the downloaded directory. To check that everything will work properly on your system, run:
 
 ```sh
 python3 -m unittest discover
+```
+
+To install, run
+
+```sh
+sudo pip3 install .
 ```
 
 All of the examples from the toplevel of [```examples/```](examples/) will be run as well, so you can check [```examples/figures```](examples/figures) for the rendered graphics.
@@ -48,13 +51,13 @@ pip3 freeze | grep hpie
 
 ## Minimal example
 
-You can find several examples at [```examples/```](examples/). Remember to either install this package or run
+You can find several examples at [```examples/```](examples/). Remember to either install this package or update your ```PYTHONPATH``` via (linux)
 
 ```sh
 source setup_path.py
 ```
 
-before running the examples so that the package is in the ```PYTHONPATH```. The most basic example is [```minimal_example_hpie.py```](examples/minimal_example_hpie.py):
+before running the examples. The most basic example is [```minimal_example_hpie.py```](examples/minimal_example_hpie.py):
 
 ```python
 import matplotlib.pyplot as plt
