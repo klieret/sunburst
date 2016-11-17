@@ -3,7 +3,7 @@
 
 import unittest
 from ..path import Path
-from ..hpie import complete, structurize
+from ..calc import complete, structurize
 from typing import Dict, List
 
 
