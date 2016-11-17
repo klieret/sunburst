@@ -82,6 +82,7 @@ def structurize(paths: List[Path]) -> List[List[List[Path]]]:
 Angles = collections.namedtuple('Angles', ['theta1', 'theta2'])
 
 
+# todo: docstring . path values must be complete!
 def calculate_angles(structured_paths: List[List[List[Path]]],
                      path_values: Dict[Path, float]) -> Dict[Path, Angles]:
     angles = {}  # return value

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import Path, charvalues_to_pathvalues, stringvalues_to_pathvalues
+from ..path import Path, charvalues_to_pathvalues
 
 
 class PathTest(unittest.TestCase):

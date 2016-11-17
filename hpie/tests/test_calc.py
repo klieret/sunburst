@@ -3,9 +3,12 @@
 
 import unittest
 from ..path import Path, charvalues_to_pathvalues
-from ..calc import complete, structurize
+from ..calc import complete, structurize, calculate_angles
 from typing import List
 
+# Abbreviations:
+#    hc: hand-calculated
+#    pv: path values, i.e. Dict[Path: float]
 
 def stringstruct_to_pathstruct(stringstruct: List[List[List[str]]]):
     return [
@@ -41,7 +44,7 @@ class HpieTest(unittest.TestCase):
                            '211': 43.})
 
         # hand calculated
-        self.hand_calculate_complete = charvalues_to_pathvalues({
+        self.hc_complete_pv = charvalues_to_pathvalues({
                 '': 5+92+15+99+0+70+27+51+43+29+69+29+43.,
                 '1': 5+92+15+99+0+70+27+51+43+29+69.,
                 '11': 92+15+99+70+27.,
@@ -59,7 +62,7 @@ class HpieTest(unittest.TestCase):
                 '21': 43.,
                 '211': 43.})
 
-        self.hand_calculate_complete_summed = charvalues_to_pathvalues({
+        self.hc_complete_pv_summed = charvalues_to_pathvalues({
                 '': 572.,
                 '1': 500.,
                 '11': 303.,
@@ -77,10 +80,9 @@ class HpieTest(unittest.TestCase):
                 '21': 43.,
                 '211': 43.})
 
-        self.assertEqual(self.hand_calculate_complete,
-                         self.hand_calculate_complete_summed)
+        self.assertEqual(self.hc_complete_pv, self.hc_complete_pv_summed)
 
-        self.hand_calculated_structurized = stringstruct_to_pathstruct([
+        self.hc_structurized_paths = stringstruct_to_pathstruct([
             [[""]],
             [["1", "2"]],
             [["11", "12", "13"], ["21"]],
@@ -95,18 +97,35 @@ class HpieTest(unittest.TestCase):
         # chances are we forgot some keys in hand_calculated:
         for key in calculated.keys():
             with self.subTest(key=key):
-                self.assertIn(key, self.hand_calculate_complete)
+                self.assertIn(key, self.hc_complete_pv)
 
         # we verified that hand_calculated has more or equally many keys as
         # calculated now check all values (thereby also checking that the
         # keys are exactly equal):
-        for key in self.hand_calculate_complete.keys():
+        for key in self.hc_complete_pv.keys():
             with self.subTest(key=key):
-                self.assertEqual(calculated[key],
-                                 self.hand_calculate_complete[key])
+                self.assertAlmostEqual(calculated[key],
+                                       self.hc_complete_pv[key])
 
     def test_structurize(self):
-        calculated = structurize(list(self.hand_calculate_complete.keys()))
+        calculated = structurize(list(self.hc_complete_pv.keys()))
         self.assertEqual(pathstruct_no_order(calculated),
-                         pathstruct_no_order(self.hand_calculated_structurized))
+                         pathstruct_no_order(self.hc_structurized_paths))
 
+    def test_calculate_angles(self):
+        angles_dict = calculate_angles(self.hc_structurized_paths,
+                                       self.hc_complete_pv)
+        for path, angles in angles_dict.items():
+            with self.subTest(path=path):
+                hc_angle_diff = self.hc_complete_pv[path] / \
+                                self.hc_complete_pv[Path(())] * 360.
+                theta1 = angles.theta1
+                theta2 = angles.theta2
+                self.assertAlmostEqual(hc_angle_diff,
+                                       angles.theta2 - angles.theta1)
+                for ancestor in path.ancestors():
+                    # compare the computed angles, to avoid issues with
+                    # floating point precision. This should be exact.
+                    self.assertLessEqual(angles_dict[ancestor].theta1, theta1)
+                    self.assertLessEqual(theta1, theta2)
+                    self.assertLessEqual(theta2, angles_dict[ancestor].theta2)
