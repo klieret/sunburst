@@ -90,10 +90,14 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
     return dot
 
 
-def stringvalues_to_pathvalues(stringvalues: Dict[str, float], delim='/'):
+def stringvalues_to_pathvalues(stringvalues: Dict[str, float],
+                               delim=STRING_DELIM) -> Dict[Path, float]:
+    assert all(isinstance(item, str) for item in stringvalues.keys())
     return {Path(item.split(delim)): value for item, value in
             stringvalues.items()}
 
 
-def charvalues_to_pathvalues(pathvalues: Dict[str, float]):
-    return {Path(tuple(item)): value for item, value in pathvalues.items()}
+def charvalues_to_pathvalues(charvalues: Dict[str, float]) -> \
+        Dict[Path, float]:
+    assert all(isinstance(item, str) for item in charvalues.keys())
+    return {Path(tuple(item)): value for item, value in charvalues.items()}

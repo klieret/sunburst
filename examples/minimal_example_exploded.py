@@ -6,7 +6,7 @@ import matplotlib
 if "debug" in sys.argv[1:]:
     matplotlib.use("AGG")
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, Path
+from hpie import HierarchicalPie, Path, stringvalues_to_pathvalues
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -16,18 +16,18 @@ fig.set_size_inches(10, 10)
 
 # set up some random data
 
-data = {
-    Path(('ipsum',)):                           40.45,  # note the ','
-    Path(('ipsum', 'eirmod')):                  29.34,
-    Path(('ipsum', 'eirmod', 'dolor')):         94.4,
-    Path(('lorem', )):                          36.12,
-    Path(('lorem', 'sadipscing', 'dolor')):     44.32,
-    Path(('lorem', 'sadipscing', 'lorem')):     37.15,
-    Path(('lorem', 'sadipscing', 'nonumy')):    23.98,
-    Path(('lorem', 'eirmod')):                  11.12,
-    Path(('lorem', 'eirmod', 'lorem')):         45.65,
-    Path(('lorem', 'sadipscing')):              79.67,
-}
+data = stringvalues_to_pathvalues({
+    'ipsum':                      40.45,
+    'ipsum/eirmod':               29.34,
+    'ipsum/eirmod/dolor':         94.4,
+    'lorem':                      36.12,
+    'lorem/sadipscing/dolor':     44.32,
+    'lorem/sadipscing/lorem':     37.15,
+    'lorem/sadipscing/nonumy':    23.98,
+    'lorem/eirmod':               11.12,
+    'lorem/eirmod/lorem':         45.65,
+    'lorem/sadipscing':           79.67,
+})
 
 
 axs[0].set_title('Standard HPie')
