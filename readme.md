@@ -1,6 +1,8 @@
 # Hierarchical Pie Charts  [![Build Status](https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master)](https://travis-ci.org/klieret/pyplot-hierarchical-pie)
 
-| [Installation](#installation) | [Minimal Example](#minimal-example) | 
+| [Introduction](#introduction) | [Features](#features) | [Installation](#installation) | [Minimal Example](#minimal-example) | 
+
+## Introduction
 
 ```HPie``` is a module to create "Ring charts" or "Hierarchical Pie Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts" ) together with the [```matplotlib```](http://matplotlib.org/) package. 
 Quoting [Wikipedia](https://en.wikipedia.org/wiki/Pie_chart#Ring_chart_.2F_Sunburst_chart_.2F_Multilevel_pie_chart):
@@ -12,7 +14,17 @@ A prominent example are disk usage charts (see [```examples/disk_usage_plot.py``
 
 ![screenshot](https://cloud.githubusercontent.com/assets/13602468/20408444/c8cb6a56-ad15-11e6-8f5c-1abef69dc551.png)
 
+## Features
 
+```HPie``` tries to be 
+
+- Intuitive & Easy to use: After setting up your data and ```matplotlib```, not more than two lines are nescessary to generate first plots ([example](examples/minimal_example_hpie.py).
+- Flexible & Robust: Wherever it makes sense, the methods of the ```HierarchicalPie``` class are intended to be overwritten. Methods that are resposible for spacing, coloring, styling etc. of the ```wedges``` take the corresponding data point (```path```) as an argument, allowing to set most properties  independently for each ```wedge```.
+
+More specifically:
+
+- Clever positioning of labels, which - depending on space constraints  are positioned in a tangentially or radially. 
+- An easy way to "explode" the plot by redifining ```HierarchicalPie.wedge_gap``` ([example](examples/minimal_example_exploded.py), [example](examples/disk_usage_exploded.py)).
 
 ## Installation
 

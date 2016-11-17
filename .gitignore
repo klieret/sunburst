@@ -1,5 +1,5 @@
 meta/**
-readme_files/**
+readme_files/screenshots/**
 *.pyc
 *.pdf
 *.pd
