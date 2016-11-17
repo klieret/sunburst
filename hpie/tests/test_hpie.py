@@ -4,44 +4,50 @@
 import unittest
 from ..path import Path
 from ..hpie import complete
+from typing import Dict
+
+
+def strinvalues_to_pathvalues(stringvalues: Dict[str, float]):
+    return {Path(tuple(item)): value for item, value in stringvalues.items()}
 
 
 class HpieTest(unittest.TestCase):
 
     def setUp(self):
-        self.pathvalues = {Path(('1',)): 5.,
-                           Path(('1', '1', '1')): 92.,
-                           Path(('1', '1', '1', '1')): 15.,
-                           Path(('1', '1', '1', '2')): 99.,
-                           Path(('1', '1', '2')): 0.,
-                           Path(('1', '1', '2', '1')): 70.,
-                           Path(('1', '1', '3')): 27.,
-                           Path(('1', '2')): 51.,
-                           Path(('1', '2', '1')): 43.,
-                           Path(('1', '2', '2')): 29.,
-                           Path(('1', '3')): 69.,
-                           Path(('2',)): 29.,
-                           Path(('2', '1', '1')): 43.}
+        self.pathvalues = strinvalues_to_pathvalues({
+                           '1': 5.,
+                           '111': 92.,
+                           '1111': 15.,
+                           '1112': 99.,
+                           '112': 0.,
+                           '1121': 70.,
+                           '113': 27.,
+                           '12': 51.,
+                           '121': 43.,
+                           '122': 29.,
+                           '13': 69.,
+                           '2': 29.,
+                           '211': 43.})
 
     def test_complete(self):
         # hand calculated
-        hand_calculated = {
-                Path(()): 5+92+15+99+0+70+27+51+43+29+69+29+43.,
-                Path(('1',)): 5+92+15+99+0+70+27+51+43+29+69.,
-                Path(('1', '1',)): 92+15+99+70+27.,
-                Path(('1', '1', '1')): 92+15+99.,
-                Path(('1', '1', '1', '1')): 15.,
-                Path(('1', '1', '1', '2')): 99.,
-                Path(('1', '1', '2')): 70.,
-                Path(('1', '1', '2', '1')): 70.,
-                Path(('1', '1', '3')): 27.,
-                Path(('1', '2')): 51+43+29.,
-                Path(('1', '2', '1')): 43.,
-                Path(('1', '2', '2')): 29.,
-                Path(('1', '3')): 69.,
-                Path(('2',)): 29+43.,
-                Path(('2', '1',)): 43.,
-                Path(('2', '1', '1')): 43.}
+        hand_calculated = strinvalues_to_pathvalues({
+                '': 5+92+15+99+0+70+27+51+43+29+69+29+43.,
+                '1': 5+92+15+99+0+70+27+51+43+29+69.,
+                '11': 92+15+99+70+27.,
+                '111': 92+15+99.,
+                '1111': 15.,
+                '1112': 99.,
+                '112': 70.,
+                '1121': 70.,
+                '113': 27.,
+                '12': 51+43+29.,
+                '121': 43.,
+                '122': 29.,
+                '13': 69.,
+                '2': 29+43.,
+                '21': 43.,
+                '211': 43.})
 
         # for better debugging: loop
         calculated = complete(self.pathvalues)
