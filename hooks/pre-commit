@@ -2,10 +2,10 @@
 
 set -e
 
-echo "Running pre-commit hooks"
+echo "*** RUNNING PRE-COMMIT HOOKS *** "
 
 cd hooks
 
-echo "Running unittest"
+echo "*** RUNNING UNITTEST ***"
 python3 -m unittest discover .. || exit 1
 . check_examples.sh || exit 1

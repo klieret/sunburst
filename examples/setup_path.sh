@@ -1,8 +1,11 @@
 #!/bin/bash
 
-echo "Run this to test the examples without having to install the package"
-echo "i.e. to update the path"
-echo "run with 'source set_path.sh'"
+if [[ "$1" -ne "quiet" ]]
+then
+	echo "Run this to test the examples without having to install the package"
+	echo "i.e. to update the path"
+	echo "run with 'source set_path.sh'"
+fi
 
 add_to_pypath ()
 {
@@ -16,6 +19,14 @@ add_to_pypath ()
 this_dir=$(dirname $0)
 lib=${this_dir}/../
 
-echo "old PYTHONPATH: $PYTHONPATH"
+if [[ "$1" -ne "quiet" ]]
+then
+	echo "old PYTHONPATH: $PYTHONPATH"
+fi
+
 add_to_pypath $lib
-echo "new PYTHONPATH: $PYTHONPATH"
+
+if [[ "$1" -ne "quiet" ]]
+then
+	echo "new PYTHONPATH: $PYTHONPATH"
+fi

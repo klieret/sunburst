@@ -34,18 +34,19 @@ hp = HierarchicalPie(data, ax)
 hp.plot(setup_axes=True)
 ax.set_title('Example HPie')
 
-# For the interpretation:
-
-print("hp._completed_pv.items() = {")
-for path, value in sorted(hp._completed_pv.items(), key=lambda x: str(x[0])):
-        print("\t{}: {},".format(repr(path), value))
-print("}")
-
 # save/show plot
 
 fig.savefig(os.path.join(os.path.dirname(__file__), "figures",
                          "{}.png".format(os.path.basename(__file__))),
             dpi=100,
             bbox_inches='tight')
+
 if len(sys.argv) == 1 or "debug" not in sys.argv:
     plt.show()
+
+    # For the interpretation:
+    print("hp._completed_pv.items() = {")
+    # noinspection PyProtectedMember
+    for path, value in sorted(hp._completed_pv.items(), key=lambda x: str(x[0])):
+            print("\t{}: {},".format(repr(path), value))
+    print("}")
