@@ -3,7 +3,7 @@
 import os.path
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, Path, stringvalues_to_pathvalues
+from hpie import HierarchicalPie, Path, stringvalues_to_pv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -13,7 +13,7 @@ fig.set_size_inches(10, 10)
 
 # set up some random data
 
-data = stringvalues_to_pathvalues({
+data = stringvalues_to_pv({
     'ipsum':                      40.45,
     'ipsum/eirmod':               29.34,
     'ipsum/eirmod/dolor':         94.4,
@@ -39,7 +39,7 @@ hps = [HierarchicalPie(data, axs[0], order="keep"),
        ]
 
 for i, hp in enumerate(hps):
-    print("********************************************************************")
+    print("******************************************************************")
     hp.plot(setup_axes=True)
 
 fig.tight_layout(pad=0.5)

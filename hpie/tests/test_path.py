@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import Path, charvalues_to_pathvalues
+from ..path import Path, charvalues_to_pv
 
 
 class PathTest(unittest.TestCase):
@@ -73,7 +73,7 @@ class TestConversions(unittest.TestCase):
         pathvalues = {Path("123"): 1.,
                       Path(()): 2.,
                       Path("1"): 3.}
-        self.assertEqual(charvalues_to_pathvalues(charvalues), pathvalues)
+        self.assertEqual(charvalues_to_pv(charvalues), pathvalues)
 
 if __name__ == '__main__':
     unittest.main()

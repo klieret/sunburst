@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import charvalues_to_pathvalues
+from ..path import charvalues_to_pv
 from ..calc import *
 from typing import List
 
@@ -29,7 +29,7 @@ def pathstruct_no_order(pathstruct: List[List[List[Path]]]):
 class CalcTest(unittest.TestCase):
 
     def setUp(self):
-        self.pathvalues = charvalues_to_pathvalues({
+        self.pathvalues = charvalues_to_pv({
                            '1': 5.,
                            '111': 92.,
                            '1111': 15.,
@@ -45,7 +45,7 @@ class CalcTest(unittest.TestCase):
                            '211': 43.})
 
         # hand calculated
-        self.hc_complete_pv = charvalues_to_pathvalues({
+        self.hc_complete_pv = charvalues_to_pv({
                 '': 5+92+15+99+0+70+27+51+43+29+69+29+43.,
                 '1': 5+92+15+99+0+70+27+51+43+29+69.,
                 '11': 92+15+99+70+27.,
@@ -63,7 +63,7 @@ class CalcTest(unittest.TestCase):
                 '21': 43.,
                 '211': 43.})
 
-        self.hc_complete_pv_summed = charvalues_to_pathvalues({
+        self.hc_complete_pv_summed = charvalues_to_pv({
                 '': 572.,
                 '1': 500.,
                 '11': 303.,
@@ -113,7 +113,7 @@ class CalcTest(unittest.TestCase):
                                        self.hc_complete_pv[key])
 
     def test_structurize(self):
-        calculated = structurize(list(self.hc_complete_pv.keys()))
+        calculated = structure_paths(list(self.hc_complete_pv.keys()))
         self.assertEqual(pathstruct_no_order(calculated),
                          pathstruct_no_order(self.hc_structurized_paths))
 

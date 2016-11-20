@@ -53,7 +53,7 @@ def complete_paths(paths: List[Path]) -> List[Path]:
     return ret
 
 
-def structurize(paths: List[Path]) -> List[List[List[Path]]]:
+def structure_paths(paths: List[Path]) -> List[List[List[Path]]]:
     """ Takes a list of paths and groups the paths first by length (empty
     path length 0) and then by the parent (path[:len(path) - 1]).
     Example:
@@ -94,11 +94,12 @@ def structurize(paths: List[Path]) -> List[List[List[Path]]]:
     return structured
 
 
-def pprint_structurized(structurized: List[List[List[Path]]]):
+def pprint_structured_paths(structurized: List[List[List[Path]]]):
     print("[")
     for grp_lvl in structurized:
         print("\t", [list(map(str, grp_parents)) for grp_parents in grp_lvl])
     print("]")
+
 
 def pprint_paths(paths: List[Path]):
     print("[")

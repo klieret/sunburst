@@ -115,7 +115,7 @@ class HierarchicalPie(object):
 
         # the order of self._structured paths determines the
         # arrangment of the wedges afterwards.
-        self._structured_paths = structurize(self._completed_paths)
+        self._structured_paths = structure_paths(self._completed_paths)
 
         self._angles = calculate_angles(self._structured_paths,
                                         self._completed_pv)

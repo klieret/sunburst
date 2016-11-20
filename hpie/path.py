@@ -91,8 +91,8 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
 
 
 # todo: has to keep sorting!
-def stringvalues_to_pathvalues(stringvalues: MutableMapping[str, float],
-                               delim=STRING_DELIM) -> \
+def stringvalues_to_pv(stringvalues: MutableMapping[str, float],
+                       delim=STRING_DELIM) -> \
                                MutableMapping[Path, float]:
     assert all(isinstance(item, str) for item in stringvalues.keys())
     return {Path(item.split(delim)): value for item, value in
@@ -100,7 +100,7 @@ def stringvalues_to_pathvalues(stringvalues: MutableMapping[str, float],
 
 
 # todo: has to keep sorting!
-def charvalues_to_pathvalues(charvalues: MutableMapping[str, float]) -> \
+def charvalues_to_pv(charvalues: MutableMapping[str, float]) -> \
         MutableMapping[Path, float]:
     assert all(isinstance(item, str) for item in charvalues.keys())
     return {Path(tuple(item)): value for item, value in charvalues.items()}

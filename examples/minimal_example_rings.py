@@ -6,13 +6,13 @@ import matplotlib
 if "debug" in sys.argv[1:]:
     matplotlib.use("AGG")
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, stringvalues_to_pathvalues
+from hpie import HierarchicalPie, stringvalues_to_pv
 
 fig, ax = plt.subplots()
 
 # set up some random data
 
-data = stringvalues_to_pathvalues({
+data = stringvalues_to_pv({
     'ipsum/?/?':                 40.45,
     'ipsum/eirmod/?':            29.34,
     'ipsum/eirmod/dolor':        94.4,
