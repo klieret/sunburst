@@ -2,19 +2,18 @@
 
 import collections
 from itertools import groupby
-from typing import Dict, List
+from typing import List, MutableMapping
 from .path import Path
 
-# future: sorting & unsorting
 
+# future: sorting & unsorting
 # fixme: problems with the total sum/value at the root
 # (not the same, as value at root can be more than the total of the next level)
 # solution: do not allow empty roots to be given by the user
 # thus the real (empy) root always carries the total sum of the entries
-# and gets set by complete
+# and gets set by complete_pv
 # to plot the innerst circle, bring back the draw_center_circle option
-
-def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
+def complete_pv(pathvalues: MutableMapping[Path, float]) -> MutableMapping[Path, float]:
     """ Consider a pathvalue dictionary of the form Dict[Path, float] e.g.
     {1.1.1: 12.0} (here: only one entry). This function will disect each path
     and assign its value to the truncated path: e.g. here 1, 1.1 and 1.1.1.
@@ -23,7 +22,8 @@ def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     Furthermore the total sum of the items of
     the topmost level will be assigned to the empty path. For this to make
     sense we require that no empy path is in the data beforehand""
-    :param pathvalues: {path: value} dictionary :return: {path: value}
+    :param pathvalues: {path: value} dictionary
+    :return: {path: value}
     dictionary
     """
     if Path(()) in pathvalues:
@@ -36,6 +36,21 @@ def complete(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
         for level in range(0, len(path) + 1):
             completed[path[:level]] += value
     return completed
+
+
+def complete_paths(paths: List[Path]) -> List[Path]:
+    """ Like complete_pv, only that it tries to preserve the order of paths.
+    """
+    ret = [Path(())]
+    for path in paths:
+        for i in range(1, len(path)):
+            # iterate over all "real" ancestors
+            ancestor = path[:i]
+            if ancestor not in paths and ancestor not in ret:
+                # will not come up later: insert before path
+                ret.append(ancestor)
+        ret.append(path)
+    return ret
 
 
 def structurize(paths: List[Path]) -> List[List[List[Path]]]:
@@ -79,12 +94,20 @@ def structurize(paths: List[Path]) -> List[List[List[Path]]]:
     return structured
 
 
+def pprint_structurized(structurized: List[List[List[Path]]]):
+    print("[")
+    for grp_lvl in structurized:
+        print("\t", [list(map(str, grp_parents)) for grp_parents in grp_lvl])
+    print("]")
+
+
 Angles = collections.namedtuple('Angles', ['theta1', 'theta2'])
 
 
-# todo: docstring . path values must be complete!
+# todo: docstring . path values must be complete_pv!
 def calculate_angles(structured_paths: List[List[List[Path]]],
-                     path_values: Dict[Path, float]) -> Dict[Path, Angles]:
+                     path_values: MutableMapping[Path, float]) -> \
+                     MutableMapping[Path, Angles]:
     angles = {}  # return value
     # the total sum of all elements (on one level)
     value_sum = path_values[Path(())]

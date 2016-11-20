@@ -6,3 +6,4 @@ readme_files/screenshots/**
 *.gv
 __pycache__/**
 .idea/*
+*.log

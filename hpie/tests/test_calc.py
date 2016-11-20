@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import Path, charvalues_to_pathvalues
-from ..calc import complete, structurize, calculate_angles
+from ..path import charvalues_to_pathvalues
+from ..calc import *
 from typing import List
 
 # Abbreviations:
 #    hc: hand-calculated
 #    pv: path values, i.e. Dict[Path: float]
+
 
 def stringstruct_to_pathstruct(stringstruct: List[List[List[str]]]):
     return [
@@ -25,7 +26,7 @@ def pathstruct_no_order(pathstruct: List[List[List[Path]]]):
                       in pathstruct])
 
 
-class HpieTest(unittest.TestCase):
+class CalcTest(unittest.TestCase):
 
     def setUp(self):
         self.pathvalues = charvalues_to_pathvalues({
@@ -90,9 +91,13 @@ class HpieTest(unittest.TestCase):
             [["1111", "1112"], ["1121"]]
         ])
 
+    def test_complete_paths(self):
+        self.assertEqual(complete_paths(sorted(self.pathvalues.keys())),
+                         sorted(self.hc_complete_pv))
+
     def test_complete(self):
         # for better debugging: loop
-        calculated = complete(self.pathvalues)
+        calculated = complete_pv(self.pathvalues)
 
         # chances are we forgot some keys in hand_calculated:
         for key in calculated.keys():

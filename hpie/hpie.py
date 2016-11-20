@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
-from .path import Path
-from .calc import complete, structurize, calculate_angles, Angles
+from .calc import *
 
 
 class HierarchicalPie(object):
     def __init__(self,
-                 pathvalues: Dict[Path, float],
-                 axes,
+                 pathvalues: MutableMapping[Path, float],
+                 axes,  # todo: make optional argument?
                  origin=(0, 0),
                  cmap=plt.get_cmap('autumn'),
                  default_ring_width=0.4,
@@ -19,7 +18,8 @@ class HierarchicalPie(object):
                  default_line_width=0.75,
                  plot_center=False,
                  plot_minimal_angle=0,
-                 label_minimal_angle=0):
+                 label_minimal_angle=0,
+                 order=""):
         """
 
         :param pathvalues: Dict[Path, float]
@@ -48,10 +48,11 @@ class HierarchicalPie(object):
         self.plot_center = plot_center
         self.plot_minimal_angle = plot_minimal_angle
         self.label_minimal_angle = label_minimal_angle
+        self.order = order
 
         # *** Variables used for computation *** (emph)
         self._completed_pv = None        # type: Dict[Path, float]
-        self._paths = None               # type: List[Path]
+        self._completed_paths = None     # type: List[Path]
         self._max_level = None           # type: int
         self._structured_paths = None    # type: List[List[List[Path]]]
         self._angles = None              # type: Dict[Path, Angles]
@@ -62,14 +63,64 @@ class HierarchicalPie(object):
     def prepare_data(self) -> None:
         """ Sets up auxiliary variables.
         """
-        self._completed_pv = complete(self.input_pv)
-        self._paths = list(self._completed_pv.keys())
-        self._max_level = max((len(path) for path in self._paths))
-        self._structured_paths = structurize(self._paths)
+        # MOST OF THE ACTUAL CALCULATIONS ARE DEFINED AS FUNCTIONS IN
+        # calc.py (allowing for better testing)
+        # todo maybe split up more....
+        # even if self.input_pv is of type OrderedDict,
+        # self._completed_pv will be a normal (unsorted) dictionary
+        self._completed_pv = complete_pv(self.input_pv)
+
+        # Complete the list of paths with possible missing ancestors:
+        # Do not take the keys of self._completed_pv, because they will
+        # not be sorted anymore. The sorting of self._completed_paths
+        # induces the sorting of self._structured_paths which is
+        # responsible for the order of the wedges.
+        ordered_paths = None
+
+        if self.order:
+            order_options = set(self.order.split(" "))
+        else:
+            order_options = set()
+
+        # check supplied order options:
+        lonely_order_options = {"value", "key", "keep"}
+        allowed_order_options = lonely_order_options | {"reverse"}
+        if not order_options <= allowed_order_options:
+            raise ValueError("'order' option must consist of a subset of "
+                             "strings from {}, joined by "
+                             "spaces.".format(allowed_order_options))
+        if not len(order_options & lonely_order_options) <= 1:
+            raise ValueError("Only one of the options {} "
+                             "allowed.".format(lonely_order_options))
+
+        if not order_options:
+            ordered_paths = self.input_pv.keys()
+        elif "keep" in self.order:
+            ordered_paths = self.input_pv.keys()
+            if isinstance(self.input_pv, dict):
+                print("Warning: Looks like you want to keep the order of your"
+                      "input pathvalues, but pathvalues are of type dict"
+                      "which does keep record of the order of its items.")
+        elif "value" in self.order:
+            ordered_paths = sorted(self._completed_pv.keys(),
+                                   key=lambda key: self._completed_pv[key])
+        elif "key" in self.order:
+            ordered_paths = sorted(self._completed_pv.keys())
+        if "reverse" in self.order:
+            ordered_paths = list(reversed(ordered_paths))
+
+        self._completed_paths = complete_paths(ordered_paths)
+
+        self._max_level = max((len(path) for path in self._completed_paths))
+
+        # the order of self._structured paths determines the
+        # arrangment of the wedges afterwards.
+        self._structured_paths = structurize(self._completed_paths)
+
         self._angles = calculate_angles(self._structured_paths,
                                         self._completed_pv)
 
-        for path in self._paths:
+        for path in self._completed_paths:
             if self.plot_center or len(path) >= 1:
                 angle = self._angles[path].theta2 - self._angles[path].theta1
                 if len(path) == 0 or angle > self.plot_minimal_angle:
@@ -153,8 +204,9 @@ class HierarchicalPie(object):
             color = list(self.cmap(angle/360))
             # make the color get lighter with increasing level
             for i in range(3):
-                color[i] += (1 - color[i]) * 0.7 * (len(path)/(self._max_level + 1))
-            # somehow this seems to be ignored yet
+                color[i] += (1 - color[i]) * 0.7 * \
+                            (len(path)/(self._max_level + 1))
+            # somehow the following seems to be ignored yet
             # color[3] = 1 - (len(path) - 1)**3 / (self._max_level**3 )
             # print(color[3])
         return tuple(color)
