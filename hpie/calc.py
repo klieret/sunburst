@@ -100,6 +100,12 @@ def pprint_structurized(structurized: List[List[List[Path]]]):
         print("\t", [list(map(str, grp_parents)) for grp_parents in grp_lvl])
     print("]")
 
+def pprint_paths(paths: List[Path]):
+    print("[")
+    for path in paths:
+        print("\t", str(path))
+    print("]")
+
 
 Angles = collections.namedtuple('Angles', ['theta1', 'theta2'])
 
