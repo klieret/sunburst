@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
+# fixme: needs some clean up and fixing
+
 from random import randrange as rr
+import random
 from typing import List
 import sys
 import os.path
@@ -12,12 +15,10 @@ from hpie import HierarchicalPie, Path
 
 
 class RandomHdata(object):
-    def __init__(self, population_numbers: List[int]):
+    def __init__(self, loremipsum, population_numbers: List[int]):
         self.population_numbers = population_numbers
 
-        self.loremipsum = "Lorem ipsum dolor ame consetetur sadipscing elit " \
-                          "sed diam nonumy eirmod tempor invidunt " \
-                          "labore dolore".split(" ")
+        self.loremipsum = loremipsum
 
         self.level_population = [self.random_items(pn) for pn
                                  in population_numbers]
@@ -32,19 +33,25 @@ class RandomHdata(object):
         return path
 
     def paths(self, num_paths):
-        return [self.random_path(rr(1, len(self.population_numbers) + 1)) for _ in range(num_paths)]
+        return sorted([self.random_path(rr(1, len(self.population_numbers) + 1)) for _ in range(num_paths)], key=lambda p: str(p))
+
 
 if __name__ == "__main__":
     import sys
-    if not len(sys.argv) == 3:
-        print("Wrong syntax, goodbye. This is expected when running the debug script, so exiting with 0.")
-        # fixme. This is so that the testing doesn't get interrupted
-        sys.exit(0)
-    p_numbers = [int(i) for i in sys.argv[1].split(',')]
-    n_paths = int(sys.argv[2])
-    rhd = RandomHdata(p_numbers)
+    if not len(sys.argv) == 4:
+        print("Wrong syntax")
+        sys.exit(1)
+    if sys.argv[1] == "lorem":
+        loremipsum = "Lorem ipsum dolor ame consetetur sadipscing elit " \
+                          "sed diam nonumy eirmod tempor invidunt " \
+                          "labore dolore".split(" ")
+    else:
+        loremipsum = list(map(str, range(10)))
+    p_numbers = [int(i) for i in sys.argv[2].split(',')]
+    n_paths = int(sys.argv[3])
+    rhd = RandomHdata(loremipsum, p_numbers)
     paths = rhd.paths(n_paths)
-    pathvalues = {path: rr(1, 100) for path in paths}
+    pathvalues = {path: rr(1, 1000)/10 for path in paths}
 
     # pretty print
     # print(data)
