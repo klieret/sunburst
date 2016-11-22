@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from typing import List, Iterable, MutableMapping
+from typing import List, Iterable, MutableMapping, Any
+from collections import OrderedDict
 
 STRING_DELIM = "/"
 
@@ -90,7 +91,6 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
     return dot
 
 
-# todo: has to keep sorting!
 def stringvalues_to_pv(stringvalues: MutableMapping[str, float],
                        delim=STRING_DELIM) -> \
                                MutableMapping[Path, float]:
@@ -99,8 +99,28 @@ def stringvalues_to_pv(stringvalues: MutableMapping[str, float],
             stringvalues.items()}
 
 
-# todo: has to keep sorting!
+def stringlist_to_ordered_pv(stringpairs: List[Any],
+                             delim=STRING_DELIM) -> \
+                                        MutableMapping[Path, float]:
+    keys = stringpairs[::2]
+    values = stringpairs[1::2]
+    assert all(isinstance(item, str) for item in keys)
+    assert all(isinstance(item, float) for item in values)
+    paths = [Path(item.split(delim)) for item in keys]
+    return OrderedDict(zip(paths, values))
+
+
 def charvalues_to_pv(charvalues: MutableMapping[str, float]) -> \
         MutableMapping[Path, float]:
     assert all(isinstance(item, str) for item in charvalues.keys())
     return {Path(tuple(item)): value for item, value in charvalues.items()}
+
+
+def charlist_to_ordered_pv(stringpairs: List[Any]) -> \
+                                        MutableMapping[Path, float]:
+    keys = stringpairs[::2]
+    values = stringpairs[1::2]
+    assert all(isinstance(item, str) for item in keys)
+    assert all(isinstance(item, float) for item in values)
+    paths = [Path(tuple(item)) for item in keys]
+    return OrderedDict(zip(paths, values))
