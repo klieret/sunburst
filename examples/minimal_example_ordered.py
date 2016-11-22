@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import os.path
-import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, Path, stringvalues_to_pv
+from hpie import HierarchicalPie, charlist_to_ordered_pv, charvalues_to_pv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -13,33 +12,48 @@ fig.set_size_inches(10, 10)
 
 # set up some random data
 
-data = stringvalues_to_pv({
-    'ipsum':                      40.45,
-    'ipsum/eirmod':               29.34,
-    'ipsum/eirmod/dolor':         94.4,
-    'lorem':                      36.12,
-    'lorem/sadipscing/dolor':     44.32,
-    'lorem/sadipscing/lorem':     37.15,
-    'lorem/sadipscing/nonumy':    23.98,
-    'lorem/eirmod':               11.12,
-    'lorem/eirmod/lorem':         45.65,
-    'lorem/sadipscing':           79.67,
-})
+data = charvalues_to_pv({'1': 5.,
+                         '111': 92.,
+                         '1111': 15.,
+                         '1112': 99.,
+                         '112': 0.,
+                         '1121': 70.,
+                         '113': 27.,
+                         '12': 51.,
+                         '121': 43.,
+                         '122': 29.,
+                         '13': 69.,
+                         '2': 29.,
+                         '211': 43.})
+
+data_ordered = charlist_to_ordered_pv([
+                           '2', 29.,
+                           '1', 5.,
+                           '111', 92.,
+                           '1112', 99.,
+                           '1111', 15.,
+                           '112', 0.,
+                           '1121', 70.,
+                           '113', 27.,
+                           '12', 51.,
+                           '122', 29.,
+                           '121', 43.,
+                           '13', 69.,
+                           '211', 43.,
+])
 
 
-axs[0].set_title('Keeping Order')
+axs[0].set_title('No Order')
 axs[1].set_title('Alphabetic Order')
 axs[2].set_title('Order by Value')
-axs[3].set_title('Reverse Order by Value')
+axs[3].set_title('Keep Order')
 
-hps = [HierarchicalPie(data, axs[0], order="keep"),
+hps = [HierarchicalPie(data, axs[0]),
        HierarchicalPie(data, axs[1], order="key"),
        HierarchicalPie(data, axs[2], order="value"),
-       HierarchicalPie(data, axs[3], order="value reverse"),
-       ]
+       HierarchicalPie(data_ordered, axs[3], order="keep")]
 
 for i, hp in enumerate(hps):
-    print("******************************************************************")
     hp.plot(setup_axes=True)
 
 fig.tight_layout(pad=0.5)
