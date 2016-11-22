@@ -1,5 +1,4 @@
 meta/**
-readme_files/screenshots/**
 *.pyc
 *.pdf
 *.pd
@@ -7,3 +6,4 @@ readme_files/screenshots/**
 __pycache__/**
 .idea/*
 *.log
+readme/**

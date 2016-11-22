@@ -12,6 +12,7 @@ setup(name='hpie',
       url='https://github.com/klieret/pyplot-hierarchical-pie',
       packages=['hpie'],
       install_requires=['matplotlib', 'typing'],
+      license="BSD"
 )
 
 
