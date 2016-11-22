@@ -3,7 +3,7 @@ Hierarchical Pie Charts |Build Status|
 
 `Introduction <#introduction>`__ \| `Features <#features>`__ \|
 `Installation <#installation>`__ \| `Minimal
-Example <#minimal-example>`__ \|
+Example <#minimal-example>`__ \| `License <#License>` \|
 
 .. |Build Status| image:: https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master
    :target: https://travis-ci.org/klieret/pyplot-hierarchical-pie
@@ -12,7 +12,7 @@ Introduction
 ------------
 
 ``HPie`` is a module to create "Ring charts" or "Hierarchical Pie
-Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts" )
+Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts")
 together with the |matplotlib|_ package.
 Quoting Wikipedia_:
 
@@ -248,5 +248,12 @@ wedges labeled ``?``.
    :alt: Minimal Example Rings
    :align: center
 
+License
+-------
+
+This project is licensed under the *BSD 3-Clause License* license, see |readme|_.
+
+.. |readme| replace:: ``README.rst``
+.. _readme: README.rst
 
 
