@@ -1,9 +1,9 @@
 Hierarchical Pie Charts |Build Status|
 ======================================
 
-`Introduction <#introduction>`__ \| `Features <#features>`__ \|
+\| `Introduction <#introduction>`__ \| `Features <#features>`__ \|
 `Installation <#installation>`__ \| `Minimal
-Example <#minimal-example>`__ \| `License <#License>` \|
+Example <#minimal-example>`__ \| `License <#license>`__ \|
 
 .. |Build Status| image:: https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master
    :target: https://travis-ci.org/klieret/pyplot-hierarchical-pie
@@ -251,9 +251,9 @@ wedges labeled ``?``.
 License
 -------
 
-This project is licensed under the *BSD 3-Clause License* license, see |readme|_.
+This project is licensed under the *BSD 3-Clause License*, see |license|_.
 
-.. |readme| replace:: ``README.rst``
-.. _readme: README.rst
+.. |license| replace:: ``LICENSE.txt``
+.. _license: LICENSE.txt
 
 
