@@ -50,7 +50,7 @@ axs[3].set_title('Keep Order')
 
 hps = [HierarchicalPie(data, axs[0]),
        HierarchicalPie(data, axs[1], order="key"),
-       HierarchicalPie(data, axs[2], order="value"),
+       HierarchicalPie(data, axs[2], order="value reverse"),
        HierarchicalPie(data_ordered, axs[3], order="keep")]
 
 for i, hp in enumerate(hps):
