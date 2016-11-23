@@ -1,5 +1,5 @@
-Hierarchical Pie Charts |Build Status|
-======================================
+Hierarchical Pie Charts |Build Status| |Doc Status|
+===================================================
 
 \| `Introduction <#introduction>`__ \| `Features <#features>`__ \|
 `Installation <#installation>`__ \| `Minimal
@@ -8,7 +8,15 @@ Example <#minimal-example>`__ \| `License <#license>`__ \|
 .. |Build Status| image:: https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master
    :target: https://travis-ci.org/klieret/pyplot-hierarchical-pie
 
+.. |Doc Status| image:: https://readthedocs.org/projects/pyplot-hierarchical-pie/badge/?version=latest
+   :target: http://pyplot-hierarchical-pie.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 .. start-body
+
+Check out the full documentation at readthedocs.io_
+
+.. _readthedocs.io: http://pyplot-hierarchical-pie.readthedocs.io/en/latest/
 
 Introduction
 ------------
