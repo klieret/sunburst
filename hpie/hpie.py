@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Docstring """
+
 from typing import Dict, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
@@ -8,6 +10,36 @@ from .calc import *
 
 
 class HierarchicalPie(object):
+    """
+    Attributes:
+        pathvalues: pathvalues of type
+            MutuableMapping[Path, float]
+        axes:
+        origin: Coordinates of the center of the pie chart as tuple
+        cmap: Colormap: Controls the coloring based on the angle.
+        default_ring_width: Default width of each ring/wedge.
+        default_edge_color: Default edge color of the wedges.
+        default_line_width: Default line width of the wedges.
+        plot_center: Plot a circle in the middle corresponding to the
+            total of all paths.
+        plot_minimal_angle: Plot only wedges with an angle bigger
+            than plot_minimal_angle
+        label_minimal_angle: Only label wedges with an angle bigger than
+            this value
+        order: string with syntax keep|value|key [reverse], e.g.
+           "key reversed" (default) or "value" or "reversed"
+           controlling in which order the wedges will be created
+           - keep: Keep the order of the supplied pathvalues
+             dictionary (for this to work, use a dictionary
+             subclass that supports ordering, i.e.
+             collections.OrderedDict). This is the default, but
+             explicitly stating it, will warn you if you supply a
+             normal dict for pathvalues.
+           - value: Sort values from small to big
+           - key: Sort paths alphabetically
+           - reversed: take the order specified by one of the above
+             options (or none) and reverse it.
+    """
     def __init__(self,
                  pathvalues: MutableMapping[Path, float],
                  axes,  # todo: make optional argument?
@@ -19,23 +51,7 @@ class HierarchicalPie(object):
                  plot_center=False,
                  plot_minimal_angle=0,
                  label_minimal_angle=0,
-                 order=""):
-        """
-
-        :param pathvalues: Dict[Path, float]
-        :param axes:
-        :param origin: Coordinates of the center of the pie chart.
-        :param cmap: Colormap: Controls the coloring based on the angle.
-        :param default_ring_width: Default width of each ring/wedge.
-        :param default_edge_color: Default edge color of the wedges.
-        :param default_line_width: Default line width of the wedges.
-        :param plot_center: Plot a circle in the middle corresponding to the
-                            total of all paths.
-        :param plot_minimal_angle: Plot only wedges with an angle bigger
-                                   than plot_minimal_angle
-        :param label_minimal_angle: Only label wedges with an angle bigger than
-                                    plot_minimal_angle
-        """
+                 order="value reverse"):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
@@ -62,9 +78,11 @@ class HierarchicalPie(object):
 
     def prepare_data(self) -> None:
         """ Sets up auxiliary variables.
+
+        Most of the actual computations are defined in :file:`calc.py` for better
+        testing.
         """
-        # MOST OF THE ACTUAL CALCULATIONS ARE DEFINED AS FUNCTIONS IN
-        # calc.py (allowing for better testing)
+
         # todo maybe split up more....
         # even if self.input_pv is of type OrderedDict,
         # self._completed_pv will be a normal (unsorted) dictionary
@@ -130,6 +148,9 @@ class HierarchicalPie(object):
                     self.wedges[path] = self.wedge(path)
 
     def _is_outmost(self, path: Path) -> bool:
+        """ Returns True if the wedge corresponding to `path` is the
+        "outmost" wedge, i.e. there is no descendant of `path`.
+        """
         # is there a descendant of path?
         # to speed up things we use self._structured_paths
         level = len(path)
@@ -145,58 +166,71 @@ class HierarchicalPie(object):
 
     # noinspection PyUnusedLocal
     def wedge_width(self, path: Path) -> float:
-        """
-        The width to a ring/wedge.
-        :param path:
-        :return:
+        """ The width of the wedge corresponding to `path`.
+
+        This method is meant to be redefined. Per default it only returns
+        :py:attr:`default_ring_width`.
         """
         return self.default_ring_width
 
     # noinspection PyUnusedLocal
     # noinspection PyMethodMayBeStatic
-    def wedge_gap(self, path: Path):
+    def wedge_spacing(self, path: Path) -> Tuple[float, float]:
+        """ """
         return 0, 0
 
     def _wedge_outer_radius(self, path: Path) -> float:
         """ The outer radius of the wedge corresponding to a path.
-        This method takes path as an argument (and not len(path)) to allow
-        to explode slices.
-        :param path
-        :return
+
+        Instead of redefining this method, adapt :py:meth:`.wedge_width` resp.
+        :py:meth:`.wedge_width`.
         """
         return self._wedge_inner_radius(path) + self.wedge_width(path)
 
     def _wedge_inner_radius(self, path: Path) -> float:
         """ The inner radius of the wedge corresponding to a path.
-        This method takes path as an argument (and not len(path)) to allow
-        to explode slices.
-        :param path
-        :return
+
+        Instead of redefining this method, adapt :py:meth:`.wedge_width` resp.
+        :py:meth:`.wedge_width`.
         """
         start = 0 if self.plot_center else 1
         ancestors = [path[:i] for i in range(start, len(path))]
-        return sum(self.wedge_width(ancestor) + sum(self.wedge_gap(ancestor))
-                   for ancestor in ancestors) + self.wedge_gap(path)[0]
+        return sum(self.wedge_width(ancestor) + sum(self.wedge_spacing(ancestor))
+                   for ancestor in ancestors) + self.wedge_spacing(path)[0]
 
     def _wedge_mid_radius(self, path: Path) -> float:
         """ The radius of the middle of the wedge corresponding to a path.
-        This method takes path as an argument (and not len(path)) to allow
-        to explode slices.
-        :param path
-        :return
+
+        Instead of redefining this method, adapt :py:meth:`.wedge_width` resp.
+        :py:meth:`.wedge_width`.
         """
         return (self._wedge_outer_radius(path) +
                 self._wedge_inner_radius(path)) / 2
 
     # noinspection PyUnusedLocal
     def edge_color(self, path: Path) -> Tuple[float, float, float, float]:
+        """ The line color of the wedge corresponding to `path`.
+
+        This method is meant to be redefined. Per default it only returns
+        :py:attr:`default_edge_color`."""
         return self.default_edge_color
 
     # noinspection PyUnusedLocal
     def line_width(self, path: Path) -> float:
+        """ The line width of the wedge corresponding to `path`.
+
+        This method is meant to be redefined. Per default it only returns
+        :py:attr:`default_line_width`."""
         return self.default_line_width
 
     def face_color(self, path: Path) -> Tuple[float, float, float, float]:
+        """ The color of the wedge corresponding to `path`.
+
+        Per default, the color is calculated by the value of
+        :py:attr`self.cmap` at the mid-angle of the wedge. The color of an
+        inner circle (corresponding to an empty `path`) is always set to be
+        white. Colors a slightly brightened with increasing level.
+        """
         # take the middle angle, else the first wedge will have the same color
         # as its parent or at least make sure, that we don't get the value 0
         # (white or black in a lot of color maps)
@@ -214,8 +248,13 @@ class HierarchicalPie(object):
             # print(color[3])
         return tuple(color)
 
+    # noinspection PyUnusedLocal
     # noinspection PyMethodMayBeStatic
     def alpha(self, path: Path) -> float:
+        """ The alpha value of the wedge corresponding to `path`.
+
+        This method is meant to be redefined. Per default it only returns 1.
+        """
         return 1
 
     # noinspection PyMethodMayBeStatic
@@ -351,4 +390,5 @@ class HierarchicalPie(object):
                      edgecolor=self.edge_color(path),
                      linewidth=self.line_width(path),
                      fill=True,
-                     alpha=self.alpha(path))  # todo: supply rest of the arguments
+                     alpha=self.alpha(path))
+        # todo: supply rest of the arguments

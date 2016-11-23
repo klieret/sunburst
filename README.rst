@@ -8,8 +8,12 @@ Example <#minimal-example>`__ \| `License <#license>`__ \|
 .. |Build Status| image:: https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master
    :target: https://travis-ci.org/klieret/pyplot-hierarchical-pie
 
+.. start-body
+
 Introduction
 ------------
+
+.. start-introduction
 
 ``HPie`` is a module to create "Ring charts" or "Hierarchical Pie
 Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts")
@@ -24,8 +28,7 @@ Quoting Wikipedia_:
     segments of the outer circle which lie within the angular sweep of
     the parent segment.
 
-A prominent example are disk usage charts (see |du_example|_ for
-this example):
+A prominent example are disk usage charts (see |du_example|_ for this example):
 
 .. figure:: https://cloud.githubusercontent.com/assets/13602468/20408444/c8cb6a56-ad15-11e6-8f5c-1abef69dc551.png
    :alt: Hpie Example: Disk Usage Chart
@@ -37,7 +40,7 @@ this example):
 .. _wikipedia: https://en.wikipedia.org/wiki/Pie_chart#Ring_chart_.2F_Sunburst_chart_.2F_Multilevel_pie_chart
 
 .. |du_example| replace:: ``examples/disk_usage_plot.py``
-.. _du_example: examples/disk_usage_plot.py
+.. _du_example: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/disk_usage_plot.py
 
 Features
 --------
@@ -59,11 +62,11 @@ More specifically:
 -  Clever positioning of labels, which - depending on space constraints
    are positioned in a tangentially or radially.
 -  An easy way to "explode" the plot by redifining
-   ``HierarchicalPie.wedge_gap``
-   (`example <examples/minimal_example_exploded.py>`__,
-   `example <examples/disk_usage_exploded.py>`__).
+   ``HierarchicalPie.wedge_spacing``
+   (`example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_exploded.py>`__,
+   `example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/disk_usage_exploded.py>`__).
 
-.. _minimal example: examples/minimal_example_hpie.py
+.. _minimal example: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py
 
 
 Installation
@@ -102,8 +105,8 @@ will be run as well, so you can check
 
 .. |examples| replace:: ``examples/``
 .. |figures| replace:: ``examples/figures``
-.. _examples: examples/
-.. _figures: examples/figures/
+.. _examples: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/
+.. _figures: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/figures/
 
 To uninstall, run
 
@@ -130,7 +133,7 @@ to either install this package or update your ``PYTHONPATH`` via (linux)
 before running the examples. The most basic example is |minimal|:
 
 .. |minimal| replace:: minimal_example_hpie.py
-.. _minimal: examples/minimal_example_hpie.py
+.. _minimal: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py
 
 .. code:: python
 
@@ -210,7 +213,7 @@ minimal example prints the following:
 explicit test of this calculation based on a similar example.
 
 .. |test_calc| replace:: ``hpie/tests/test_calc.py``
-.. _test_calc: hpie/tests/test_calc.py
+.. _test_calc: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/hpie/tests/test_calc.py
 
 Ring Charts
 ~~~~~~~~~~~
@@ -242,11 +245,13 @@ plot, which indeed just fills up the white space of the above plot with
 wedges labeled ``?``.
 
 .. |rings| replace:: ``minimal_example_rings.py``
-.. _rings: examples/minimal_example_rings.py
+.. _rings: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_rings.py
 
 .. figure:: https://cloud.githubusercontent.com/assets/13602468/20408445/c8cdf4ec-ad15-11e6-9a10-2758c3469f9d.png
    :alt: Minimal Example Rings
    :align: center
+
+.. start-license
 
 License
 -------
@@ -254,6 +259,6 @@ License
 This project is licensed under the *BSD 3-Clause License*, see |license|_.
 
 .. |license| replace:: ``LICENSE.txt``
-.. _license: LICENSE.txt
+.. _license: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/LICENSE.txt
 
 

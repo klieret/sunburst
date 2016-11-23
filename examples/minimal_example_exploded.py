@@ -57,9 +57,9 @@ def wedge_gap3(path: Path):
     else:
         return 0, 0
 
-hps[1].wedge_gap = wedge_gap1
-hps[2].wedge_gap = wedge_gap2
-hps[3].wedge_gap = wedge_gap3
+hps[1].wedge_spacing = wedge_gap1
+hps[2].wedge_spacing = wedge_gap2
+hps[3].wedge_spacing = wedge_gap3
 
 
 for i, hp in enumerate(hps):
