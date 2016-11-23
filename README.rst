@@ -14,8 +14,9 @@ Example <#minimal-example>`__ \| `License <#license>`__ \|
 
 .. start-body
 
-Check out the full documentation at readthedocs.io_
+**Check out the full documentation at** |readthedocs.io|_.
 
+.. |readthedocs.io| replace:: **readthedocs.io**
 .. _readthedocs.io: http://pyplot-hierarchical-pie.readthedocs.io/en/latest/
 
 Introduction
