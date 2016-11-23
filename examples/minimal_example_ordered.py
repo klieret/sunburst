@@ -43,14 +43,14 @@ data_ordered = charlist_to_ordered_pv([
 ])
 
 
-axs[0].set_title('No Order')
+axs[0].set_title('Default Order')
 axs[1].set_title('Alphabetic Order')
-axs[2].set_title('Order by Value')
+axs[2].set_title('Order by Value Increasing')
 axs[3].set_title('Keep Order')
 
 hps = [HierarchicalPie(data, axs[0]),
        HierarchicalPie(data, axs[1], order="key"),
-       HierarchicalPie(data, axs[2], order="value reverse"),
+       HierarchicalPie(data, axs[2], order="value"),
        HierarchicalPie(data_ordered, axs[3], order="keep")]
 
 for i, hp in enumerate(hps):

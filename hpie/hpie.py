@@ -9,9 +9,9 @@ from .calc import *
 
 class HierarchicalPie(object):
     def __init__(self,
-                 pathvalues: MutableMapping[Path, float],
+                 input_pv: MutableMapping[Path, float],
                  axes,  # todo: make optional argument?
-                 origin=(0, 0),
+                 origin=(0., 0.),
                  cmap=plt.get_cmap('autumn'),
                  default_ring_width=0.4,
                  default_edge_color=(0, 0, 0, 1),
@@ -19,12 +19,11 @@ class HierarchicalPie(object):
                  plot_center=False,
                  plot_minimal_angle=0,
                  label_minimal_angle=0,
-                 order=""):
+                 order="value reverse"):
         """
-
-        :param pathvalues: Dict[Path, float]
+        :param input_pv: pathvalues of type MutuableMapping[Path, float]
         :param axes:
-        :param origin: Coordinates of the center of the pie chart.
+        :param origin: Coordinates of the center of the pie chart as tuple
         :param cmap: Colormap: Controls the coloring based on the angle.
         :param default_ring_width: Default width of each ring/wedge.
         :param default_edge_color: Default edge color of the wedges.
@@ -35,10 +34,23 @@ class HierarchicalPie(object):
                                    than plot_minimal_angle
         :param label_minimal_angle: Only label wedges with an angle bigger than
                                     plot_minimal_angle
+        :param order: string with syntax keep|value|key [reverse], e.g.
+                      "key reversed" (default) or "value" or "reversed"
+                      controlling in which order the wedges will be created
+                      - keep: Keep the order of the supplied pathvalues
+                        dictionary (for this to work, use a dictionary
+                        subclass that supports ordering, i.e.
+                        collections.OrderedDict). This is the default, but
+                        explicitly stating it, will warn you if you supply a
+                        normal dict for pathvalues.
+                      - value: Sort values from small to big
+                      - key: Sort paths alphabetically
+                      - reversed: take the order specified by one of the above
+                        options (or none) and reverse it.
         """
 
-        # *** Input & Config *** (emph)
-        self.input_pv = pathvalues
+        # *** Input & Config ***                                        (emph)
+        self.input_pv = input_pv
         self.axes = axes
         self.cmap = cmap
         self.origin = origin
@@ -50,7 +62,7 @@ class HierarchicalPie(object):
         self.label_minimal_angle = label_minimal_angle
         self.order = order
 
-        # *** Variables used for computation *** (emph)
+        # *** Variables used for computation ***                        (emph)
         self._completed_pv = None        # type: Dict[Path, float]
         self._completed_paths = None     # type: List[Path]
         self._max_level = None           # type: int
@@ -82,7 +94,7 @@ class HierarchicalPie(object):
         else:
             order_options = set()
 
-        # check supplied order options:
+        # check supplied order options:                                 (emph)
         lonely_order_options = {"value", "key", "keep"}
         allowed_order_options = lonely_order_options | {"reverse"}
         if not order_options <= allowed_order_options:
@@ -214,6 +226,7 @@ class HierarchicalPie(object):
             # print(color[3])
         return tuple(color)
 
+    # noinspection PyUnusedLocal
     # noinspection PyMethodMayBeStatic
     def alpha(self, path: Path) -> float:
         return 1
@@ -341,6 +354,7 @@ class HierarchicalPie(object):
             self.axes.margins(x=0.1, y=0.1)
 
     def wedge(self, path: Path) -> Wedge:
+        # todo: supply rest of the arguments
         return Wedge((self.origin[0], self.origin[1]),
                      self._wedge_outer_radius(path),
                      self._angles[path].theta1,
@@ -351,4 +365,4 @@ class HierarchicalPie(object):
                      edgecolor=self.edge_color(path),
                      linewidth=self.line_width(path),
                      fill=True,
-                     alpha=self.alpha(path))  # todo: supply rest of the arguments
+                     alpha=self.alpha(path))
