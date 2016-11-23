@@ -97,9 +97,12 @@ class HierarchicalPie(object):
             ordered_paths = self.input_pv.keys()
         elif "keep" in self.order:
             ordered_paths = self.input_pv.keys()
-            if isinstance(self.input_pv, dict):
+            if type(self.input_pv) is dict:
+                # do not use isinstance (because this would yield true for
+                # a OrderedDict or any other (possibly ordered subclass of dict
+                # as well)
                 print("Warning: Looks like you want to keep the order of your"
-                      "input pathvalues, but pathvalues are of type dict"
+                      "input pathvalues, but pathvalues are of type dict "
                       "which does keep record of the order of its items.")
         elif "value" in self.order:
             ordered_paths = sorted(self._completed_pv.keys(),
