@@ -12,12 +12,12 @@ Example <#minimal-example>`__ \| `License <#license>`__ \|
    :target: http://pyplot-hierarchical-pie.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. start-body
-
 **Check out the full documentation at** |readthedocs.io|_.
 
 .. |readthedocs.io| replace:: **readthedocs.io**
 .. _readthedocs.io: http://pyplot-hierarchical-pie.readthedocs.io/en/latest/
+
+.. start-body
 
 Introduction
 ------------
