@@ -60,7 +60,7 @@ Features
    ``matplotlib``, not more than two lines are nescessary to generate
    first plots (`minimal example`_).
 -  Flexible & Robust: Wherever it makes sense, the methods of the
-   ``HierarchicalPie`` class are intended to be overwritten. Methods
+   ``HPie`` class are intended to be overwritten. Methods
    that are resposible for spacing, coloring, styling etc. of the
    ``wedges`` take the corresponding data point (``path``) as an
    argument, allowing to set most properties independently for each
@@ -71,7 +71,7 @@ More specifically:
 -  Clever positioning of labels, which - depending on space constraints
    are positioned in a tangentially or radially.
 -  An easy way to "explode" the plot by redifining
-   ``HierarchicalPie.wedge_spacing``
+   ``HPie.wedge_spacing``
    (`example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_exploded.py>`__,
    `example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/disk_usage_exploded.py>`__).
 
@@ -147,7 +147,7 @@ before running the examples. The most basic example is |minimal|:
 .. code:: python
 
     import matplotlib.pyplot as plt
-    from hpie import HierarchicalPie, stringvalues_to_pv
+    from hpie import HPie, stringvalues_to_pv
 
     fig, ax = plt.subplots()
 
@@ -169,7 +169,7 @@ before running the examples. The most basic example is |minimal|:
 
     # do the magic
 
-    hp = HierarchicalPie(data, ax)
+    hp = HPie(data, ax)
 
     # set plot attributes
 
@@ -193,10 +193,10 @@ The Data
 
 Note that the value corresponding to path is always the value
 *excluding* the values of the children of the path. Therefore plotting
-the ``HierarchicalPie`` object computes a "completed" version of the
+the ``HPie`` object computes a "completed" version of the
 "pathvalue dictionary". You can check this with the
-``HierarchicalPie._completed_pv`` instance variable which gets
-initialized after calling ``HierarchicalPie.plot(*args)``. Running our
+``HPie._completed_pv`` instance variable which gets
+initialized after calling ``HPie.plot(*args)``. Running our
 minimal example prints the following:
 
 .. code:: python

@@ -6,7 +6,7 @@ import matplotlib
 if "debug" in sys.argv[1:]:
     matplotlib.use("AGG")
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, stringvalues_to_pv
+from hpie import HPie, stringvalues_to_pv
 
 fig, ax = plt.subplots()
 
@@ -27,7 +27,7 @@ data = stringvalues_to_pv({
 
 # do the magic
 
-hp = HierarchicalPie(data, ax)
+hp = HPie(data, ax)
 
 # set plot attributes
 

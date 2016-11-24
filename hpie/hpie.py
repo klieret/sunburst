@@ -9,7 +9,7 @@ import numpy as np
 from .calc import *
 
 
-class HierarchicalPie(object):
+class HPie(object):
     """
     Attributes:
         pathvalues: pathvalues of type

@@ -11,7 +11,7 @@ import matplotlib
 if "debug" in sys.argv[1:]:
     matplotlib.use("AGG")
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, Path
+from hpie import HPie, Path
 
 
 class RandomHdata(object):
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots()
 
-    hp = HierarchicalPie(pathvalues, ax)
+    hp = HPie(pathvalues, ax)
 
     hp.plot(setup_axes=True)
     ax.set_title('Example HPie')

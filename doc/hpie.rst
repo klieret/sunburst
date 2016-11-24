@@ -1,7 +1,7 @@
 The HPie Class
 --------------
 
-.. autoclass:: hpie.hpie.HierarchicalPie
+.. autoclass:: hpie.hpie.HPie
    :members:
    :undoc-members:
    :private-members:

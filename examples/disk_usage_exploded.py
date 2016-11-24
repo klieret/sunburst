@@ -5,7 +5,7 @@ import os.path
 from os.path import dirname, join, realpath
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, Path
+from hpie import HPie, Path
 import csv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
@@ -32,10 +32,10 @@ axs[1].set_title('Uniform Explosion')
 axs[2].set_title('Explode one slice')
 axs[3].set_title('Explode wedges independently')
 
-hps = [HierarchicalPie(data, ax,
-                       cmap=plt.get_cmap("hsv"),
-                       plot_minimal_angle=0,
-                       label_minimal_angle=1.5) for ax in axs]
+hps = [HPie(data, ax,
+            cmap=plt.get_cmap("hsv"),
+            plot_minimal_angle=0,
+            label_minimal_angle=1.5) for ax in axs]
 
 
 def wedge_gap0(path: Path):

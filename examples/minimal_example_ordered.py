@@ -2,7 +2,7 @@
 
 import os.path
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, charlist_to_ordered_pv, charvalues_to_pv
+from hpie import HPie, charlist_to_ordered_pv, charvalues_to_pv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -48,10 +48,10 @@ axs[1].set_title('Alphabetic Order')
 axs[2].set_title('Order by Value')
 axs[3].set_title('Keep Order')
 
-hps = [HierarchicalPie(data, axs[0]),
-       HierarchicalPie(data, axs[1], order="key"),
-       HierarchicalPie(data, axs[2], order="value reverse"),
-       HierarchicalPie(data_ordered, axs[3], order="keep")]
+hps = [HPie(data, axs[0]),
+       HPie(data, axs[1], order="key"),
+       HPie(data, axs[2], order="value reverse"),
+       HPie(data_ordered, axs[3], order="keep")]
 
 for i, hp in enumerate(hps):
     hp.plot(setup_axes=True)

@@ -4,7 +4,7 @@ import sys
 import os.path
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, stringvalues_to_pv
+from hpie import HPie, stringvalues_to_pv
 
 fig, ax = plt.subplots()
 
@@ -27,7 +27,7 @@ data = stringvalues_to_pv({
 
 # do the magic
 
-hp = HierarchicalPie(data, ax, default_line_width=1)
+hp = HPie(data, ax, default_line_width=1)
 
 # set plot attributes
 
