@@ -34,7 +34,7 @@ hp = HPie(data, ax, default_line_width=1)
 def nothing(*args, **kwargs):
     return ""
 
-hp.text = nothing
+hp.format_text = nothing
 
 
 hp.plot(setup_axes=True)

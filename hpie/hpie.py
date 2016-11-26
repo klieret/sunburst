@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-""" Docstring """
-
 from typing import Dict, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
@@ -10,7 +8,8 @@ from .calc import *
 
 
 class HPie(object):
-    """
+    """ The central class of the HPie package.
+
     Attributes:
         pathvalues: pathvalues of type
             MutuableMapping[Path, float]
@@ -272,9 +271,9 @@ class HPie(object):
         # else:
         #     return "({})".format(minutes)
 
-    def text(self, path: Path, value: float) -> str:
+    def format_text(self, path: Path) -> str:
         path_text = self.format_path_text(path)
-        value_text = self.format_value_text(value)
+        value_text = self.format_value_text(self._completed_pv[path])
         if path_text and value_text:
             return "{} ({})".format(path_text, value_text)
         return path_text
@@ -324,7 +323,7 @@ class HPie(object):
         bbox_props = dict(boxstyle="round, pad=0.2", fc=(1, 1, 1, 0.8),
                           ec=(0.4, 0.4, 0.4, 1), lw=0.)
 
-        text = self.text(path, self._completed_pv[path])
+        text = self.format_text(path)
         self.axes.text(mid_x, mid_y, text, ha=ha, va=va,
                        rotation=rotation, bbox=bbox_props)
 
@@ -350,7 +349,7 @@ class HPie(object):
         bbox_props = dict(boxstyle="round, pad=0.2", fc=(1, 1, 1, 0.8),
                           ec=(0.4, 0.4, 0.4, 1), lw=0.)
 
-        text = self.text(path, self._completed_pv[path])
+        text = self.format_text(path)
         self.axes.text(mid_x, mid_y, text, ha="center",
                        va="center", rotation=rotation, bbox=bbox_props)
 
@@ -385,7 +384,7 @@ class HPie(object):
                      self._angles[path].theta1,
                      self._angles[path].theta2,
                      width=self.wedge_width(path),
-                     label=self.text(path, self._completed_pv[path]),
+                     label=self.format_text(path),
                      facecolor=self.face_color(path),
                      edgecolor=self.edge_color(path),
                      linewidth=self.line_width(path),
