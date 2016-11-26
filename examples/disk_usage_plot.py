@@ -5,7 +5,7 @@ import os.path
 from os.path import dirname, join, realpath
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, Path
+from hpie import HPie, Path
 import csv
 
 # read data
@@ -26,11 +26,11 @@ with open(file_size_data_file) as csvfile:
 
 # do the magic
 
-hp = HierarchicalPie(data,
-                     ax,
-                     cmap=plt.get_cmap("hsv"),
-                     plot_minimal_angle=0,
-                     label_minimal_angle=1.5)
+hp = HPie(data,
+          ax,
+          cmap=plt.get_cmap("hsv"),
+          plot_minimal_angle=0,
+          label_minimal_angle=1.5)
 
 # Do not display values
 hp.format_value_text = lambda value: None

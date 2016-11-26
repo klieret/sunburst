@@ -3,7 +3,7 @@
 import os.path
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HierarchicalPie, Path, stringvalues_to_pv
+from hpie import HPie, Path, stringvalues_to_pv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -32,7 +32,7 @@ axs[1].set_title('Completely exploded')
 axs[2].set_title('Explode one slice')
 axs[3].set_title('Explode multiple slices')
 
-hps = [HierarchicalPie(data, ax) for ax in axs]
+hps = [HPie(data, ax) for ax in axs]
 
 
 # noinspection PyUnusedLocal
@@ -57,9 +57,9 @@ def wedge_gap3(path: Path):
     else:
         return 0, 0
 
-hps[1].wedge_gap = wedge_gap1
-hps[2].wedge_gap = wedge_gap2
-hps[3].wedge_gap = wedge_gap3
+hps[1].wedge_spacing = wedge_gap1
+hps[2].wedge_spacing = wedge_gap2
+hps[3].wedge_spacing = wedge_gap3
 
 
 for i, hp in enumerate(hps):
