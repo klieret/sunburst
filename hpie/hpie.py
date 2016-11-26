@@ -10,6 +10,27 @@ from .calc import *
 class HPie(object):
     """ The central class of the HPie package.
 
+    Usage:
+        - Initialize HPie object
+        - Redefine attributes or methods
+        - Run HPie.plot()
+
+    All of the following attributes can be set
+        - as keyword argument during initialisation
+        - after initialization, but before calling :py:meth:`.prepare_data`
+          or :py:meth:`.plot`.
+
+    Arguments starting with the prefix `default` can also be defined
+    dynamically (usually depending on the path to which a wedge correspond)
+    by redefining the method with the same name without the prefix `default`.
+
+    E.g. the attribute :py:attr:`.self.default_wedge_width` corresponds to the
+    initialization keyword argument `default_wedge_width` and to the method
+    :py:meth:`.wedge_width`: ::
+
+        def wedge_width(self, path: Path) -> float:
+            return self.default_ring_width
+
     Attributes:
         pathvalues: pathvalues of type
             MutuableMapping[Path, float]
@@ -50,20 +71,27 @@ class HPie(object):
                  plot_center=False,
                  plot_minimal_angle=0,
                  label_minimal_angle=0,
-                 order="value reverse"):
+                 order="value reverse",
+                 default_textbox_props = None):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
         self.axes = axes
         self.cmap = cmap
         self.origin = origin
-        self.default_ring_width = default_ring_width
+        self.default_wedge_width = default_ring_width
         self.default_edge_color = default_edge_color
         self.default_line_width = default_line_width
         self.plot_center = plot_center
         self.plot_minimal_angle = plot_minimal_angle
         self.label_minimal_angle = label_minimal_angle
         self.order = order
+        self.default_textbox_props = default_textbox_props
+        if not default_textbox_props:
+            self.default_textbox_props = dict(boxstyle="round, pad=0.2",
+                                              fc=(1, 1, 1, 0.8),
+                                              ec=(0.4, 0.4, 0.4, 1),
+                                              lw=0.)
 
         # *** Variables used for computation *** (emph)
         self._completed_pv = None        # type: Dict[Path, float]
@@ -82,6 +110,7 @@ class HPie(object):
         testing.
         """
 
+        # todo: maybe join together with self.plot?
         # todo maybe split up more....
         # even if self.input_pv is of type OrderedDict,
         # self._completed_pv will be a normal (unsorted) dictionary
@@ -168,14 +197,14 @@ class HPie(object):
         """ The width of the wedge corresponding to `path`.
 
         This method is meant to be redefined. Per default it only returns
-        :py:attr:`default_ring_width`.
+        :py:attr:`default_wedge_width`.
         """
-        return self.default_ring_width
+        return self.default_wedge_width
 
     # noinspection PyUnusedLocal
     # noinspection PyMethodMayBeStatic
     def wedge_spacing(self, path: Path) -> Tuple[float, float]:
-        """ """
+        # todo: docstring
         return 0, 0
 
     def _wedge_outer_radius(self, path: Path) -> float:
@@ -226,7 +255,7 @@ class HPie(object):
         """ The color of the wedge corresponding to `path`.
 
         Per default, the color is calculated by the value of
-        :py:attr`self.cmap` at the mid-angle of the wedge. The color of an
+        :py:attr:`.cmap` at the mid-angle of the wedge. The color of an
         inner circle (corresponding to an empty `path`) is always set to be
         white. Colors a slightly brightened with increasing level.
         """
@@ -255,6 +284,27 @@ class HPie(object):
         This method is meant to be redefined. Per default it only returns 1.
         """
         return 1
+
+    # noinspection PyUnusedLocal
+    # noinspection PyMethodMayBeStatic
+    def textbox_props(self, path: Path, text_type: str) -> Dict:
+        """ Properties of the textbox (bbox) that annotating the wedge
+        corresponding to `path`.
+
+        This method is meant to be redefined. Per default it is independent
+        of the arguments.
+
+        Args:
+            path (Path): path
+            text_type (str): Position type of the text box:
+                "tangential", "radial", etc.
+
+        Returns:
+            Dictionary of keyword properties for the bbox option of the
+            :py:meth:`matplotlib.pyplot.text` function.
+            See http://matplotlib.org/users/annotations_guide.html
+        """
+        return self.default_textbox_props
 
     # noinspection PyMethodMayBeStatic
     def format_path_text(self, path) -> str:
@@ -294,6 +344,8 @@ class HPie(object):
             rotation = angle - 180
         elif 270 < angle <= 360:
             rotation = angle - 360
+            # note that a rotation around 360 flips the text, so
+            # the -360 does matter.
         else:
             raise ValueError
 
@@ -318,14 +370,10 @@ class HPie(object):
             ha = "center"
             va = "center"
 
-        # todo: allow customization
-        # boxstyle="round,pad=0.3"
-        bbox_props = dict(boxstyle="round, pad=0.2", fc=(1, 1, 1, 0.8),
-                          ec=(0.4, 0.4, 0.4, 1), lw=0.)
-
         text = self.format_text(path)
         self.axes.text(mid_x, mid_y, text, ha=ha, va=va,
-                       rotation=rotation, bbox=bbox_props)
+                       rotation=rotation,
+                       bbox=self.textbox_props(path, "radial"))
 
     def _tangential_text(self, path: Path) -> str:
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
@@ -351,7 +399,8 @@ class HPie(object):
 
         text = self.format_text(path)
         self.axes.text(mid_x, mid_y, text, ha="center",
-                       va="center", rotation=rotation, bbox=bbox_props)
+                       va="center", rotation=rotation,
+                       bbox=self.textbox_props(path, "tangential"))
 
     def plot(self, setup_axes=False) -> None:
         if not self.wedges:
