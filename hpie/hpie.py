@@ -405,7 +405,7 @@ class HPie(object):
                        rotation=rotation,
                        bbox=self.textbox_props(path, "radial"))
 
-    def _tangential_text(self, path: Path) -> None:
+    def _tangential_text(self, path) -> None:
         """ Adds a tangentially rotated annotation for the wedge corresponding to
         `path` to the axes.
         """
@@ -434,16 +434,68 @@ class HPie(object):
     def _add_annotation(self, path):
         """ Adds annotation to the wedge corresponding to `path`. """
         angle = self._angles[path].theta2 - self._angles[path].theta1
-
         if not angle > self.label_minimal_angle:
-            # no text
+            # skip annotation
             return
 
-        # fixme: replace with less random criteria!
-        if len(path)*angle > 90:
+        # first we need to get the dimensions of the text.
+        # the only way to do this consistently is to initialize a fake
+        # text object, measure it, then delete it again.
+        renderer = self.axes.figure.canvas.get_renderer()
+        text = self.axes.text(0, 0, self.format_text(path),
+                              bbox=self.textbox_props(path, ""))
+        bbox = text.get_window_extent(renderer=renderer)
+
+        # Change units: get_window_extent returns lengths in units of the
+        # figure coordinate system. We need them in units of the data
+        # coordinate system.
+        # We get the converted lengths by considering the distance
+        # of two points and move from the Figure to the Data coordinate system
+        # via transData.inverted().
+        transform = self.axes.transData.inverted().transform
+        text_width, text_height = (transform([bbox.width, bbox.height]) -
+                                   transform([0,0]))
+        # remove text again:
+        try:
+            text.remove()
+        except NotImplementedError:
+            # bug, fixed in matplotlib 1.4
+            text.set_visible(False)
+
+        # todo: does not take spacing into account
+        wedge_available_height = self._wedge_outer_radius(path) - \
+            self._wedge_inner_radius(path)
+        # todo: only a rough approx.
+        # this only works well for small angles
+        wedge_available_width = 2 * self._wedge_mid_radius(path) * \
+            np.sin(np.deg2rad(angle/2))
+
+        # One really strange thing is that we have to have at least one
+        # (random) pyplot.plot command for the following to give us nice
+        # results. Not clear why, maybe the data coordinate system is not
+        # initialized elsewise or something.
+        # todo: It would probably be enough to do this once.
+        # note: plot returns a list, hence the ","
+        line, = plt.plot([0, text_width], [1, 1])
+        line.set_visible(False)
+
+        if len(path) == 1 and not self.plot_center:
+            # todo: more clear case
+            # if there is no center and there are only 2 slices of level 1,
+            # the angles of the text for radial_text would be the same
+            # and both texts would clash with certainty.
             self._tangential_text(path)
-        else:
+        elif wedge_available_width >= text_width and \
+                wedge_available_height >= text_height:
+            self._tangential_text(path)
+        elif wedge_available_height >= text_width and \
+                wedge_available_width >= text_height or \
+                self._is_outmost(path):
             self._radial_text(path)
+        print("{}. Outmost: {}, text: {}x{}, available: {}x{}".format(
+            path, self._is_outmost(path), text_width, text_height,
+            wedge_available_width, wedge_available_height
+        ))
 
     def plot(self, setup_axes=False) -> None:
         """ Method that combines several others, to do all nescessary
