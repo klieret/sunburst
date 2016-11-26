@@ -31,6 +31,10 @@ class HPie(object):
         def wedge_width(self, path: Path) -> float:
             return self.base_ring_width
 
+    Almost all of the methods can (or are meant to) be redefined.
+    Those which should be handled more carefully are designated by a leading
+    underscore.
+
     Attributes:
         pathvalues: pathvalues of type
             MutuableMapping[Path, float]
@@ -59,6 +63,9 @@ class HPie(object):
            - key: Sort paths alphabetically
            - reversed: take the order specified by one of the above
              options (or none) and reverse it.
+        base_textbox_props: Properties of the textbox (bbox) that annotating
+            the wedge corresponding to `path`. See
+            http://matplotlib.org/users/annotations_guide.html
     """
     def __init__(self,
                  pathvalues: MutableMapping[Path, float],
@@ -106,8 +113,8 @@ class HPie(object):
     def prepare_data(self) -> None:
         """ Sets up auxiliary variables.
 
-        Most of the actual computations are defined in :file:`calc.py` for better
-        testing.
+        Most of the actual computations are defined as functions for better
+        testing (in file :file:`calc.py`).
         """
 
         # todo: maybe join together with self.plot?
@@ -204,7 +211,14 @@ class HPie(object):
     # noinspection PyUnusedLocal
     # noinspection PyMethodMayBeStatic
     def wedge_spacing(self, path: Path) -> Tuple[float, float]:
-        # todo: docstring
+        """ The radial space before the wedge corresponding to `path` and
+        after.
+
+        E.g. if `wedge_space(some/path) = 0.1, 0.2`, then this shifts the wedge
+        corresponding to some/path by 0.1 radially away from the center and all
+        wedges corresponding to ancestors of some/path (e.g. some/path/child,
+        some/path/child/grandchild) by 0.2 radially away from the center.
+        """
         return 0, 0
 
     def _wedge_outer_radius(self, path: Path) -> float:
@@ -308,10 +322,17 @@ class HPie(object):
 
     # noinspection PyMethodMayBeStatic
     def format_path_text(self, path) -> str:
+        """ Returns a string representation for `path` which is used to
+        annotate the corresponding wedge.
+        """
         return path[-1] if path else ""
 
     # noinspection PyMethodMayBeStatic
     def format_value_text(self, value: float) -> str:
+        """ Returns a string representation of the value corresponding to
+        `path` which is used to annotate the wedge corresponding to
+        `path`.
+        """
         return "{0:.2f}".format(value)
         # todo:
         # hours = int(value/60)
@@ -322,13 +343,22 @@ class HPie(object):
         #     return "({})".format(minutes)
 
     def format_text(self, path: Path) -> str:
+        """ Returns a string used annotate the wedge corresponding to `path`.
+
+        Most modifications of the annotations can be made by redefining
+        :py:meth:`.format_path_text` or :py:meth:`.format_value_text`, this
+        method combines both of those methods.
+        """
         path_text = self.format_path_text(path)
         value_text = self.format_value_text(self._completed_pv[path])
         if path_text and value_text:
             return "{} ({})".format(path_text, value_text)
         return path_text
 
-    def _radial_text(self, path: Path) -> str:
+    def _radial_text(self, path: Path) -> None:
+        """ Adds a radially rotated annotation for the wedge corresponding to
+        `path` to the axes.
+        """
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
         radius = self._wedge_mid_radius(path)
@@ -375,7 +405,10 @@ class HPie(object):
                        rotation=rotation,
                        bbox=self.textbox_props(path, "radial"))
 
-    def _tangential_text(self, path: Path) -> str:
+    def _tangential_text(self, path: Path) -> None:
+        """ Adds a tangentially rotated annotation for the wedge corresponding to
+        `path` to the axes.
+        """
         theta1, theta2 = self._angles[path].theta1, self._angles[path].theta2
         angle = (theta1 + theta2) / 2
         radius = self._wedge_mid_radius(path)
@@ -393,32 +426,40 @@ class HPie(object):
         else:
             raise ValueError
 
-        # todo: allow customization
-        bbox_props = dict(boxstyle="round, pad=0.2", fc=(1, 1, 1, 0.8),
-                          ec=(0.4, 0.4, 0.4, 1), lw=0.)
-
         text = self.format_text(path)
         self.axes.text(mid_x, mid_y, text, ha="center",
                        va="center", rotation=rotation,
                        bbox=self.textbox_props(path, "tangential"))
 
+    def _add_annotation(self, path):
+        """ Adds annotation to the wedge corresponding to `path`. """
+        angle = self._angles[path].theta2 - self._angles[path].theta1
+
+        if not angle > self.label_minimal_angle:
+            # no text
+            return
+
+        # fixme: replace with less random criteria!
+        if len(path)*angle > 90:
+            self._tangential_text(path)
+        else:
+            self._radial_text(path)
+
     def plot(self, setup_axes=False) -> None:
+        """ Method that combines several others, to do all nescessary
+        preparations and add the plot to the axes :py:attr:`self.axes`.
+
+        Args:
+            setup_axes (bool): Does some basic setup for the axes
+            (autoscale, margins, etc.). It won't always be the perfect setup
+            but it saves writing a few lines more.
+        """
         if not self.wedges:
             # we didn't prepare the data yet
             self.prepare_data()
         for path, wedge in self.wedges.items():
             self.axes.add_patch(wedge)
-            angle = self._angles[path].theta2 - self._angles[path].theta1
-
-            if not angle > self.label_minimal_angle:
-                # no text
-                continue
-
-            if len(path)*angle > 90:
-                # fixme: replace with less random criteria!
-                self._tangential_text(path)
-            else:
-                self._radial_text(path)
+            self._add_annotation(path)
 
         if setup_axes:
             self.axes.autoscale()
@@ -428,6 +469,7 @@ class HPie(object):
             self.axes.margins(x=0.1, y=0.1)
 
     def wedge(self, path: Path) -> Wedge:
+        """ Generates the patches wedge object corresponding to `path`."""
         return Wedge((self.origin[0], self.origin[1]),
                      self._wedge_outer_radius(path),
                      self._angles[path].theta1,
