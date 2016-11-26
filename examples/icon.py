@@ -27,7 +27,7 @@ data = stringvalues_to_pv({
 
 # do the magic
 
-hp = HPie(data, ax, default_line_width=1)
+hp = HPie(data, ax, base_line_width=1)
 
 # set plot attributes
 

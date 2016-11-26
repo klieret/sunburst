@@ -20,16 +20,16 @@ class HPie(object):
         - after initialization, but before calling :py:meth:`.prepare_data`
           or :py:meth:`.plot`.
 
-    Arguments starting with the prefix `default` can also be defined
+    Arguments starting with the prefix `base` can also be defined
     dynamically (usually depending on the path to which a wedge correspond)
-    by redefining the method with the same name without the prefix `default`.
+    by redefining the method with the same name without the prefix `base`.
 
-    E.g. the attribute :py:attr:`.self.default_wedge_width` corresponds to the
-    initialization keyword argument `default_wedge_width` and to the method
+    E.g. the attribute :py:attr:`.self.base_wedge_width` corresponds to the
+    initialization keyword argument `base_wedge_width` and to the method
     :py:meth:`.wedge_width`: ::
 
         def wedge_width(self, path: Path) -> float:
-            return self.default_ring_width
+            return self.base_ring_width
 
     Attributes:
         pathvalues: pathvalues of type
@@ -37,9 +37,9 @@ class HPie(object):
         axes:
         origin: Coordinates of the center of the pie chart as tuple
         cmap: Colormap: Controls the coloring based on the angle.
-        default_ring_width: Default width of each ring/wedge.
-        default_edge_color: Default edge color of the wedges.
-        default_line_width: Default line width of the wedges.
+        base_ring_width: Default width of each ring/wedge.
+        base_edge_color: Default edge color of the wedges.
+        base_line_width: Default line width of the wedges.
         plot_center: Plot a circle in the middle corresponding to the
             total of all paths.
         plot_minimal_angle: Plot only wedges with an angle bigger
@@ -65,33 +65,33 @@ class HPie(object):
                  axes,  # todo: make optional argument?
                  origin=(0, 0),
                  cmap=plt.get_cmap('autumn'),
-                 default_ring_width=0.4,
-                 default_edge_color=(0, 0, 0, 1),
-                 default_line_width=0.75,
+                 base_ring_width=0.4,
+                 base_edge_color=(0, 0, 0, 1),
+                 base_line_width=0.75,
                  plot_center=False,
                  plot_minimal_angle=0,
                  label_minimal_angle=0,
                  order="value reverse",
-                 default_textbox_props = None):
+                 base_textbox_props = None):
 
         # *** Input & Config *** (emph)
         self.input_pv = pathvalues
         self.axes = axes
         self.cmap = cmap
         self.origin = origin
-        self.default_wedge_width = default_ring_width
-        self.default_edge_color = default_edge_color
-        self.default_line_width = default_line_width
+        self.base_wedge_width = base_ring_width
+        self.base_edge_color = base_edge_color
+        self.base_line_width = base_line_width
         self.plot_center = plot_center
         self.plot_minimal_angle = plot_minimal_angle
         self.label_minimal_angle = label_minimal_angle
         self.order = order
-        self.default_textbox_props = default_textbox_props
-        if not default_textbox_props:
-            self.default_textbox_props = dict(boxstyle="round, pad=0.2",
-                                              fc=(1, 1, 1, 0.8),
-                                              ec=(0.4, 0.4, 0.4, 1),
-                                              lw=0.)
+        self.base_textbox_props = base_textbox_props
+        if not base_textbox_props:
+            self.base_textbox_props = dict(boxstyle="round, pad=0.2",
+                                           fc=(1, 1, 1, 0.8),
+                                           ec=(0.4, 0.4, 0.4, 1),
+                                           lw=0.)
 
         # *** Variables used for computation *** (emph)
         self._completed_pv = None        # type: Dict[Path, float]
@@ -197,9 +197,9 @@ class HPie(object):
         """ The width of the wedge corresponding to `path`.
 
         This method is meant to be redefined. Per default it only returns
-        :py:attr:`default_wedge_width`.
+        :py:attr:`base_wedge_width`.
         """
-        return self.default_wedge_width
+        return self.base_wedge_width
 
     # noinspection PyUnusedLocal
     # noinspection PyMethodMayBeStatic
@@ -240,16 +240,16 @@ class HPie(object):
         """ The line color of the wedge corresponding to `path`.
 
         This method is meant to be redefined. Per default it only returns
-        :py:attr:`default_edge_color`."""
-        return self.default_edge_color
+        :py:attr:`base_edge_color`."""
+        return self.base_edge_color
 
     # noinspection PyUnusedLocal
     def line_width(self, path: Path) -> float:
         """ The line width of the wedge corresponding to `path`.
 
         This method is meant to be redefined. Per default it only returns
-        :py:attr:`default_line_width`."""
-        return self.default_line_width
+        :py:attr:`base_line_width`."""
+        return self.base_line_width
 
     def face_color(self, path: Path) -> Tuple[float, float, float, float]:
         """ The color of the wedge corresponding to `path`.
@@ -304,7 +304,7 @@ class HPie(object):
             :py:meth:`matplotlib.pyplot.text` function.
             See http://matplotlib.org/users/annotations_guide.html
         """
-        return self.default_textbox_props
+        return self.base_textbox_props
 
     # noinspection PyMethodMayBeStatic
     def format_path_text(self, path) -> str:
