@@ -445,7 +445,7 @@ class HPie(object):
         else:
             self._radial_text(path)
 
-    def plot(self, setup_axes=False) -> None:
+    def plot(self, setup_axes=False, interactive=False) -> None:
         """ Method that combines several others, to do all nescessary
         preparations and add the plot to the axes :py:attr:`self.axes`.
 
@@ -453,13 +453,16 @@ class HPie(object):
             setup_axes (bool): Does some basic setup for the axes
             (autoscale, margins, etc.). It won't always be the perfect setup
             but it saves writing a few lines more.
+
+            interactive (bool): Display label for the wedge under the cursor only.
         """
         if not self.wedges:
             # we didn't prepare the data yet
             self.prepare_data()
         for path, wedge in self.wedges.items():
             self.axes.add_patch(wedge)
-            self._add_annotation(path)
+            if not interactive:
+                self._add_annotation(path)
 
         if setup_axes:
             self.axes.autoscale()
@@ -467,6 +470,25 @@ class HPie(object):
             self.axes.autoscale_view(True, True, True)
             self.axes.axis('off')
             self.axes.margins(x=0.1, y=0.1)
+
+        if interactive:
+
+            def hover(event):
+                if event.inaxes == self.axes:
+                    found = False
+                    for path in self.wedges:
+                        if not found:
+                            cont, ind = self.wedges[path].contains(event)
+                        else:
+                            cont = False
+                        if cont:
+                            self.wedges[path].set_alpha(0.5)
+                            self.axes.set_title(self.format_text(path))
+                        else:
+                            self.wedges[path].set_alpha(1.)
+                    self.axes.figure.canvas.draw_idle()
+
+            self.axes.figure.canvas.mpl_connect("motion_notify_event", hover)
 
     def wedge(self, path: Path) -> Wedge:
         """ Generates the patches wedge object corresponding to `path`."""
