@@ -51,8 +51,9 @@ class HPie(object):
         label_minimal_angle: Only label wedges with an angle bigger than
             this value
         order: string with syntax keep|value|key [reverse], e.g.
-           "key reversed" (default) or "value" or "reversed"
+           "key reverse" (default) or "value" or "reverse"
            controlling in which order the wedges will be created
+           
            - keep: Keep the order of the supplied pathvalues
              dictionary (for this to work, use a dictionary
              subclass that supports ordering, i.e.
@@ -451,8 +452,8 @@ class HPie(object):
 
         Args:
             setup_axes (bool): Does some basic setup for the axes
-            (autoscale, margins, etc.). It won't always be the perfect setup
-            but it saves writing a few lines more.
+               (autoscale, margins, etc.). It won't always be the perfect setup
+               but it saves writing a few lines.
 
             interactive (bool): Display label for the wedge under the cursor only.
         """
