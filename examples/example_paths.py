@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 import os.path
-from hpie import Path, paths2dot
+from sunburst import Path, paths2dot
 
 numbering = [
     Path(tuple(a))

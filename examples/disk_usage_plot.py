@@ -5,7 +5,7 @@ import os.path
 from os.path import dirname, join, realpath
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HPie, Path
+from sunburst import SuburstPlot, Path
 import csv
 
 # read data
@@ -27,7 +27,7 @@ with open(file_size_data_file) as csvfile:
 
 # do the magic
 
-hp = HPie(
+hp = SuburstPlot(
     data,
     ax,
     cmap=plt.get_cmap("hsv"),

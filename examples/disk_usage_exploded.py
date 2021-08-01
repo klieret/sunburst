@@ -5,7 +5,7 @@ import os.path
 from os.path import dirname, join, realpath
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HPie, Path
+from sunburst import SuburstPlot, Path
 import csv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
@@ -34,7 +34,7 @@ axs[2].set_title("Explode one slice")
 axs[3].set_title("Explode wedges independently")
 
 hps = [
-    HPie(
+    SuburstPlot(
         data,
         ax,
         cmap=plt.get_cmap("hsv"),

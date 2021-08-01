@@ -19,7 +19,7 @@ For more information, please consult:
 .. toctree::
    :maxdepth: 2
 
-   hpie
+   plot
    path
    license
 

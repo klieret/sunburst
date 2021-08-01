@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import Path, charvalues_to_pv
+from sunburst.path import Path, charvalues_to_pv
 
 
 class PathTest(unittest.TestCase):

@@ -7,7 +7,7 @@ import matplotlib
 if "debug" in sys.argv[1:]:
     matplotlib.use("AGG")
 import matplotlib.pyplot as plt
-from hpie import HPie, stringvalues_to_pv
+from sunburst import SunburstPlot, stringvalues_to_pv
 
 fig, ax = plt.subplots()
 
@@ -30,7 +30,7 @@ data = stringvalues_to_pv(
 
 # do the magic
 
-hp = HPie(data, ax)
+hp = SunburstPlot(data, ax)
 
 # set plot attributes
 

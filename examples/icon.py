@@ -4,7 +4,7 @@ import sys
 import os.path
 import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HPie, stringvalues_to_pv
+from sunburst import SunburstPlot, stringvalues_to_pv
 
 fig, ax = plt.subplots()
 
@@ -29,7 +29,7 @@ data = stringvalues_to_pv(
 
 # do the magic
 
-hp = HPie(data, ax, base_line_width=1)
+hp = SunburstPlot(data, ax, base_line_width=1)
 
 # set plot attributes
 

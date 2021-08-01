@@ -2,7 +2,7 @@
 
 import os.path
 import matplotlib.pyplot as plt
-from hpie import HPie, charlist_to_ordered_pv, charvalues_to_pv
+from sunburst import SunburstPlot, charlist_to_ordered_pv, charvalues_to_pv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -68,10 +68,10 @@ axs[2].set_title("Order by Value Increasing")
 axs[3].set_title("Keep Order")
 
 hps = [
-    HPie(data, axs[0]),
-    HPie(data, axs[1], order="key"),
-    HPie(data, axs[2], order="value reverse"),
-    HPie(data_ordered, axs[3], order="keep"),
+    SunburstPlot(data, axs[0]),
+    SunburstPlot(data, axs[1], order="key"),
+    SunburstPlot(data, axs[2], order="value reverse"),
+    SunburstPlot(data_ordered, axs[3], order="keep"),
 ]
 
 for i, hp in enumerate(hps):

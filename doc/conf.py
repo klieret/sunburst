@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# HPie documentation build configuration file, created by
+# sunburst documentation build configuration file, created by
 # sphinx-quickstart on Wed Nov 23 10:35:32 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,7 +21,6 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../"))
-# sys.path.insert(0, os.path.abspath('../hpie'))
 
 
 # -- General configuration ------------------------------------------------
@@ -59,7 +58,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "HPie"
+project = "sunburst"
 copyright = "2016, klieret"
 author = "klieret"
 
@@ -144,7 +143,7 @@ html_theme = "alabaster"
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-# html_title = 'HPie v1.0'
+# html_title = 'sunburst v1.0'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -251,7 +250,7 @@ html_sidebars = {
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "HPiedoc"
+htmlhelp_basename = "sunburstdoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -274,7 +273,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "HPie.tex", "HPie Documentation", "klieret", "manual"),
+    (master_doc, "suburst.tex", "sunburst documentation", "klieret", "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -314,7 +313,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "hpie", "HPie Documentation", [author], 1)]
+man_pages = [(master_doc, "sunburst", "Sunburst Documentation", [author], 1)]
 
 # If true, show URL addresses after external links.
 #
@@ -329,10 +328,10 @@ man_pages = [(master_doc, "hpie", "HPie Documentation", [author], 1)]
 texinfo_documents = [
     (
         master_doc,
-        "HPie",
-        "HPie Documentation",
+        "Sunburst",
+        "Sunburst Documentation",
         author,
-        "HPie",
+        "Sunburst",
         "One line description of project.",
         "Miscellaneous",
     ),

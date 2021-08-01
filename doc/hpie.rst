@@ -1,7 +1,7 @@
 The HPie Class
 --------------
 
-.. autoclass:: hpie.hpie.HPie
+.. autoclass:: sunburst.plot.SunburstPlot
    :members:
    :undoc-members:
    :private-members:

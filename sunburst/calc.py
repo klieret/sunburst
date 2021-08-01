@@ -3,7 +3,7 @@
 import collections
 from itertools import groupby
 from typing import List, MutableMapping
-from .path import Path
+from sunburst.path import Path
 
 
 # future: sorting & unsorting

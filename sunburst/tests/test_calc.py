@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import charvalues_to_pv
-from ..calc import *
+from sunburst.path import charvalues_to_pv
+from sunburst.calc import *
 from typing import List
 
 # Abbreviations:

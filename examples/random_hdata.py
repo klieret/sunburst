@@ -12,7 +12,7 @@ import matplotlib
 if "debug" in sys.argv[1:]:
     matplotlib.use("AGG")
 import matplotlib.pyplot as plt
-from hpie import HPie, Path
+from sunburst import SunburstPlot, Path
 
 
 class RandomHdata(object):
@@ -79,10 +79,10 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots()
 
-    hp = HPie(pathvalues, ax)
+    hp = SunburstPlot(pathvalues, ax)
 
     hp.plot(setup_axes=True)
-    ax.set_title("Example HPie")
+    ax.set_title("Example SunburstPlot")
 
     # save/show plot
 

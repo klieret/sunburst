@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import os.path
-import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HPie, Path, stringvalues_to_pv
+from sunburst import SunburstPlot, Path, stringvalues_to_pv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -29,12 +28,12 @@ data = stringvalues_to_pv(
 )
 
 
-axs[0].set_title("Standard HPie")
+axs[0].set_title("Standard SunburstPlot")
 axs[1].set_title("Completely exploded")
 axs[2].set_title("Explode one slice")
 axs[3].set_title("Explode multiple slices")
 
-hps = [HPie(data, ax) for ax in axs]
+hps = [SunburstPlot(data, ax) for ax in axs]
 
 
 # noinspection PyUnusedLocal

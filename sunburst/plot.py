@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 
-from typing import Dict, Tuple
+from typing import Dict, Tuple, MutableMapping
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
-from .calc import *
+from sunburst.calc import complete_pv, complete_paths, structure_paths, calculate_angles
+from sunburst.path import Path
 
 
-class HPie(object):
-    """The central class of the HPie package.
+class SunburstPlot(object):
+    """The central class of the suburst package.
 
     Usage:
-        - Initialize HPie object
+        - Initialize SunburstPlot object
         - Redefine attributes or methods
-        - Run HPie.plot()
+        - Run SunburstPlot.plot()
 
     All of the following attributes can be set
         - as keyword argument during initialisation
