@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 
-from typing import Dict, Tuple, MutableMapping
+from typing import Dict, Tuple, List
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
-from sunburst.calc import complete_pv, complete_paths, structure_paths, calculate_angles
+from sunburst.calc import (
+    complete_pv,
+    complete_paths,
+    structure_paths,
+    calculate_angles,
+    Angles,
+)
 from sunburst.path import Path
 
 
@@ -72,7 +78,7 @@ class SunburstPlot(object):
 
     def __init__(
         self,
-        input_pv: MutableMapping[Path, float],
+        input_pv: Dict[Path, float],
         axes,  # todo: make optional argument?
         origin=(0.0, 0.0),
         cmap=plt.get_cmap("autumn"),
@@ -108,11 +114,11 @@ class SunburstPlot(object):
             )
 
         # *** Variables used for computation ***                        (emph)
-        self._completed_pv = None  # type: Dict[Path, float]
-        self._completed_paths = None  # type: List[Path]
-        self._max_level = None  # type: int
-        self._structured_paths = None  # type: List[List[List[Path]]]
-        self._angles = None  # type: Dict[Path, Angles]
+        self._completed_pv = {}  # type: Dict[Path, float]
+        self._completed_paths = []  # type: List[Path]
+        self._max_level = 0  # type: int
+        self._structured_paths = []  # type: List[List[List[Path]]]
+        self._angles = {}  # type: Dict[Path, Angles]
 
         # *** "Output" *** (emph)
         self.wedges = {}  # type: Dict[Path, Wedge]
@@ -135,7 +141,7 @@ class SunburstPlot(object):
         # not be sorted anymore. The sorting of self._completed_paths
         # induces the sorting of self._structured_paths which is
         # responsible for the order of the wedges.
-        ordered_paths = None
+        ordered_paths: List[Path] = []
 
         if self.order:
             order_options = set(self.order.split(" "))
@@ -158,9 +164,9 @@ class SunburstPlot(object):
             )
 
         if not order_options:
-            ordered_paths = self.input_pv.keys()
+            ordered_paths = list(self.input_pv.keys())
         elif "keep" in self.order:
-            ordered_paths = self.input_pv.keys()
+            ordered_paths = list(self.input_pv.keys())
             if type(self.input_pv) is dict:
                 # do not use isinstance (because this would yield true for
                 # a OrderedDict or any other (possibly ordered subclass of dict
@@ -299,10 +305,10 @@ class SunburstPlot(object):
         # as its parent or at least make sure, that we don't get the value 0
         # (white or black in a lot of color maps)
         if len(path) == 0:
-            color = (1, 1, 1, 1)
+            color: List[float] = [1, 1, 1, 1]
         else:
             angle = (self._angles[path].theta1 + self._angles[path].theta2) / 2
-            color = list(self.cmap(angle / 360))
+            color = list(self.cmap(angle / 360))  # type: ignore
             # make the color get lighter with increasing level
             for i in range(3):
                 color[i] += (
@@ -311,7 +317,7 @@ class SunburstPlot(object):
             # somehow the following seems to be ignored yet
             # color[3] = 1 - (len(path) - 1)**3 / (self._max_level**3 )
             # print(color[3])
-        return tuple(color)
+        return tuple(color)  # type: ignore
 
     # noinspection PyUnusedLocal
     # noinspection PyMethodMayBeStatic
@@ -488,8 +494,8 @@ class SunburstPlot(object):
             setup_axes (bool): Does some basic setup for the axes
                (autoscale, margins, etc.). It won't always be the perfect setup
                but it saves writing a few lines.
-
-            interactive (bool): Display label for the wedge under the cursor only.
+            interactive (bool): Display label for the wedge under the cursor
+                only.
         """
         if not self.wedges:
             # we didn't prepare the data yet

@@ -11,6 +11,7 @@ import setuptools  # see below (1)
 
 import site
 import sys
+
 site.ENABLE_USER_SITE = "--user" in sys.argv[1:]
 
 packages = setuptools.find_packages()

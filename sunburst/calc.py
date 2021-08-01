@@ -2,7 +2,7 @@
 
 import collections
 from itertools import groupby
-from typing import List, MutableMapping
+from typing import List, Dict, DefaultDict
 from sunburst.path import Path
 
 
@@ -13,9 +13,7 @@ from sunburst.path import Path
 # thus the real (empty) root always carries the total sum of the entries
 # and gets set by complete_pv
 # to plot the innerst circle, bring back the draw_center_circle option
-def complete_pv(
-    pathvalues: MutableMapping[Path, float]
-) -> MutableMapping[Path, float]:
+def complete_pv(pathvalues: Dict[Path, float]) -> Dict[Path, float]:
     """Consider a pathvalue dictionary of the form Dict[Path, float] e.g.
     {1.1.1: 12.0} (here: only one entry). This function will disect each path
     and assign its value to the truncated path: e.g. here 1, 1.1 and 1.1.1.
@@ -33,13 +31,13 @@ def complete_pv(
             "This function does not allow the empty path as item"
             "in the data list."
         )
-    completed = collections.defaultdict(float)
+    completed: DefaultDict[Path, float] = collections.defaultdict(float)
     for path, value in pathvalues.items():
         # len(path) +1 ensures that also the whole tag is considered
         # starting point 0: also add to empty path.
         for level in range(0, len(path) + 1):
             completed[path[:level]] += value
-    return completed
+    return dict(completed)
 
 
 def complete_paths(paths: List[Path]) -> List[Path]:
@@ -118,9 +116,9 @@ Angles = collections.namedtuple("Angles", ["theta1", "theta2"])
 # todo: docstring . path values must be complete_pv!
 def calculate_angles(
     structured_paths: List[List[List[Path]]],
-    path_values: MutableMapping[Path, float],
-) -> MutableMapping[Path, Angles]:
-    angles = {}  # return value
+    path_values: Dict[Path, float],
+) -> Dict[Path, Angles]:
+    angles: Dict[Path, Angles] = {}  # return value
     # the total sum of all elements (on one level)
     value_sum = path_values[Path(())]
     for level_no, groups in enumerate(structured_paths):
@@ -140,7 +138,7 @@ def calculate_angles(
                     theta1 = angles[path.parent()].theta1
                 else:
                     # we continue the wedge where the previous one had stopped
-                    theta1 = theta2
+                    theta1 = theta2  # type: ignore
                 # Now we determine the ending angle based on the fraction of
                 # the value.
                 theta2 = theta1 + 360 * path_values[path] / value_sum

@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 
-Welcome to HPie's documentation!
+Welcome to Sunburst's documentation!
 ================================
 
 First you might want to check out the readme
