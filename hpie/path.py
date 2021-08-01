@@ -25,8 +25,9 @@ class Path(tuple):
         # This should normally return code that can directly interpreted
         # by python to give the same Path element than the string
         # represents
-        return "Path(({}, ))".format(", ".join((string.__repr__() for
-                                                string in self)))
+        return "Path(({}, ))".format(
+            ", ".join((string.__repr__() for string in self))
+        )
 
     def __getitem__(self, key):
         result = tuple.__getitem__(tuple(self), key)
@@ -42,21 +43,22 @@ class Path(tuple):
 
     def startswith(self, tag):
         if not isinstance(tag, Path):
-            raise ValueError("Expecting instance of Path "
-                             "but got {}!".format(type(tag)))
+            raise ValueError(
+                "Expecting instance of Path " "but got {}!".format(type(tag))
+            )
         if len(tag) > len(self):
             return False
-        return self[:len(tag)] == tag
+        return self[: len(tag)] == tag
 
     def parent(self):
-        return self[:len(self) - 1]
+        return self[: len(self) - 1]
 
     def ancestors(self):
-        return [self[:i] for i in range(len(self)+1)]
+        return [self[:i] for i in range(len(self) + 1)]
 
 
 def paths2dot(paths: List[Path], full_labels=True) -> str:
-    """ Converts a list of numbering to their correspondent graph described in the
+    """Converts a list of numbering to their correspondent graph described in the
     DOT language (see http://www.graphviz.org/doc/info/lang.html). Not using
     the python graphviz package to reduce dependencies.
 
@@ -79,9 +81,9 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
         def vid(vert):
             return str(abs(hash(vert)))
 
-        vertices = [path[:level + 1] for level in range(len(path))]
+        vertices = [path[: level + 1] for level in range(len(path))]
         vertex_ids = (vid(vertex) for vertex in vertices)
-        dot += "\t{} [dir=none];\n".format('->'.join(vertex_ids))
+        dot += "\t{} [dir=none];\n".format("->".join(vertex_ids))
         # since __repr__ has a lot of quotation marks mixed in the
         # representation, we adapt the labeling with the ouput of __str__
         # we have to manually escape double quotation marks)
@@ -95,17 +97,18 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
     return dot
 
 
-def stringvalues_to_pv(stringvalues: MutableMapping[str, float],
-                       delim=STRING_DELIM) -> \
-                               MutableMapping[Path, float]:
+def stringvalues_to_pv(
+    stringvalues: MutableMapping[str, float], delim=STRING_DELIM
+) -> MutableMapping[Path, float]:
     assert all(isinstance(item, str) for item in stringvalues.keys())
-    return {Path(item.split(delim)): value for item, value in
-            stringvalues.items()}
+    return {
+        Path(item.split(delim)): value for item, value in stringvalues.items()
+    }
 
 
-def stringlist_to_ordered_pv(stringpairs: List[Any],
-                             delim=STRING_DELIM) -> \
-                                        MutableMapping[Path, float]:
+def stringlist_to_ordered_pv(
+    stringpairs: List[Any], delim=STRING_DELIM
+) -> MutableMapping[Path, float]:
     keys = stringpairs[::2]
     values = stringpairs[1::2]
     assert all(isinstance(item, str) for item in keys)
@@ -114,14 +117,16 @@ def stringlist_to_ordered_pv(stringpairs: List[Any],
     return OrderedDict(zip(paths, values))
 
 
-def charvalues_to_pv(charvalues: MutableMapping[str, float]) -> \
-        MutableMapping[Path, float]:
+def charvalues_to_pv(
+    charvalues: MutableMapping[str, float]
+) -> MutableMapping[Path, float]:
     assert all(isinstance(item, str) for item in charvalues.keys())
     return {Path(tuple(item)): value for item, value in charvalues.items()}
 
 
-def charlist_to_ordered_pv(stringpairs: List[Any]) -> \
-                                        MutableMapping[Path, float]:
+def charlist_to_ordered_pv(
+    stringpairs: List[Any],
+) -> MutableMapping[Path, float]:
     keys = stringpairs[::2]
     values = stringpairs[1::2]
     assert all(isinstance(item, str) for item in keys)

@@ -13,8 +13,10 @@ from .path import Path
 # thus the real (empy) root always carries the total sum of the entries
 # and gets set by complete_pv
 # to plot the innerst circle, bring back the draw_center_circle option
-def complete_pv(pathvalues: MutableMapping[Path, float]) -> MutableMapping[Path, float]:
-    """ Consider a pathvalue dictionary of the form Dict[Path, float] e.g.
+def complete_pv(
+    pathvalues: MutableMapping[Path, float]
+) -> MutableMapping[Path, float]:
+    """Consider a pathvalue dictionary of the form Dict[Path, float] e.g.
     {1.1.1: 12.0} (here: only one entry). This function will disect each path
     and assign its value to the truncated path: e.g. here 1, 1.1 and 1.1.1.
     Thus we get {1: 12.0, 1.1: 12.0, 1.1.1: 12.0}. For more items the values
@@ -27,8 +29,10 @@ def complete_pv(pathvalues: MutableMapping[Path, float]) -> MutableMapping[Path,
     dictionary
     """
     if Path(()) in pathvalues:
-        raise ValueError("This function does not allow the empty path as item"
-                         "in the data list.")
+        raise ValueError(
+            "This function does not allow the empty path as item"
+            "in the data list."
+        )
     completed = collections.defaultdict(float)
     for path, value in pathvalues.items():
         # len(path) +1 ensures that also the whole tag is considered
@@ -39,8 +43,7 @@ def complete_pv(pathvalues: MutableMapping[Path, float]) -> MutableMapping[Path,
 
 
 def complete_paths(paths: List[Path]) -> List[Path]:
-    """ Like complete_pv, only that it tries to preserve the order of paths.
-    """
+    """Like complete_pv, only that it tries to preserve the order of paths."""
     ret = [Path(())]
     for path in paths:
         for i in range(1, len(path)):
@@ -54,7 +57,7 @@ def complete_paths(paths: List[Path]) -> List[Path]:
 
 
 def structure_paths(paths: List[Path]) -> List[List[List[Path]]]:
-    """ Takes a list of paths and groups the paths first by length (empty
+    """Takes a list of paths and groups the paths first by length (empty
     path length 0) and then by the parent (path[:len(path) - 1]).
     Example:
     [
@@ -87,8 +90,9 @@ def structure_paths(paths: List[Path]) -> List[List[List[Path]]]:
     # sort by parent
     for paths_of_level in paths_by_level:
         paths_of_level.sort(key=parent)
-        paths_by_parent = [list(group) for _, group in
-                           groupby(paths_of_level, key=parent)]
+        paths_by_parent = [
+            list(group) for _, group in groupby(paths_of_level, key=parent)
+        ]
         structured.append(paths_by_parent)
 
     return structured
@@ -108,13 +112,14 @@ def pprint_paths(paths: List[Path]):
     print("]")
 
 
-Angles = collections.namedtuple('Angles', ['theta1', 'theta2'])
+Angles = collections.namedtuple("Angles", ["theta1", "theta2"])
 
 
 # todo: docstring . path values must be complete_pv!
-def calculate_angles(structured_paths: List[List[List[Path]]],
-                     path_values: MutableMapping[Path, float]) -> \
-                     MutableMapping[Path, Angles]:
+def calculate_angles(
+    structured_paths: List[List[List[Path]]],
+    path_values: MutableMapping[Path, float],
+) -> MutableMapping[Path, Angles]:
     angles = {}  # return value
     # the total sum of all elements (on one level)
     value_sum = path_values[Path(())]
@@ -138,6 +143,6 @@ def calculate_angles(structured_paths: List[List[List[Path]]],
                     theta1 = theta2
                 # Now we determine the ending angle based on the fraction of
                 # the value.
-                theta2 = theta1 + 360 * path_values[path]/value_sum
+                theta2 = theta1 + 360 * path_values[path] / value_sum
                 angles[path] = Angles(theta1, theta2)
     return angles

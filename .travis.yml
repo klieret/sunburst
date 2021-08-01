@@ -3,5 +3,5 @@ python:
   - "3.4"
   - "3.5"
 install: "python3 setup.py install"
-script: 
+script:
   - "python3 -m unittest discover"

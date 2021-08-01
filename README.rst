@@ -202,9 +202,9 @@ minimal example prints the following:
 .. code:: python
 
     hp._completed_pv.items() = {
-        Path((, )): 442.2,  # = the total sum of all items = 
+        Path((, )): 442.2,  # = the total sum of all items =
                             # = 36.12 + 44.32 + 37.15 + 23.98 + ...
-        Path(('ipsum', )): 164.19000000000003,  # = sum of "ipsum" and all of its children = 
+        Path(('ipsum', )): 164.19000000000003,  # = sum of "ipsum" and all of its children =
                                                 # = 40.45 + 29.34 + 94.4
         Path(('ipsum', 'eirmod', )): 123.74000000000001, # = sum of ipsum/eirmod and all of its children =
                                                          # = 29.34 + 94.4
@@ -269,5 +269,3 @@ This project is licensed under the *BSD 3-Clause License*, see |license|_.
 
 .. |license| replace:: ``LICENSE.txt``
 .. _license: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/LICENSE.txt
-
-
