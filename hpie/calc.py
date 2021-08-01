@@ -10,7 +10,7 @@ from .path import Path
 # fixme: problems with the total sum/value at the root
 # (not the same, as value at root can be more than the total of the next level)
 # solution: do not allow empty roots to be given by the user
-# thus the real (empy) root always carries the total sum of the entries
+# thus the real (empty) root always carries the total sum of the entries
 # and gets set by complete_pv
 # to plot the innerst circle, bring back the draw_center_circle option
 def complete_pv(
@@ -23,7 +23,7 @@ def complete_pv(
     will be summed accordingly.
     Furthermore the total sum of the items of
     the topmost level will be assigned to the empty path. For this to make
-    sense we require that no empy path is in the data beforehand""
+    sense we require that no empty path is in the data beforehand""
     :param pathvalues: {path: value} dictionary
     :return: {path: value}
     dictionary
@@ -75,7 +75,7 @@ def structure_paths(paths: List[Path]) -> List[List[List[Path]]]:
 
     # we do this in two stepts via the iteritems.groupby function, first
     # using the level, then the parent function as keys.
-    # (Note that sorting is nescessary before calling groupby!)
+    # (Note that sorting is necessary before calling groupby!)
 
     def level(path):
         return len(path)

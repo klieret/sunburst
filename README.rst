@@ -57,11 +57,11 @@ Features
 ``HPie`` tries to be
 
 -  Intuitive & Easy to use: After setting up your data and
-   ``matplotlib``, not more than two lines are nescessary to generate
+   ``matplotlib``, not more than two lines are necessary to generate
    first plots (`minimal example`_).
 -  Flexible & Robust: Wherever it makes sense, the methods of the
    ``HPie`` class are intended to be overwritten. Methods
-   that are resposible for spacing, coloring, styling etc. of the
+   that are responsible for spacing, coloring, styling etc. of the
    ``wedges`` take the corresponding data point (``path``) as an
    argument, allowing to set most properties independently for each
    ``wedge``.

@@ -184,7 +184,7 @@ class HPie(object):
         self._max_level = max((len(path) for path in self._completed_paths))
 
         # the order of self._structured paths determines the
-        # arrangment of the wedges afterwards.
+        # arrangement of the wedges afterwards.
         self._structured_paths = structure_paths(self._completed_paths)
 
         self._angles = calculate_angles(
@@ -480,7 +480,7 @@ class HPie(object):
             self._radial_text(path)
 
     def plot(self, setup_axes=False, interactive=False) -> None:
-        """Method that combines several others, to do all nescessary
+        """Method that combines several others, to do all necessary
         preparations and add the plot to the axes :py:attr:`self.axes`.
 
         Args:

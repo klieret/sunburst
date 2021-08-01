@@ -85,7 +85,7 @@ def paths2dot(paths: List[Path], full_labels=True) -> str:
         vertex_ids = (vid(vertex) for vertex in vertices)
         dot += "\t{} [dir=none];\n".format("->".join(vertex_ids))
         # since __repr__ has a lot of quotation marks mixed in the
-        # representation, we adapt the labeling with the ouput of __str__
+        # representation, we adapt the labeling with the output of __str__
         # we have to manually escape double quotation marks)
         for vertex in vertices:
             if full_labels:
