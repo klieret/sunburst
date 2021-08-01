@@ -169,11 +169,11 @@ before running the examples. The most basic example is |minimal|:
 
     # do the magic
 
-    hp = SunburstPlot(data, ax)
+    sbp = SunburstPlot(data, ax)
 
     # set plot attributes
 
-    hp.plot(setup_axes=True)
+    sbp.plot(setup_axes=True)
     ax.set_title('Example SunburstPlot')
 
     # save/show plot
@@ -201,7 +201,7 @@ minimal example prints the following:
 
 .. code:: python
 
-    hp._completed_pv.items() = {
+    sbp._completed_pv.items() = {
         Path((, )): 442.2,  # = the total sum of all items =
                             # = 36.12 + 44.32 + 37.15 + 23.98 + ...
         Path(('ipsum', )): 164.19000000000003,  # = sum of "ipsum" and all of its children =

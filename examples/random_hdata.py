@@ -3,7 +3,6 @@
 # fixme: needs some clean up and fixing
 
 from random import randrange as rr
-import random
 from typing import List
 import sys
 import os.path
@@ -79,9 +78,9 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots()
 
-    hp = SunburstPlot(pathvalues, ax)
+    sbp = SunburstPlot(pathvalues, ax)
 
-    hp.plot(setup_axes=True)
+    sbp.plot(setup_axes=True)
     ax.set_title("Example SunburstPlot")
 
     # save/show plot

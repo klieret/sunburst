@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-import sys
 import os.path
 from os.path import dirname, join, realpath
-import matplotlib
 import matplotlib.pyplot as plt
-from sunburst import SuburstPlot, Path
+from sunburst import SunburstPlot, Path
 import csv
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
@@ -16,9 +14,7 @@ fig.set_size_inches(10, 10)
 
 # set up some random data
 
-file_size_data_file = realpath(
-    join(dirname(__file__), "data", "file_sizes.txt")
-)
+file_size_data_file = realpath(join(dirname(__file__), "data", "file_sizes.txt"))
 data = {}
 with open(file_size_data_file) as csvfile:
     reader = csv.reader(csvfile, delimiter="\t")
@@ -33,8 +29,8 @@ axs[1].set_title("Uniform Explosion")
 axs[2].set_title("Explode one slice")
 axs[3].set_title("Explode wedges independently")
 
-hps = [
-    SuburstPlot(
+sbps = [
+    SunburstPlot(
         data,
         ax,
         cmap=plt.get_cmap("hsv"),
@@ -76,16 +72,16 @@ def wedge_gap3(path: Path):
         return 0, 0
 
 
-hps[0].wedge_spacing = wedge_gap0
-hps[1].wedge_spacing = wedge_gap1
-hps[2].wedge_spacing = wedge_gap2
-hps[3].wedge_spacing = wedge_gap3
+sbps[0].wedge_spacing = wedge_gap0
+sbps[1].wedge_spacing = wedge_gap1
+sbps[2].wedge_spacing = wedge_gap2
+sbps[3].wedge_spacing = wedge_gap3
 
 
-for i, hp in enumerate(hps):
-    hp.format_value_text = lambda path: ""
-    hp.format_path_text = lambda path: ""
-    hp.plot(setup_axes=True)
+for i, sbp in enumerate(sbps):
+    sbp.format_value_text = lambda path: ""
+    sbp.format_path_text = lambda path: ""
+    sbp.plot(setup_axes=True)
 
 
 fig.tight_layout(pad=0.5)

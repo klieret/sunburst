@@ -67,15 +67,15 @@ axs[1].set_title("Alphabetic Order")
 axs[2].set_title("Order by Value Increasing")
 axs[3].set_title("Keep Order")
 
-hps = [
+sbps = [
     SunburstPlot(data, axs[0]),
     SunburstPlot(data, axs[1], order="key"),
     SunburstPlot(data, axs[2], order="value reverse"),
     SunburstPlot(data_ordered, axs[3], order="keep"),
 ]
 
-for i, hp in enumerate(hps):
-    hp.plot(setup_axes=True)
+for i, sbp in enumerate(sbps):
+    sbp.plot(setup_axes=True)
 
 fig.tight_layout(pad=0.5)
 

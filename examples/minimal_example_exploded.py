@@ -33,7 +33,7 @@ axs[1].set_title("Completely exploded")
 axs[2].set_title("Explode one slice")
 axs[3].set_title("Explode multiple slices")
 
-hps = [SunburstPlot(data, ax) for ax in axs]
+sbps = [SunburstPlot(data, ax) for ax in axs]
 
 
 # noinspection PyUnusedLocal
@@ -59,14 +59,14 @@ def wedge_gap3(path: Path):
         return 0, 0
 
 
-hps[1].wedge_spacing = wedge_gap1
-hps[2].wedge_spacing = wedge_gap2
-hps[3].wedge_spacing = wedge_gap3
+sbps[1].wedge_spacing = wedge_gap1
+sbps[2].wedge_spacing = wedge_gap2
+sbps[3].wedge_spacing = wedge_gap3
 
 
-for i, hp in enumerate(hps):
-    hp.format_value_text = lambda path: ""
-    hp.plot(setup_axes=True)
+for i, sbp in enumerate(sbps):
+    sbp.format_value_text = lambda path: ""
+    sbp.plot(setup_axes=True)
 
 
 fig.tight_layout(pad=0.5)

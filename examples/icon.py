@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
 import os.path
-import matplotlib
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, stringvalues_to_pv
 
@@ -29,7 +27,7 @@ data = stringvalues_to_pv(
 
 # do the magic
 
-hp = SunburstPlot(data, ax, base_line_width=1)
+sbp = SunburstPlot(data, ax, base_line_width=1)
 
 # set plot attributes
 
@@ -38,10 +36,10 @@ def nothing(*args, **kwargs):
     return ""
 
 
-hp.format_text = nothing
+sbp.format_text = nothing
 
 
-hp.plot(setup_axes=True)
+sbp.plot(setup_axes=True)
 # ax.set_title('Minimal Example')
 
 # save/show plot
@@ -61,10 +59,10 @@ if __name__ == "__main__":
     plt.show()
 
     # For the interpretation:
-    print("hp._completed_pv.items() = {")
+    print("sbp._completed_pv.items() = {")
     # noinspection PyProtectedMember
     for path, value in sorted(
-        hp._completed_pv.items(), key=lambda x: str(x[0])
+        sbp._completed_pv.items(), key=lambda x: str(x[0])
     ):
         print("\t{}: {},".format(repr(path), value))
     print("}")
