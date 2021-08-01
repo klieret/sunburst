@@ -1,5 +1,5 @@
-The HPie Class
---------------
+The SunburstPlot Class
+----------------------
 
 .. autoclass:: sunburst.plot.SunburstPlot
    :members:

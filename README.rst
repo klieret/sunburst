@@ -24,7 +24,7 @@ Introduction
 
 .. start-introduction
 
-``HPie`` is a module to create "Ring charts" or "Hierarchical Pie
+``sunburst`` is a module to create "Ring charts" or "Hierarchical Pie
 Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts")
 together with the |matplotlib|_ package.
 Quoting Wikipedia_:
@@ -54,13 +54,13 @@ A prominent example are disk usage charts (see |du_example|_ for this example):
 Features
 --------
 
-``HPie`` tries to be
+``sunburst`` tries to be
 
 -  Intuitive & Easy to use: After setting up your data and
    ``matplotlib``, not more than two lines are necessary to generate
    first plots (`minimal example`_).
 -  Flexible & Robust: Wherever it makes sense, the methods of the
-   ``HPie`` class are intended to be overwritten. Methods
+   ``SunburstPlot`` class are intended to be overwritten. Methods
    that are responsible for spacing, coloring, styling etc. of the
    ``wedges`` take the corresponding data point (``path``) as an
    argument, allowing to set most properties independently for each
@@ -71,11 +71,11 @@ More specifically:
 -  Clever positioning of labels, which - depending on space constraints
    are positioned in a tangentially or radially.
 -  An easy way to "explode" the plot by redifining
-   ``HPie.wedge_spacing``
+   ``sunburst.wedge_spacing``
    (`example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_exploded.py>`__,
    `example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/disk_usage_exploded.py>`__).
 
-.. _minimal example: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py
+.. _minimal example: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_sunburst.py
 
 
 Installation
@@ -121,13 +121,13 @@ To uninstall, run
 
 .. code:: sh
 
-    sudo pip3 uninstall hpie
+    sudo pip3 uninstall sunburst
 
 To check if this package is installed, run
 
 .. code:: sh
 
-    pip3 freeze | grep hpie
+    pip3 freeze | grep sunburst
 
 Minimal example
 ---------------
@@ -141,13 +141,13 @@ to either install this package or update your ``PYTHONPATH`` via (linux)
 
 before running the examples. The most basic example is |minimal|:
 
-.. |minimal| replace:: minimal_example_hpie.py
-.. _minimal: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_hpie.py
+.. |minimal| replace:: minimal_example_sunburst.py
+.. _minimal: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_sunburst.py
 
 .. code:: python
 
     import matplotlib.pyplot as plt
-    from hpie import HPie, stringvalues_to_pv
+    from sunburst import SunburstPlot, stringvalues_to_pv
 
     fig, ax = plt.subplots()
 
@@ -169,18 +169,18 @@ before running the examples. The most basic example is |minimal|:
 
     # do the magic
 
-    hp = HPie(data, ax)
+    hp = SunburstPlot(data, ax)
 
     # set plot attributes
 
     hp.plot(setup_axes=True)
-    ax.set_title('Example HPie')
+    ax.set_title('Example SunburstPlot')
 
     # save/show plot
 
     plt.show()
 
-Running this script with ``python3 minimal_example_hpie.py`` will
+Running this script with ``python3 minimal_example_sunburst.py`` will
 produce the following plot:
 
 .. figure:: https://cloud.githubusercontent.com/assets/13602468/20408443/c8c8c1d4-ad15-11e6-86a6-868dc98e91d0.png
@@ -193,10 +193,10 @@ The Data
 
 Note that the value corresponding to path is always the value
 *excluding* the values of the children of the path. Therefore plotting
-the ``HPie`` object computes a "completed" version of the
+the ``SunburstPlot`` object computes a "completed" version of the
 "pathvalue dictionary". You can check this with the
-``HPie._completed_pv`` instance variable which gets
-initialized after calling ``HPie.plot(*args)``. Running our
+``SunburstPlot._completed_pv`` instance variable which gets
+initialized after calling ``SunburstPlot.plot(*args)``. Running our
 minimal example prints the following:
 
 .. code:: python
@@ -221,8 +221,8 @@ minimal example prints the following:
 |test_calc|_ contains an
 explicit test of this calculation based on a similar example.
 
-.. |test_calc| replace:: ``hpie/tests/test_calc.py``
-.. _test_calc: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/hpie/tests/test_calc.py
+.. |test_calc| replace:: ``sunburst/tests/test_calc.py``
+.. _test_calc: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/sunburst/tests/test_calc.py
 
 Ring Charts
 ~~~~~~~~~~~

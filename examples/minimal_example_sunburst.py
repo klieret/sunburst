@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
 import os.path
-import matplotlib
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, stringvalues_to_pv
 
@@ -52,8 +50,6 @@ if __name__ == "__main__":
     # For the interpretation:
     print("hp._completed_pv.items() = {")
     # noinspection PyProtectedMember
-    for path, value in sorted(
-        hp._completed_pv.items(), key=lambda x: str(x[0])
-    ):
+    for path, value in sorted(hp._completed_pv.items(), key=lambda x: str(x[0])):
         print("\t{}: {},".format(repr(path), value))
     print("}")

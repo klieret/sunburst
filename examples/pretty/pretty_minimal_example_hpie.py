@@ -10,4 +10,4 @@ matplotlib.rc("font", weight="light")
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-import minimal_example_hpie
+import minimal_example_sunburst
