@@ -22,7 +22,7 @@ setup(
     description="Hierarchical Pie charts for pyplot",
     author="klieret",
     author_email="kilian.lieret@posteo.de",
-    url="https://github.com/klieret/pyplot-hierarchical-pie",
+    url="https://github.com/klieret/sunburst",
     packages=packages,
     install_requires=["matplotlib", "typing"],
     license="BSD",
