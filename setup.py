@@ -24,6 +24,6 @@ setup(
     author_email="kilian.lieret@posteo.de",
     url="https://github.com/klieret/pyplot-hierarchical-pie",
     packages=packages,
-    install_requires=["matplotlib"],
+    install_requires=["matplotlib", "typing"],
     license="BSD",
 )
