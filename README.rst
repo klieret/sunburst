@@ -1,6 +1,8 @@
 Hierarchical Pie Charts |Build Status| |Doc Status|
 ===================================================
 
+✨ **This package is currently being reworked. Checkout the `sunburst` branch** ✨
+
 \| `Introduction <#introduction>`__ \| `Features <#features>`__ \|
 `Installation <#installation>`__ \| `Minimal
 Example <#minimal-example>`__ \| `License <#license>`__ \|
