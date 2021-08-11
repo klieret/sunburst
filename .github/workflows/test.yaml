@@ -40,6 +40,15 @@ jobs:
           path: ./dist
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
+      
+            # Upload to TestPyPI
+      - name: Upload to TestPyPI
+        run: 
+          python3 -m twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          TWINE_REPOSITORY: testpypi
 
   test:
     needs: [build]
