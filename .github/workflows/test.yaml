@@ -10,7 +10,7 @@ jobs:
       - name: Secret test
         shell: bash
         env:
-          SUPER_SECRET: ${{ secrets.TESTTEST }}
+          TESTTEST: ${{ secrets.TESTTEST }}
         run: |
           echo "$TESTTEST"
       - uses: actions/checkout@v2
