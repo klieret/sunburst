@@ -19,9 +19,30 @@
 #
 import os
 import sys
+from pathlib import Path
+from typing import Dict, Any
 
 sys.path.insert(0, os.path.abspath("../"))
 
+readme_path = Path(__file__).parent.resolve().parent / "README.md"
+readme_target = Path(__file__).parent / "readme.md"
+
+with readme_target.open("w") as outf:
+    outf.write(
+        "\n".join(
+            [
+                "Readme",
+                "======",
+            ]
+        )
+    )
+    lines = []
+    for line in readme_path.read_text().split("\n"):
+        if line.startswith("# "):
+            # Skip title, because we now use "Readme"
+            continue
+        lines.append(line)
+    outf.write("\n".join(lines))
 
 # -- General configuration ------------------------------------------------
 
@@ -39,6 +60,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
+    "recommonmark",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -254,7 +276,7 @@ htmlhelp_basename = "sunburstdoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements = {
+latex_elements: Dict[str, Any] = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
