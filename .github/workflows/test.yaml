@@ -34,10 +34,6 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
-      - uses: actions/upload-artifact@v2
-        with:
-          name: sunburst dist ${{ github.run_number }}
-          path: ./dist
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
       - name: Upload to TestPyPI
@@ -67,10 +63,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v2
-      with:
-        name: sunburst dist ${{ github.run_number }}
-        path: ./dist
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -78,21 +70,11 @@ jobs:
     - name: Install prerequisites
       run: |
         python3 -m pip install -U pip wheel
-    - name: Get artifact path
-      id: artifact
-      shell: bash -l {0}
-      run: |
-        cd dist
-        echo "::set-output name=path::$(ls ${{ matrix.artifact }})"
     - name: Install package
       run: |
-        cd dist
-        python3 -m pip install ${{ steps.artifact.outputs.path }}
+        python3 -m pip install --index-url https://test.pypi.org/simple/ sunburst
     - name: Smoke test
       run: |
-        cd dist
-        python3 -m pip list
-        python3 -m pip check
         python3 -c "import sunburst"
     - name: Install test dependencies
       run: |
