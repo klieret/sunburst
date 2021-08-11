@@ -14,7 +14,7 @@ jobs:
           python-version: 3.8
       - name: Install prerequisites
         run: |
-          python3 -m pip install -U pip wheel setuptools
+          python3 -m pip install -U pip wheel setuptools twine
       - name: Build distribution
         run: |
           python3 setup.py sdist bdist_wheel
@@ -40,8 +40,6 @@ jobs:
           path: ./dist
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
-      
-            # Upload to TestPyPI
       - name: Upload to TestPyPI
         run: 
           python3 -m twine upload dist/*
