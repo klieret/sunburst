@@ -1,9 +1,9 @@
 # Sunburst Charts
 
 [![Build Status](https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master)](https://travis-ci.org/klieret/pyplot-hierarchical-pie)
-[![Documentation Status](https://readthedocs.org/projects/sunburst/badge/?version=latest)](http://sunburst.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/sunburst/badge/?version=latest)](http://sunburst.readthedocs.io/en/latest/)
 
-**Check out the [full documentation](https://readthedocs.org/projects/sunburst/)**
+**Check out the [full documentation](https://sunburst.readthedocs.io/en/latest/)!**
 
 ## Introduction
 
@@ -53,22 +53,10 @@ To get the old version back, check out the `old-hpie` branch.
 
 ## Installation
 
-As this project is still in development, you have to first have to clone the repository before installing the package with `pip3`\_:
-
-```bash
-git clone https://github.com/klieret/sunburst
-```
-
 To install, run
 
 ```bash
-pip3 install .
-```
-
-To uninstall, run
-
-```bash
-pip3 uninstall sunburst
+pip3 install sunburst
 ```
 
 ## Minimal example
