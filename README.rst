@@ -70,7 +70,7 @@ More specifically:
 
 -  Clever positioning of labels, which - depending on space constraints
    are positioned in a tangentially or radially.
--  An easy way to "explode" the plot by redifining
+-  An easy way to "explode" the plot by redefining
    ``sunburst.wedge_spacing``
    (`example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_exploded.py>`__,
    `example <https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/disk_usage_exploded.py>`__).
