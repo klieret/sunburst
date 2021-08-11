@@ -8,3 +8,4 @@ __pycache__/**
 *.log
 readme/**
 doc/_build
+sunburst.egg-info/**

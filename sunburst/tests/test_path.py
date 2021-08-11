@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from ..path import Path, charvalues_to_pv
+from sunburst.path import Path, charvalues_to_pv
 
 
 class PathTest(unittest.TestCase):
-
     def setUp(self):
         self.paths = {
             "empty": Path(()),
             "triple": Path(("a", "b", "c")),
-            "unicode": Path(("東京", ))
+            "unicode": Path(("東京",)),
         }
 
     def test_length(self):
@@ -24,9 +23,9 @@ class PathTest(unittest.TestCase):
         self.assertEqual(Path("abc"), self.paths["triple"])
         for i in range(10):
             with self.subTest(i=i):
-                self.assertEqual(len(Path("a"*i)), i)
-                self.assertEqual(len(Path(['a']*i)), i)
-                self.assertEqual(len(Path(('a', )*i)), i)
+                self.assertEqual(len(Path("a" * i)), i)
+                self.assertEqual(len(Path(["a"] * i)), i)
+                self.assertEqual(len(Path(("a",) * i)), i)
                 self.assertEqual(len(Path(("",)) * i), i)
 
     def test_getitem(self):
@@ -67,13 +66,11 @@ class PathTest(unittest.TestCase):
 
 
 class TestConversions(unittest.TestCase):
-
     def test_charvalues_to_pathvalues(self):
-        charvalues = {"123": 1., "": 2., "1": 3.}
-        pathvalues = {Path("123"): 1.,
-                      Path(()): 2.,
-                      Path("1"): 3.}
+        charvalues = {"123": 1.0, "": 2.0, "1": 3.0}
+        pathvalues = {Path("123"): 1.0, Path(()): 2.0, Path("1"): 3.0}
         self.assertEqual(charvalues_to_pv(charvalues), pathvalues)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

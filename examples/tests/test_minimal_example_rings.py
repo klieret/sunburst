@@ -3,13 +3,14 @@
 
 import unittest
 import matplotlib
+
 matplotlib.use("AGG")
 
 
 class TestExample(unittest.TestCase):
-
     def test_all(self):
         from .. import minimal_example_rings
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

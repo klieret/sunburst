@@ -1,21 +1,29 @@
 #!/usr/bin/env python3
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+# std
+from distutils.core import setup
 
-setup(name='hpie',
-      description='Hierarchical Pie charts for pyplot',
-      author='klieret',
-      author_email='klieret@users.noreply.github.com',
-      url='https://github.com/klieret/pyplot-hierarchical-pie',
-      packages=['hpie'],
-      install_requires=['matplotlib', 'typing'],
-      license="BSD"
+# noinspection PyUnresolvedReferences
+import setuptools  # see below (1)
+
+# (1) see https://stackoverflow.com/questions/8295644/
+# Without this import, install_requires won't work.
+
+import site
+import sys
+
+site.ENABLE_USER_SITE = "--user" in sys.argv[1:]
+
+packages = setuptools.find_packages()
+
+
+setup(
+    name="sunburst",
+    description="Hierarchical Pie charts for pyplot",
+    author="klieret",
+    author_email="kilian.lieret@posteo.de",
+    url="https://github.com/klieret/sunburst",
+    packages=packages,
+    install_requires=["matplotlib", "typing"],
+    license="BSD",
 )
-
-
-
-
-

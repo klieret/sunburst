@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 
-import sys
 import os.path
 from os.path import dirname, join, realpath
-import matplotlib
 import matplotlib.pyplot as plt
-from hpie import HPie, Path
+from sunburst import SunburstPlot, Path
 import csv
 
 # read data
 
-file_size_data_file = realpath(join(dirname(__file__), "data",
-                                    "file_sizes.txt"))
+file_size_data_file = realpath(join(dirname(__file__), "data", "file_sizes.txt"))
 
 fig, ax = plt.subplots()
 
@@ -22,20 +19,22 @@ with open(file_size_data_file) as csvfile:
     for row in reader:
         if not len(row) == 2:
             continue
-        data[Path(row[1].split('/'))] = float(row[0])
+        data[Path(row[1].split("/"))] = float(row[0])
 
 # do the magic
 
-hp = HPie(data,
-          ax,
-          cmap=plt.get_cmap("hsv"),
-          plot_minimal_angle=0,
-          label_minimal_angle=1.5)
+sbp = SunburstPlot(
+    data,
+    ax,
+    cmap=plt.get_cmap("hsv"),
+    plot_minimal_angle=0,
+    label_minimal_angle=1.5,
+)
 
 # Do not display values
-hp.format_value_text = lambda value: None
+sbp.format_value_text = lambda value: ""  # type: ignore
 
-hp.plot(setup_axes=True)
+sbp.plot(setup_axes=True)
 
 # set plot attributes
 ax.set_title("Disk Usage Chart")
@@ -43,10 +42,15 @@ ax.set_title("Disk Usage Chart")
 # save/show plot
 
 fig.set_size_inches(10, 10)
-fig.savefig(os.path.join(os.path.dirname(__file__), "figures",
-                         "{}.png".format(os.path.basename(__file__))),
-            dpi=100,
-            bbox_inches='tight')
+fig.savefig(
+    os.path.join(
+        os.path.dirname(__file__),
+        "figures",
+        "{}.png".format(os.path.basename(__file__)),
+    ),
+    dpi=100,
+    bbox_inches="tight",
+)
 
 if __name__ == "__main__":
     plt.show()

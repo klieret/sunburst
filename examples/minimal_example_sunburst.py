@@ -6,8 +6,6 @@ from sunburst import SunburstPlot, stringvalues_to_pv
 
 fig, ax = plt.subplots()
 
-fig.set_size_inches(5, 5)
-
 # set up some random data
 
 data = stringvalues_to_pv(
@@ -27,20 +25,12 @@ data = stringvalues_to_pv(
 
 # do the magic
 
-sbp = SunburstPlot(data, ax, base_line_width=1)
+sbp = SunburstPlot(data, ax)
 
 # set plot attributes
 
-
-def nothing(*args, **kwargs):
-    return ""
-
-
-sbp.format_text = nothing
-
-
 sbp.plot(setup_axes=True)
-# ax.set_title('Minimal Example')
+ax.set_title("Minimal Example")
 
 # save/show plot
 
@@ -53,7 +43,6 @@ fig.savefig(
     dpi=100,
     bbox_inches="tight",
 )
-
 
 if __name__ == "__main__":
     plt.show()

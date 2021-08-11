@@ -1,7 +1,7 @@
 The Path class
 --------------
 
-.. autoclass:: hpie.path.Path
+.. autoclass:: sunburst.path.Path
    :members:
    :undoc-members:
    :private-members:
@@ -9,7 +9,7 @@ The Path class
 Helper functions
 ~~~~~~~~~~~~~~~~
 
-.. automodule:: hpie.path
+.. automodule:: sunburst.path
    :members:
    :undoc-members:
    :private-members:

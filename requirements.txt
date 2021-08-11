@@ -1,4 +1,0 @@
-# need this for readthedocs build
-# todo: load this by setup.py
-matplotlib
-typing
