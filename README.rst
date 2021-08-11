@@ -80,6 +80,15 @@ More specifically:
 .. _minimal example: https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_sunburst.py
 
 
+✨ Migration notice ✨
+----------------------
+
+For the first release to pypi, this package has been rebranded as ``sunburst``.
+This includes non-backwards compatible changes to the API: Most importantly,
+the ``HPie`` class is now ``SunburstPlot`` and many other changes.
+
+To get the old version back, check out the ``old-hpie`` branch.
+
 Installation
 ------------
 
