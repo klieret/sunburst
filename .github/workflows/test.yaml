@@ -14,7 +14,11 @@ jobs:
           python-version: 3.8
       - name: Install prerequisites
         run: |
-          python3 -m pip install -U pip build setuptools
+          python3 -m pip install -U pip wheel setuptools
+      - name: Build distribution
+        run: |
+          python3 setup.py sdist bdist_wheel
+          cd dist && sha256sum * | tee SHA256SUMS
       - name: Install lint/test dependencies
         run: |
           python3 -m pip install flake8 pytest pytest-cover pytest-subtests
@@ -30,16 +34,12 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sunburst dist ${{ github.run_number }}
+          path: ./dist
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
-      - name: Build distribution
-        run: |
-          python3 -m build --sdist --wheel --outdir dist/
-      - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository_url: https://test.pypi.org/legacy/
 
   test:
     needs: [build]
@@ -60,6 +60,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        name: sunburst dist ${{ github.run_number }}
+        path: ./dist
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -67,11 +71,21 @@ jobs:
     - name: Install prerequisites
       run: |
         python3 -m pip install -U pip wheel
+    - name: Get artifact path
+      id: artifact
+      shell: bash -l {0}
+      run: |
+        cd dist
+        echo "::set-output name=path::$(ls ${{ matrix.artifact }})"
     - name: Install package
       run: |
-        python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple sunburst
+        cd dist
+        python3 -m pip install ${{ steps.artifact.outputs.path }}
     - name: Smoke test
       run: |
+        cd dist
+        python3 -m pip list
+        python3 -m pip check
         python3 -c "import sunburst"
     - name: Install test dependencies
       run: |
