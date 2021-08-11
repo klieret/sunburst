@@ -18,7 +18,6 @@ jobs:
       - name: Build distribution
         run: |
           python3 setup.py sdist bdist_wheel
-          cd dist && sha256sum * | tee SHA256SUMS
       - name: Install lint/test dependencies
         run: |
           python3 -m pip install flake8 pytest pytest-cover pytest-subtests
