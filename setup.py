@@ -26,5 +26,5 @@ setup(
     packages=packages,
     install_requires=["matplotlib", "typing"],
     license="BSD",
-    long_description_content_type="test/markdown",
+    long_description_content_type="text/markdown",
 )
