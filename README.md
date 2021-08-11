@@ -1,9 +1,9 @@
-# Hierarchical Pie Charts
+# Sunburst Charts
 
 [![Build Status](https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master)](https://travis-ci.org/klieret/pyplot-hierarchical-pie)
-[![Documentation Status](https://readthedocs.org/projects/pyplot-hierarchical-pie/badge/?version=latest)](http://pyplot-hierarchical-pie.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/sunburst/badge/?version=latest)](http://sunburst.readthedocs.io/en/latest/?badge=latest)
 
-**Check out the [full documentation](https://readthedocs.org/projects/pyplot-hierarchical-pie/)**
+**Check out the [full documentation](https://readthedocs.org/projects/sunburst/)**
 
 ## Introduction
 
@@ -29,7 +29,7 @@ A prominent example are disk usage charts (see
 -   Intuitive & Easy to use: After setting up your data and
     `matplotlib`, not more than two lines are necessary to generate
     first plots ([minimal
-    example](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_sunburst.py)).
+    example](https://github.com/klieret/sunburst/blob/master/examples/minimal_example_sunburst.py)).
 -   Flexible & Robust: Wherever it makes sense, the methods of the
     `SunburstPlot` class are intended to be overwritten. Methods that
     are responsible for spacing, coloring, styling etc. of the `wedges`
@@ -40,8 +40,8 @@ More specifically:
 -   Clever positioning of labels, which - depending on space constraints are positioned in a tangentially or radially.
 -   An easy way to "explode" the plot by redefining
     `sunburst.wedge_spacing`
-    ([example](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/minimal_example_exploded.py),
-    [example](https://github.com/klieret/pyplot-hierarchical-pie/blob/master/examples/disk_usage_exploded.py)).
+    ([example](https://github.com/klieret/sunburst/blob/master/examples/minimal_example_exploded.py),
+    [example](https://github.com/klieret/sunburst/blob/master/examples/disk_usage_exploded.py)).
 
 ## ✨ Migration notice ✨
 
@@ -56,12 +56,8 @@ To get the old version back, check out the `old-hpie` branch.
 As this project is still in development, you have to first have to clone the repository before installing the package with `pip3`\_:
 
 ```bash
-git clone https://github.com/klieret/pyplot-hierarchical-pie
+git clone https://github.com/klieret/sunburst
 ```
-
-Alternatively click
-[here](https://github.com/klieret/pyplot-hierarchical-pie/archive/master.zip)
-to download the current state of the master branch.
 
 To install, run
 
