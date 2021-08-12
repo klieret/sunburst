@@ -68,10 +68,7 @@ You can find several examples at `examples/`. The most basic example is
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, stringvalues_to_pv
 
-fig, ax = plt.subplots()
-
-# set up some random data
-
+# set up some data
 data = stringvalues_to_pv({
     'ipsum':                      40.45,
     'ipsum/eirmod':               29.34,
@@ -86,16 +83,10 @@ data = stringvalues_to_pv({
 })
 
 
-# do the magic
-
+fig, ax = plt.subplots()
 sbp = SunburstPlot(data, ax)
-
-# set plot attributes
-
 sbp.plot(setup_axes=True)
 ax.set_title('Example SunburstPlot')
-
-# save/show plot
 
 plt.show()
 ```
@@ -134,7 +125,7 @@ sbp._completed_pv.items() = {
 }
 ```
 
-`sunburst/tests/test_calc.py`\_ contains an explicit test of this
+`sunburst/tests/test_calc.py` contains an explicit test of this
 calculation based on a similar example.
 
 ## Ring Charts
