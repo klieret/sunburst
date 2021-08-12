@@ -1,0 +1,57 @@
+name: Release to PyPI!
+on: [workflow_dispatch]
+jobs:
+  test-publish:
+    name: Publish package
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install pypa/build
+      run: >-
+        python -m
+        pip install
+        build
+        --user
+    - name: Build a binary wheel and a source tarball
+      run: >-
+        python -m
+        build
+        --sdist
+        --wheel
+        --outdir dist/
+        .
+    - name: Publish distribution 📦 to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+  test:
+    needs: [test-publish]
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os:  [ubuntu, windows, macos]
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install prerequisites
+      run: |
+        python3 -m pip install -U pip wheel
+    - name: Install package
+      run: |
+        python3 -m pip install sunburst
+    - name: Smoke test
+      run: |
+        python3 -c "import sunburst"
+    - name: Install test dependencies
+      run: |
+        python3 -m pip install pytest pytest-cover pytest-subtests
+    - name: Test with pytest
+      run: |
+        pytest --pyargs sunburst --cov sunburst --cov-report term-missing:skip-covered
