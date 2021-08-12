@@ -1,10 +1,8 @@
-name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
-on:
-  release:
-    types: [created]
+name: Publish Python distribution to TestPyPI
+on: [workflow_dispatch]
 jobs:
-  build-n-publish:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+  test-publish:
+    name: Publish package to TestPyPI
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
@@ -31,10 +29,6 @@ jobs:
       with:
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
-    - name: Publish distribution 📦 to PyPI
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
   test:
     needs: [build]
     runs-on: ${{ matrix.os }}-latest
@@ -42,17 +36,7 @@ jobs:
       matrix:
         os:  [ubuntu, windows, macos]
         python-version: [3.6, 3.7, 3.8, 3.9]
-        include:
-          - python-version: 3.6
-            artifact: sunburst-*.tar.gz
-          - python-version: 3.7
-            artifact: sunburst-*.whl
-          - python-version: 3.8
-            artifact: sunburst-*.whl
-          - python-version: 3.9
-            artifact: sunburst-*.tar.gz
     steps:
-    - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -62,7 +46,7 @@ jobs:
         python3 -m pip install -U pip wheel
     - name: Install package
       run: |
-        python3 -m pip install sunburst
+        python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple sunburst
     - name: Smoke test
       run: |
         python3 -c "import sunburst"
