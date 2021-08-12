@@ -3,8 +3,12 @@
 [![gh actions](https://github.com/klieret/sunburst/actions/workflows/test.yaml/badge.svg)](https://github.com/klieret/sunburst/actions)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/klieret/sunburst/master.svg)](https://results.pre-commit.ci/latest/github/klieret/sunburst/master)
 [![Documentation Status](https://readthedocs.org/projects/sunburst/badge/?version=latest)](http://sunburst.readthedocs.io/en/latest/)
+[![Pypi status](https://badge.fury.io/py/sunburst.svg)](https://pypi.org/project/sunburst/)
+[![PR welcome](https://img.shields.io/badge/PR-Welcome-%23FF8300.svg)](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project)
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![License](https://img.shields.io/github/license/klieret/sunburst.svg)](https://github.com/klieret/sunburst/blob/master/LICENSE.txt)
 
-**Check out the [full documentation](https://sunburst.readthedocs.io/en/latest/)!**
+🔖 **Check out the [full documentation](https://sunburst.readthedocs.io/en/latest/)!**
 
 ## Introduction
 
@@ -23,7 +27,7 @@ A prominent example are disk usage charts (see
 
 ![](https://cloud.githubusercontent.com/assets/13602468/20408444/c8cb6a56-ad15-11e6-8f5c-1abef69dc551.png)
 
-## Features
+## ✨ Features
 
 `sunburst` tries to be
 
@@ -44,15 +48,7 @@ More specifically:
     ([example](https://github.com/klieret/sunburst/blob/master/examples/minimal_example_exploded.py),
     [example](https://github.com/klieret/sunburst/blob/master/examples/disk_usage_exploded.py)).
 
-## ✨ Migration notice ✨
-
-For the first release to pypi, this package has been rebranded as
-`sunburst`. This includes non-backwards compatible changes to the API: Most importantly, the `HPie` class is now `SunburstPlot` and many other
-changes.
-
-To get the old version back, check out the `old-hpie` branch.
-
-## Installation
+## 📦 Installation
 
 To install, run
 
@@ -60,7 +56,15 @@ To install, run
 pip3 install sunburst
 ```
 
-## Minimal example
+## 🚧 Migration notice
+
+For the first release to pypi, this package has been rebranded as
+`sunburst`. This includes non-backwards compatible changes to the API: Most importantly, the `HPie` class is now `SunburstPlot` and many other
+changes.
+
+To get the old version back, check out the `old-hpie` branch.
+
+## 🔥 Minimal example
 
 You can find several examples at `examples/`. The most basic example is
 `minimal_example_sunburst.py`:
