@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-echo "*** RUNNING UNITTEST ***"
-python3 -m unittest discover --verbose || exit 1
