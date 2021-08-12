@@ -55,5 +55,4 @@ jobs:
         python3 -m pip install pytest pytest-cover pytest-subtests
     - name: Test with pytest
       run: |
-        cd dist
         pytest --pyargs sunburst --cov sunburst --cov-report term-missing:skip-covered
