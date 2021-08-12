@@ -12,9 +12,8 @@
 
 ## Introduction
 
-`sunburst` is a module to create "Ring charts" or "Hierarchical Pie
-Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts") together with the `matplotlib` package. Quoting
-[Wikipedia](https://en.wikipedia.org/wiki/Pie_chart#Ring_chart_.2F_Sunburst_chart_.2F_Multilevel_pie_chart):
+`sunburst` creates "sunburst charts" (also called "Ring Charts", "Hierarchical Pie Chargs" or "Multilevel Pie Charts") together with the `matplotlib` package.
+Quoting [Wikipedia](https://en.wikipedia.org/wiki/Pie_chart#Ring_chart_.2F_Sunburst_chart_.2F_Multilevel_pie_chart):
 
 > A ring chart, also known as a sunburst chart or a multilevel pie
 > chart, is used to visualize hierarchical data, depicted by concentric circles. The circle in the centre represents the root node, with the
@@ -58,11 +57,11 @@ pip3 install sunburst
 
 ## 🚧 Migration notice
 
-For the first release to pypi, this package has been rebranded as
-`sunburst`. This includes non-backwards compatible changes to the API: Most importantly, the `HPie` class is now `SunburstPlot` and many other
-changes.
+For more information about recent changes, see the [changelog](https://sunburst.readthedocs.io/en/latest/changelog.html).
 
-To get the old version back, check out the `old-hpie` branch.
+* Before the first release to pypi, this package was called `hpie`.
+  * There have since bean many non-backwards compatible changes to the API: Most importantly, the `HPie` class is now `SunburstPlot` and the package is called `sunburst`
+  * To get the old version back, check out the `old-hpie` branch. It will however not be maintained any longer.
 
 ## 🔥 Minimal example
 
