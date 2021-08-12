@@ -18,7 +18,7 @@ Charts" (also called "Multilevel Pie Charts" or "Sunburst Charts") together with
 > outer circle which lie within the angular sweep of the parent segment.
 
 A prominent example are disk usage charts (see
-`examples/disk_usage_plot.py`\_ for this example):
+`examples/disk_usage_plot.py` for this example):
 
 ![](https://cloud.githubusercontent.com/assets/13602468/20408444/c8cb6a56-ad15-11e6-8f5c-1abef69dc551.png)
 

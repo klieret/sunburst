@@ -1,30 +1,23 @@
 #!/usr/bin/env python3
 
+""" To install this package, change to the directory of this file and run
+
+    pip3 install --user .
+
+(the ``--user`` flag installs the package for your user account only, otherwise
+you will need administrator rights).
+"""
+
 # std
-from distutils.core import setup
-
-# noinspection PyUnresolvedReferences
-import setuptools  # see below (1)
-
-# (1) see https://stackoverflow.com/questions/8295644/
-# Without this import, install_requires won't work.
-
 import site
 import sys
+import setuptools
 
+# Sometimes editable install fails with an error message about user site
+# being not writeable. The following line can fix that, see
+# https://github.com/pypa/pip/issues/7953
 site.ENABLE_USER_SITE = "--user" in sys.argv[1:]
 
-packages = setuptools.find_packages()
 
-
-setup(
-    name="sunburst",
-    description="Hierarchical Pie charts for pyplot",
-    author="klieret",
-    author_email="kilian.lieret@posteo.de",
-    url="https://github.com/klieret/sunburst",
-    packages=packages,
-    install_requires=["matplotlib", "typing"],
-    license="BSD",
-    long_description_content_type="text/markdown",
-)
+if __name__ == "__main__":
+    setuptools.setup()
