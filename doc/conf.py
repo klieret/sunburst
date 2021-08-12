@@ -21,11 +21,16 @@ import os
 import sys
 from pathlib import Path
 from typing import Dict, Any
+import shutil
 
 sys.path.insert(0, os.path.abspath("../"))
 
-readme_path = Path(__file__).parent.resolve().parent / "README.md"
-readme_target = Path(__file__).parent / "readme.md"
+this_dir = Path(__file__).parent.resolve()
+
+readme_path = this_dir.parent / "README.md"
+readme_target = this_dir / readme_path.name.lower()
+changelog_path = this_dir.parent / "CHANGELOG.md"
+changelog_target = this_dir / changelog_path.name.lower()
 
 with readme_target.open("w") as outf:
     outf.write(
@@ -43,6 +48,7 @@ with readme_target.open("w") as outf:
             continue
         lines.append(line)
     outf.write("\n".join(lines))
+shutil.copy(changelog_path, changelog_target)
 
 # -- General configuration ------------------------------------------------
 

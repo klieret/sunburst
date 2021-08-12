@@ -11,17 +11,20 @@ First you might want to check out the readme
 
 .. toctree::
    :maxdepth: 2
+   :caption: Basics
 
    readme
+   changelog
+   license
 
 For more information, please consult:
 
 .. toctree::
    :maxdepth: 2
+   :caption: Advanced
 
    plot
    path
-   license
 
 
 
