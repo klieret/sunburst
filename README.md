@@ -1,6 +1,7 @@
 # Sunburst Charts
 
-[![Build Status](https://travis-ci.org/klieret/pyplot-hierarchical-pie.svg?branch=master)](https://travis-ci.org/klieret/pyplot-hierarchical-pie)
+[![gh actions](https://github.com/klieret/sunburst/actions/workflows/test.yaml/badge.svg)](https://github.com/klieret/sunburst/actions)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/klieret/sunburst/master.svg)](https://results.pre-commit.ci/latest/github/klieret/sunburst/master)
 [![Documentation Status](https://readthedocs.org/projects/sunburst/badge/?version=latest)](http://sunburst.readthedocs.io/en/latest/)
 
 **Check out the [full documentation](https://sunburst.readthedocs.io/en/latest/)!**
