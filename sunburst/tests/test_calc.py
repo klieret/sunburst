@@ -131,9 +131,7 @@ class CalcTest(unittest.TestCase):
         # keys are exactly equal):
         for key in self.hc_complete_pv.keys():
             with self.subTest(key=key):
-                self.assertAlmostEqual(
-                    calculated[key], self.hc_complete_pv[key]
-                )
+                self.assertAlmostEqual(calculated[key], self.hc_complete_pv[key])
 
     def test_structurize(self):
         calculated = structure_paths(list(self.hc_complete_pv.keys()))
