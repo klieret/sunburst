@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os.path
+import pathlib
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, Path, stringvalues_to_pv
 
@@ -74,11 +74,9 @@ fig.tight_layout(pad=0.5)
 # save/show plot
 
 fig.savefig(
-    os.path.join(
-        os.path.dirname(__file__),
-        "figures",
-        "{}.png".format(os.path.basename(__file__)),
-    ),
+    pathlib.Path(__file__).resolve().parent
+    / "figures"
+    / "minimal_example_exploded.png",
     dpi=100,
     bbox_inches="tight",
 )

@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-import os.path
-from os.path import dirname, join, realpath
+import pathlib
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, Path
 import csv
 
 # read data
 
-file_size_data_file = realpath(join(dirname(__file__), "data", "file_sizes.txt"))
+file_size_data_file = (
+    pathlib.Path(__file__).resolve().parent / "data" / "file_sizes.txt"
+)
 
 fig, ax = plt.subplots()
 
@@ -43,11 +44,7 @@ ax.set_title("Disk Usage Chart")
 
 fig.set_size_inches(10, 10)
 fig.savefig(
-    os.path.join(
-        os.path.dirname(__file__),
-        "figures",
-        "{}.png".format(os.path.basename(__file__)),
-    ),
+    pathlib.Path(__file__).resolve().parent / "figures" / "disk_usage_plot.png",
     dpi=100,
     bbox_inches="tight",
 )

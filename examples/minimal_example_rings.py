@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-import os.path
+import pathlib
 import matplotlib
 
 if "debug" in sys.argv[1:]:
@@ -40,11 +40,9 @@ ax.set_title("Minimal Example (Rings)")
 # save/show plot
 
 fig.savefig(
-    os.path.join(
-        os.path.dirname(__file__),
-        "figures",
-        "{}.png".format(os.path.basename(__file__)),
-    ),
+    pathlib.Path(__file__).resolve().parent
+    / "figures"
+    / "minimal_example_rings.png",
     dpi=100,
     bbox_inches="tight",
 )
