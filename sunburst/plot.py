@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Optional
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 import numpy as np
@@ -79,7 +79,7 @@ class SunburstPlot(object):
     def __init__(
         self,
         input_pv: Dict[Path, float],
-        axes,  # todo: make optional argument?
+        axes: Optional[plt.Axes] = None,  # todo: make optional argument?
         origin=(0.0, 0.0),
         cmap=plt.get_cmap("autumn"),
         base_ring_width=0.4,
@@ -91,7 +91,8 @@ class SunburstPlot(object):
         order="value reverse",
         base_textbox_props=None,
     ):
-
+        if axes is None:
+            axes = plt.gca()
         # *** Input & Config ***                                        (emph)
         self.input_pv = input_pv
         self.axes = axes
