@@ -4,6 +4,7 @@ import pathlib
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, Path
 import csv
+import os
 
 # read data
 
@@ -49,5 +50,5 @@ fig.savefig(
     bbox_inches="tight",
 )
 
-if __name__ == "__main__":
+if not "NOPLOT" in os.environ:
     plt.show()

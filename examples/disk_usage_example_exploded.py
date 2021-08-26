@@ -4,6 +4,7 @@ import pathlib
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, Path
 import csv
+import os
 
 fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
 
@@ -99,5 +100,5 @@ fig.savefig(
 )
 
 
-if __name__ == "__main__":
+if not "NOPLOT" in os.environ:
     plt.show()

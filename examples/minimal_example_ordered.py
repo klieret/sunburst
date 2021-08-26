@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import pathlib
+import os
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, charlist_to_ordered_pv, charvalues_to_pv
 
@@ -89,5 +90,5 @@ fig.savefig(
     bbox_inches="tight",
 )
 
-if __name__ == "__main__":
+if not "NOPLOT" in os.environ:
     plt.show()
