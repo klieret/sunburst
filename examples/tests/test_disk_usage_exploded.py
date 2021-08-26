@@ -15,7 +15,7 @@ file_size_data_file = realpath(
 @unittest.skipUnless(exists(file_size_data_file), "Data is missing.")
 class TestExample(unittest.TestCase):
     def test_all(self):
-        from .. import disk_usage_exploded
+        from .. import disk_usage_example_exploded
 
 
 if __name__ == "__main__":
