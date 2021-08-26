@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import os.path
+import pathlib
+import os
 import matplotlib.pyplot as plt
 from sunburst import SunburstPlot, stringvalues_to_pv
 
@@ -35,23 +36,19 @@ ax.set_title("Minimal Example")
 # save/show plot
 
 fig.savefig(
-    os.path.join(
-        os.path.dirname(__file__),
-        "figures",
-        "{}.png".format(os.path.basename(__file__)),
-    ),
+    pathlib.Path(__file__).resolve().parent
+    / "figures"
+    / "minimal_example_sunburst.png",
     dpi=100,
     bbox_inches="tight",
 )
 
-if __name__ == "__main__":
+if "NOPLOT" not in os.environ:
     plt.show()
 
-    # For the interpretation:
-    print("sbp._completed_pv.items() = {")
-    # noinspection PyProtectedMember
-    for path, value in sorted(
-        sbp._completed_pv.items(), key=lambda x: str(x[0])
-    ):
-        print("\t{}: {},".format(repr(path), value))
-    print("}")
+# For the interpretation:
+print("sbp._completed_pv.items() = {")
+# noinspection PyProtectedMember
+for path, value in sorted(sbp._completed_pv.items(), key=lambda x: str(x[0])):
+    print("\t{}: {},".format(repr(path), value))
+print("}")
