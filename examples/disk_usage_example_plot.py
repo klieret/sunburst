@@ -50,5 +50,5 @@ fig.savefig(
     bbox_inches="tight",
 )
 
-if not "NOPLOT" in os.environ:
+if "NOPLOT" not in os.environ:
     plt.show()

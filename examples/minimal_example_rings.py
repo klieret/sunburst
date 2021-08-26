@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-import sys
+# std
 import pathlib
-import matplotlib
 import os
 
-if "debug" in sys.argv[1:]:
-    matplotlib.use("AGG")
+# 3rd
 import matplotlib.pyplot as plt
+
+# ours
 from sunburst import SunburstPlot, stringvalues_to_pv
 
 fig, ax = plt.subplots()
@@ -48,7 +48,7 @@ fig.savefig(
     bbox_inches="tight",
 )
 
-if not "NOPLOT" in os.environ:
+if "NOPLOT" not in os.environ:
     plt.show()
 
 # For the interpretation:

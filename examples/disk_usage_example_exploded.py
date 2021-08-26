@@ -100,5 +100,5 @@ fig.savefig(
 )
 
 
-if not "NOPLOT" in os.environ:
+if "NOPLOT" not in os.environ:
     plt.show()
