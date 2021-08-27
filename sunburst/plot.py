@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from typing import Dict, Tuple, List, Optional
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge

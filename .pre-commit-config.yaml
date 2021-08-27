@@ -26,6 +26,7 @@ repos:
     rev: 'v0.910'  # Use the sha / tag you want to point at
     hooks:
     -   id: mypy
+        exclude: "sunburst/examples/.*"
 -   repo: https://github.com/codespell-project/codespell
     rev: 'v2.1.0'
     hooks:
