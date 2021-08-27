@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-#
 # sunburst documentation build configuration file, created by
 # sphinx-quickstart on Wed Nov 23 10:35:32 2016.
 #

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import collections
 from itertools import groupby
 from typing import List, Dict, DefaultDict
