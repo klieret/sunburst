@@ -1,4 +1,6 @@
 include sunburst/version.txt
 include README.md
 include LICENSE.txt
-recursive-include examples/
+include sunburst/examples/*.py
+include sunburst/examples/data/*.txt
+include sunburst/examples/figures/.keep

@@ -15,7 +15,7 @@ matplotlib.use("AGG")
 
 
 def get_all_example_files() -> List[Path]:
-    examples_dir = base_dir.parent / "examples"
+    examples_dir = base_dir / "examples"
     return [
         f
         for f in examples_dir.iterdir()
