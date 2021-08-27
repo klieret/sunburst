@@ -15,7 +15,7 @@ matplotlib.use("AGG")
 
 
 def get_all_example_files() -> List[Path]:
-    examples_dir = base_dir.parent / "examples"
+    examples_dir = base_dir / "examples"
     return [
         f
         for f in examples_dir.iterdir()
@@ -23,8 +23,10 @@ def get_all_example_files() -> List[Path]:
     ]
 
 
-@pytest.mark.parametrize("file", get_all_example_files())
-def test_example(file):
+@pytest.mark.parametrize("example_file", get_all_example_files())
+def test_example(example_file):
     subprocess.run(
-        ["python3", file], check=True, env={**os.environ, "NOPLOT": "true"}
+        ["python3", str(example_file.resolve())],
+        check=True,
+        env={**os.environ, "NOPLOT": "true"},
     )

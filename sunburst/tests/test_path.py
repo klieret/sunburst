@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import unittest
 from sunburst.path import Path, charvalues_to_pv
 
