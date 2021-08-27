@@ -1,8 +1,12 @@
-#!/usr/bin/env python3
-
 import unittest
 from sunburst.path import charvalues_to_pv
-from sunburst.calc import *
+from sunburst.calc import (
+    Path,
+    complete_paths,
+    complete_pv,
+    structure_paths,
+    calculate_angles,
+)
 from typing import List
 
 # Abbreviations:

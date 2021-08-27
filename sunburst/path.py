@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from typing import List, Iterable, Dict, Any
 from collections import OrderedDict
 
