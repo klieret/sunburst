@@ -10,6 +10,8 @@
 
 🔖 **Check out the [full documentation](https://sunburst.readthedocs.io/en/latest/)!**
 
+🚧 **This is an older project that is currently being brushed up** 🚧
+
 ## Introduction
 
 `sunburst` creates "sunburst charts" (also called "Ring Charts", "Hierarchical Pie Chargs" or "Multilevel Pie Charts") together with the `matplotlib` package.
@@ -59,6 +61,7 @@ pip3 install sunburst
 
 For more information about recent changes, see the [changelog](https://sunburst.readthedocs.io/en/latest/changelog.html).
 
+* The 2.0 version will have a different API without the `Path` class
 * Before the first release to pypi, this package was called `hpie`.
   * There have since bean many non-backwards compatible changes to the API: Most importantly, the `HPie` class is now `SunburstPlot` and the package is called `sunburst`
   * To get the old version back, check out the `old-hpie` branch. It will however not be maintained any longer.
