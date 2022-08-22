@@ -1,2 +1,2 @@
 sphinx_book_theme
-git+git://github.com/klieret/sunburst@master#egg=sunburst
+git+https://github.com/klieret/sunburst.git
