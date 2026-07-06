@@ -1,4 +1,4 @@
-""" SunburstPlot Module """
+"""SunburstPlot Module"""
 
 import pathlib
 from sunburst.plot import SunburstPlot
